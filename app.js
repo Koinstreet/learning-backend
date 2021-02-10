@@ -5,6 +5,7 @@ const cors = require('cors');
 // ROUTES
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const subscriberRoutes = require('./routes/subscriberRoutes');
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.get("/", (req, res) => res.send("working"));
 // INITIALIZE ROUTES
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/course', courseRoutes);
+app.use('/api/v1/subscribe', subscriberRoutes);
 
 module.exports = app;

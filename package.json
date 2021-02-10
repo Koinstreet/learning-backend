@@ -4,7 +4,7 @@
   "description": "backend api for koinstreet learning app",
   "main": "index.js",
   "scripts": {
-    "start": "npm server.js",
+    "start": "npm run server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js"
   },

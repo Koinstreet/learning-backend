@@ -4,9 +4,11 @@
   "description": "backend api for koinstreet learning app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "heroku-postbuild": "npm install --production"
   },
   "author": "Koinstreet",
   "license": "ISC",

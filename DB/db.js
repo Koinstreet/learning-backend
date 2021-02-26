@@ -1,8 +1,9 @@
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-  process.env.DATABASE_URL,
-
+  "learningApp-api",
+  "gideonnnalue",
+  "gideon5053",
   {
     host: process.env.DATABASE_HOST,
     dialect: "postgres",
@@ -12,12 +13,12 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000,
     },
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
+    // dialectOptions: {
+    //   ssl: {
+    //     require: true,
+    //     rejectUnauthorized: false
+    //   }
+    // }
   }
 );
 
@@ -43,14 +44,12 @@ db.viewedcourses.belongsTo(db.courses, {
   foreignKey: "courseId",
   as: "course",
   constraints: false,
-  onDelete: 'cascade',
-  hooks: true
+  onDelete: "cascade",
+  hooks: true,
 });
 db.viewedcourses.hasMany(db.modules);
 
 module.exports = db;
-
-
 
 // const sequelize = new Sequelize(
 //   process.env.DATABSE_LOCAL,

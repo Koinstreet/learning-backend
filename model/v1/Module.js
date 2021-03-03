@@ -13,7 +13,6 @@ const moduleSchema = new Schema({
     required: true,
     ref: "Course",
   },
-  moduleId: Schema.Types.ObjectId,
   name: {
     type: String,
     required: true,
@@ -23,9 +22,12 @@ const moduleSchema = new Schema({
     required: true,
   },
   content: {
-    type: String,
+    type: Object,
     required: true,
   },
+},
+{
+  timestamps: true
 });
 
 const Module = mongoose.model("Module", moduleSchema);

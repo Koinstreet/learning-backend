@@ -1,3 +1,4 @@
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
 const { UNAUTHORIZED, BAD_REQUEST } = require("http-status-codes");
@@ -12,6 +13,7 @@ const { validateSignup, validateLogin } = require("../../../validators");
 const AppError = require("../../../utils/appError");
 
 const createSendToken = require("./createSendToken");
+
 
 exports.signupUser = async (req, res, next) => {
   try {

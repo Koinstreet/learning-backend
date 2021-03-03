@@ -28,6 +28,8 @@ const userSchema = new Schema({
   courses: {
     type: Array,
   },
+}, {
+  timestamps: true
 });
 
 userSchema.pre("save", async function (next) {

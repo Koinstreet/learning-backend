@@ -28,8 +28,10 @@ const courseSchema = new Schema({
   },
   published: {
     type: Boolean,
-    default: true,
+    default: false,
   },
+}, {
+  timestamps: true
 });
 
 const Course = mongoose.model("Course", courseSchema);

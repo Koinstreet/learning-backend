@@ -9,7 +9,7 @@ const signToken = (id, role) => {
 };
 
 const createSendToken = (user, statusCode, res, message) => {
-  const token = signToken(user._id);
+  const token = signToken(user._id, user.role);
   const data = {
     token,
     user,

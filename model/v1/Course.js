@@ -23,9 +23,7 @@ const courseSchema = new Schema({
   },
   audience: String,
   perequisites: String,
-  objectives: {
-    type: Array,
-  },
+  objectives: [String],
   published: {
     type: Boolean,
     default: false,

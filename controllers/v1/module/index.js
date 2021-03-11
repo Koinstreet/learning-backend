@@ -45,7 +45,7 @@ exports.createModule = async (req, res, next) => {
 exports.getCourseAllModule = async (req, res, next) => {
   try {
     const modules = await Module.find({ courseId: req.params.courseId }).sort(
-      "-createdAt"
+      "createdAt"
     );
     if (!modules) {
       errors.msg = "Invalid course";
@@ -105,6 +105,8 @@ exports.getModule = async (req, res, next) => {
 };
 
 exports.updateModule = async (req, res, next) => {
+  console.log(req.params);
+  console.log(req.body)
   try {
     const { errors, isValid } = validateModule(req.body);
     if (!isValid) {
@@ -145,8 +147,15 @@ exports.deleteModule = async (req, res, next) => {
 exports.getViewedCourses = async (req, res, next) => {
   try {
     const viewedCourses = await ViewedCourse.find({ userId: req.user.id })
-      .populate("courseId")
-      .sort("-createdAt");
+    .sort("-createdAt")
+    .populate({
+      path: "courseId",
+      model: "Course",
+      populate: {
+        path: "authorId",
+        model: "User"
+      }
+    })
     successWithData(res, OK, "All courses", viewedCourses);
   } catch (err) {
     console.log(err);

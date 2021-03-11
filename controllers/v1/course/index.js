@@ -90,6 +90,7 @@ exports.getCourse = async (req, res, next) => {
 };
 
 exports.updateCourse = async (req, res, next) => {
+  
   try {
     const { errors, isValid } = validateCourse(req.body);
     if (!isValid) {
@@ -128,7 +129,7 @@ exports.updateCourse = async (req, res, next) => {
 
 exports.deleteCourse = async (req, res, file) => {
   try {
-    Course.findOneAndDelete({ _id: req.params.id });
+    await Course.findOneAndDelete({ _id: req.params.id });
     return successNoData(res, OK, "resource deleted");
   } catch (err) {
     console.log(err);

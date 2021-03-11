@@ -1,21 +1,17 @@
-class AppSuccess {
-  static getStatus(statusCode) {
-    return `${statusCode}`.startsWith("2") ? "success" : "error";
-  }
-  static successNoData(res, statusCode, message) {
+const successHandler = {
+  successNoData(res, statusCode, message) {
+    return res.status(statusCode).json({ message, status: "success" });
+  },
+  successNoMessage(res, statusCode, data) {
+    return res.status(statusCode).json({ data, status: "success" });
+  },
+  successWithData(res, statusCode, message, data) {
     return res.status(statusCode).json({
-      status: this.getStatus(statusCode),
       message,
+      status: "success",
+      data,
     });
-  }
-  static successWithData(res, statusCode, data) {
-    return res.status(statusCode).json({
-      status: this.getStatus(statusCode),
-      data: {
-        data,
-      },
-    });
-  }
-}
+  },
+};
 
-module.exports = AppSuccess;
+module.exports = successHandler;

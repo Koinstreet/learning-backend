@@ -1,7 +1,7 @@
 const express = require("express");
 
 // Controllers
-const subscriberController = require("../controllers/subscriberController");
+const subscriberController = require("../controllers/v1/subscriber");
 
 const router = express.Router();
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 let validator = require('validator');
 require('mongoose-type-url');
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,

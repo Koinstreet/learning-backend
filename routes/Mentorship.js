@@ -1,5 +1,5 @@
 let router = require('express').Router();
-let Mentorship = require('../models/Mentorship');
+let Mentorship = require('../model/Mentorship');
 
 // Get all Mentorships
 router.route('/').get((req, res) => {

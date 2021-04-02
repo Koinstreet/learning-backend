@@ -1,5 +1,5 @@
 let router = require('express').Router();
-let Chapter = require('../models/Chapter');
+let Chapter = require('../model/Chapter');
 
 // Get all Chapter
 router.route('/').get((req, res) => {

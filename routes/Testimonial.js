@@ -1,7 +1,7 @@
 const express = require('express');
 let router = express.Router();
 
-const Testimonial = require('../models/Testimonial');
+const Testimonial = require('../model/Testimonial');
 
 // Get all Testimonials
 router.route('/').get((req, res) => {

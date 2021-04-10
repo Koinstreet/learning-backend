@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const DB = require("./DB");
-
+import "@babel/polyfill";
 // env config
 dotenv.config({ path: './config.env' });
 

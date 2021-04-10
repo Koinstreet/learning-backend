@@ -12,12 +12,10 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
+    unique: false
   },
   password: {
     type: String,
-    required: true,
     min: 8,
   },
   role: {
@@ -28,6 +26,22 @@ const userSchema = new Schema({
   courses: {
     type: Array,
   },
+  googleId: {
+    type: String,
+  },
+  facebookId: {
+    type: String,
+  },
+  githubId: {
+    type: String,
+  },
+  LinkedinId: {
+    type: String,
+  },
+  profilePicture: {
+    type: String,
+  },
+
 }, {
   timestamps: true
 });

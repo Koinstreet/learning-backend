@@ -1,4 +1,5 @@
 const express = require("express");
+import passport from '../DB/passportSetup';
 
 const authUser = require("../controllers/v1/auth");
 const user = require("../controllers/v1/user");

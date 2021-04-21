@@ -31,8 +31,13 @@ passport.use(new GoogleStrategy({
       // passport callback function
       //check if user already exists in our db with the given profile ID
       var providerData = profile._json;
-
-      User.findOne({googleId: profile.id}).then((currentUser)=>{
+      
+      User.findOne({where: {
+        $or: [
+          {googleId: {$eq: profile.id}},
+          {email: {$eq: profile.emails[0].value}}
+        ]
+      }}).then((currentUser)=>{
         if(currentUser){
           //if we already have a record with the given profile ID
           done(null, currentUser);
@@ -65,7 +70,12 @@ passport.use(
       },
       (accessToken, refreshToken, profile, done) => {
 
-        User.findOne({facebookId: profile.id}).then((currentUser)=>{
+        User.findOne({where: {
+          $or: [
+            {facebookId: {$eq: profile.id}},
+            {email: {$eq: profile.emails[0].value}}
+          ]
+        }}).then((currentUser)=>{
           if(currentUser){
             //if we already have a record with the given profile ID
             done(null, currentUser);

@@ -41,6 +41,33 @@ const userSchema = new Schema({
   profilePicture: {
     type: String,
   },
+  phoneNumber: {
+    type: Number,
+  },
+  experience: {
+    type: Number,
+  },
+  isUpdated: {
+    type: Boolean,
+    default: false
+  },
+  location: {
+    type: String,
+  },
+  is_mentor: {
+    type: Boolean,
+    default: false
+  },
+  is_mentee: {
+    type: Boolean,
+    default: true
+  },
+  age: {
+    type: Number
+  },
+  birthday: {
+    type: Date
+  }
 
 }, {
   timestamps: true

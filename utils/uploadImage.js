@@ -11,7 +11,7 @@ cloudinary.config({
 });
 
 const uploadImage = (file) => {
-  console.log('here')
+  console.log(file)
     const path = file.path;
     const fileName = file.filename;
     return cloudinary.uploader.upload(

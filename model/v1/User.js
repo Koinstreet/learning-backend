@@ -67,6 +67,15 @@ const userSchema = new Schema({
   },
   birthday: {
     type: Date
+  },
+  Nationality: {
+    type: String
+  },
+  Ethnicity: {
+    type: String
+  },
+  Gender: {
+    type: String
   }
 
 }, {

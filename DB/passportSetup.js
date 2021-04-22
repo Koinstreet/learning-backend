@@ -25,7 +25,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'https://mpa-webapp.vercel.app/dashboard/user/updateProfile/auth/google/redirect',
+  callbackURL: 'https://koinstreet-learn-api.herokuapp.com/auth/google/redirect',
 },
 (accessToken, refreshToken, profile, done) => {
       // passport callback function

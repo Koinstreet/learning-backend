@@ -76,6 +76,21 @@ const userSchema = new Schema({
   },
   Gender: {
     type: String
+  },
+  FacebookLink: {
+    type: String
+  },
+  LinkedinLink: {
+    type: String
+  },
+  GithubLink: {
+    type: String
+  },
+  bio:{
+    type: String
+  },
+  backgroundPicture:{
+    type: String
   }
 
 }, {

@@ -66,7 +66,7 @@ const userSchema = new Schema({
     type: Number
   },
   birthday: {
-    type: Date
+    type: String
   },
   Nationality: {
     type: String

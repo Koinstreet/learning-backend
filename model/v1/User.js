@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+// Error
+const AppError = require("../../utils/appError");
 
 const Schema = mongoose.Schema;
 
@@ -83,16 +85,27 @@ const userSchema = new Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  next();
+  try {
+    if (!this.isModified("password")) return next();
+    this.password = await bcrypt.hash(this.password, 12);
+    next();
+} catch(err) {
+  console.log('some problems occured while creating account')
+  return AppError.tryCatchError(err);
+}
 });
 
 userSchema.methods.correctPassword = async function (
   incomingPassword,
   userPassword
 ) {
+  try {
   return await bcrypt.compare(incomingPassword, userPassword);
+  }
+  catch(err){
+    console.log('some problems occured while comparing passwords')
+    return AppError.tryCatchError(err);
+  }
 };
 
 const User = mongoose.model("User", userSchema);

@@ -78,6 +78,21 @@ const userSchema = new Schema({
   },
   Gender: {
     type: String
+  },
+  FacebookLink: {
+    type: String
+  },
+  LinkedinLink: {
+    type: String
+  },
+  GithubLink: {
+    type: String
+  },
+  bio:{
+    type: String
+  },
+  backgroundPicture:{
+    type: String
   }
 
 }, {
@@ -90,8 +105,7 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
     next();
 } catch(err) {
-  console.log('some problems occured while creating account')
-  return AppError.tryCatchError(err);
+  console.log('some problems occured while creating account', err)
 }
 });
 
@@ -103,8 +117,7 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(incomingPassword, userPassword);
   }
   catch(err){
-    console.log('some problems occured while comparing passwords')
-    return AppError.tryCatchError(err);
+    console.log('some problems occured while comparing passwords', err)
   }
 };
 

@@ -43,8 +43,13 @@ exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email }).select("+password");
-    if (!user || !(await user.correctPassword(password, user.password))) {
-      errors.msg = "Username or Password Incorrect";
+
+    if(!user){
+      errors.msg = "Email is Incorrect";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+    }
+    if (!(await user.correctPassword(password, user.password))) {
+      errors.msg = "Password Incorrect";
       return AppError.validationError(res, UNAUTHORIZED, errors);
     }
     createSendToken(user, 201, res, "User Authorized");

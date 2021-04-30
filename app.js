@@ -11,6 +11,8 @@ import socialAuthRoutes from './routes/socialAuthRoutes';
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
+const jobsRoutes = require('./routes/jobsRoutes');
+
 
 const app = express();
 
@@ -46,5 +48,6 @@ app.use(socialAuthRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/subscribe', subscriberRoutes);
+app.use('/api/v1/jobs', jobsRoutes);
 
 module.exports = app;

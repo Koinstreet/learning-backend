@@ -12,6 +12,8 @@ const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
 const jobsRoutes = require('./routes/jobsRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+
 
 
 const app = express();
@@ -48,6 +50,8 @@ app.use(socialAuthRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/subscribe', subscriberRoutes);
-app.use('/api/v1/jobs', jobsRoutes);
+app.use('/api/v1/job', jobsRoutes);
+app.use('/api/v1/project', projectRoutes);
+
 
 module.exports = app;

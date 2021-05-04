@@ -13,6 +13,7 @@ const courseRoutes = require('./routes/courseRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
 const jobsRoutes = require('./routes/jobsRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 
 
@@ -52,6 +53,8 @@ app.use('/api/v1/course', courseRoutes);
 app.use('/api/v1/subscribe', subscriberRoutes);
 app.use('/api/v1/job', jobsRoutes);
 app.use('/api/v1/project', projectRoutes);
+app.use('/api/v1/event', eventRoutes);
+
 
 
 module.exports = app;

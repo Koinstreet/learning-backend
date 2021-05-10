@@ -22,7 +22,7 @@ router.post(
 router
   .route("/:id")
   .put(mentor.updateMentor)
-  .delete(mentor.updateMentor);
+  .delete(mentor.deleteMentor);
 
 
 module.exports = router;

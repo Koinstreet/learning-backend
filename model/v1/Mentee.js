@@ -10,12 +10,14 @@ const menteeSchema = new Schema({
   },
   interest_in: {
       type: Array,
-      required: true
   },
   learning_style: {
     type: String,
   },
   personal_type: {
+    type: String,
+  },
+  gender: {
     type: String,
   },
   usage_phone: {
@@ -44,7 +46,6 @@ const menteeSchema = new Schema({
   },
   goals: {
     type: String,
-    required: true
   },
 }, {
   timestamps: true

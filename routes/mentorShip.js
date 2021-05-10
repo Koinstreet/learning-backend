@@ -2,27 +2,27 @@ const express = require("express");
 
 
 // NEW CONTROLLERS
-const mentee = require("../controllers/v1/mentee");
+const mentorship = require("../controllers/v1/mentorship");
 
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", mentee.getAllMentee);
+router.get("/", mentorship.getAllMentorship);
 
-router.get("/:id", mentee.getMentee);
+router.get("/:id", mentorship.getMentorship);
 
 router.use(authMiddleware.protect);
 
 router.post(
   "/",
-  mentee.createMentee
+  mentorship.createMentorship
 );
 router
   .route("/:id")
-  .put(mentee.updateMentee)
-  .delete(mentee.deleteMentee);
+  .put(mentorship.updateMentorship)
+  .delete(mentorship.deleteMentorship);
 
 
 module.exports = router;

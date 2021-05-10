@@ -13,11 +13,9 @@ const mentorSchema = new Schema({
   },
   skill_level: {
     type: Number,
-    required: true,
   },
   availability: {
     type: Number,
-    required: true,
   },
   gender: {
     type: String,

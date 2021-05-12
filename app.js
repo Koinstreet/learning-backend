@@ -17,10 +17,7 @@ const eventRoutes = require('./routes/eventRoutes');
 const mentorRoutes = require('./routes/mentorRoutes');
 const menteeRoutes = require('./routes/menteeRoutes');
 const mentorshipRoutes = require('./routes/mentorShip');
-
-
-
-
+const startupRoutes = require('./routes/startup');
 
 const app = express();
 
@@ -62,5 +59,6 @@ app.use('/api/v1/event', eventRoutes);
 app.use('/api/v1/mentor', mentorRoutes);
 app.use('/api/v1/mentee', menteeRoutes);
 app.use('/api/v1/mentorship', mentorshipRoutes);
+app.use('/api/v1/startup', startupRoutes);
 
 module.exports = app;

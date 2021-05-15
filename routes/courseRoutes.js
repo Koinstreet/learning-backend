@@ -7,7 +7,7 @@ const courseModule = require("../controllers/v1/module");
 
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
-const courseMiddleware = require("../middleware/course");
+const courseMiddleware = require("../middleware/fileUploaders");
 
 const router = express.Router();
 

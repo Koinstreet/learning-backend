@@ -62,7 +62,7 @@ const userSchema = new Schema({
   },
   is_mentee: {
     type: Boolean,
-    default: true
+    default: false
   },
   age: {
     type: Number

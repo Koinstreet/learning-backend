@@ -1,7 +1,7 @@
 const express = require("express");
 import passport from '../DB/passportSetup';
 
-const courseMiddleware = require("../middleware/course");
+const courseMiddleware = require("../middleware/fileUploaders");
 const authUser = require("../controllers/v1/auth");
 const user = require("../controllers/v1/user");
 

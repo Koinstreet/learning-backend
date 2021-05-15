@@ -17,7 +17,6 @@ const startupSchema = new Schema({
   },
   targetAmount: {
     type: Number,
-    required: true,
   },
   shareOffered: {
     type: Number,
@@ -52,6 +51,9 @@ const startupSchema = new Schema({
   },
   teamSizeMax: {
     type: Number,
+  },
+  roadmap: {
+    type: Array,
   },
   userBase: {
     type: Number,

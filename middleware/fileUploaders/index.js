@@ -42,4 +42,6 @@ exports.uploadCourseImage = uploadImage.single("image");
 exports.uploadModuleVideo = uploadVideo.single("video");
 exports.uploadUserImage = uploadImage.single("profilePicture");
 exports.uploadEventImage = uploadImage.single("EventPicture");
+exports.uploadStartupImage = uploadImage.single("startupImage");
+
 

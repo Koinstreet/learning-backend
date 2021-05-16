@@ -27,13 +27,13 @@ exports.createEvent = async (req, res, next) => {
       if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
       event = {
         ...req.body,
-        authorId: req.user.id,
+        host: req.user.id,
         EventPicture: data.url,
       };
     } else {
       event = {
         ...req.body,
-        authorId: req.user.id,
+        host: req.user.id,
       };
     }
 
@@ -53,7 +53,7 @@ exports.createEvent = async (req, res, next) => {
 exports.getAllEvents = async (req, res, next) => {
   try {
     const events = await Event.find({})
-      .populate("authorId", "-password")
+      .populate("host", "-password")
       .sort("-createdAt");
     return successWithData(res, OK, "Events fetched successfully", events);
   } catch (err) {
@@ -65,7 +65,7 @@ exports.getAllEvents = async (req, res, next) => {
 exports.getEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id).populate(
-      "authorId",
+      "host",
       "-password"
     );
     if (!event) return AppError.tryCatchError(res, err);
@@ -93,13 +93,13 @@ exports.updateEvent = async (req, res, next) => {
         return AppError.tryCatchError(this.res, err);
       event = {
         ...req.body,
-        authorId: req.user.id,
+        host: req.user.id,
         EventPicture: data.url,
       };
     } else {
       event = {
         ...req.body,
-        authorId: req.user.id,
+        host: req.user.id,
       };
     }
     const modifiedEvent = await Event.findOneAndUpdate(

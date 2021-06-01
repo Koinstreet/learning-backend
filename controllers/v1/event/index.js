@@ -3,7 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const Event = require("../../../model/v1/Events");
 
-const validateEvent  = require("../../../validators").validateEvent;
+const validateEvent  = require("../../../validators/event");
 
 const uploadImage = require("../../../utils/uploadImage");
 

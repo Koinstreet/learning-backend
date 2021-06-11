@@ -69,7 +69,7 @@ exports.getStartup = async (req, res, next) => {
       "-password"
     );
     if (!SingleStartup) return AppError.tryCatchError(res, err);
-    return successWithData(res, OK, "Startup fetched successfully", Startup);
+    return successWithData(res, OK, "Startup fetched successfully", SingleStartup);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

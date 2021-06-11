@@ -64,11 +64,11 @@ exports.getAllStartup = async (req, res, next) => {
 
 exports.getStartup = async (req, res, next) => {
   try {
-    const Startup = await Startup.findById(req.params.id).populate(
+    const SingleStartup = await Startup.findById(req.params.id).populate(
       "startupOwner",
       "-password"
     );
-    if (!Startup) return AppError.tryCatchError(res, err);
+    if (!SingleStartup) return AppError.tryCatchError(res, err);
     return successWithData(res, OK, "Startup fetched successfully", Startup);
   } catch (err) {
     console.log(err);

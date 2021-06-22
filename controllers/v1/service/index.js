@@ -3,7 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const Services = require("../../../model/v1/service");
 
-const validateService = require("../../../validators/Service");
+const validateService = require("../../../validators/service");
 
 const {
   successWithData,

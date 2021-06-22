@@ -3,7 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const Location = require("../../../model/v1/Locations");
 
-const validateLocation  = require("../../../validators/Location");
+const validateLocation  = require("../../../validators/location");
 
 const uploadImage = require("../../../utils/uploadImage");
 

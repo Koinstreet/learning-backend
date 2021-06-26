@@ -8,6 +8,7 @@ const validateEvent = (data) => {
   data.eventLink = data.eventLink ? data.eventLink : "";
   data.actionLink = data.actionLink ? data.actionLink : "";
   data.callToAction = data.callToAction ? data.callToAction : "";
+  data.EventDescription = data.EventDescription ? data.EventDescription : "";
 
 
   if (validator.isEmpty(data.catName)) {
@@ -24,6 +25,9 @@ const validateEvent = (data) => {
   }
   if (validator.isEmpty(data.callToAction)) {
     errors.callToAction = "callToAction is required";
+  }
+  if (validator.isEmpty(data.EventDescription)) {
+    errors.EventDescription = "EventDescription is required";
   }
   return { errors, isValid: _.isEmpty(errors) };
 };

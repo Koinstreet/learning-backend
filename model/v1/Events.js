@@ -15,6 +15,13 @@ const EventSchema = new Schema({
     type: String,
     required: true,
   },
+  EventDescription: {
+    type: String,
+    required: true,
+  },
+  Featured:{
+    type: Boolean
+  },
   eventName: {
     type: String,
     required: true,

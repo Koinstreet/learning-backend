@@ -20,7 +20,8 @@ const EventSchema = new Schema({
     required: true,
   },
   Featured:{
-    type: Boolean
+    type: Boolean,
+    default: false,
   },
   eventName: {
     type: String,

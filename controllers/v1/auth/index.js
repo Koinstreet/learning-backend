@@ -1,6 +1,9 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
+import sendEmail from '../../../utils/email/emailService';
+import emailTemplate from '../../../utils/email/sendEmail';
+
 const { UNAUTHORIZED, BAD_REQUEST } = require("http-status-codes");
 
 // DB
@@ -28,7 +31,11 @@ exports.signupUser = async (req, res, next) => {
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
     const newUser = await User.create({ ...req.body });
-    createSendToken(newUser, 201, res, "User succesfully created");
+
+    const subject = 'MPA Account Successfuly created!';
+    sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
+    const message = `Dear ${newUser.firstName} , An email to confirm a successful account creation has been sent to your email.`;
+    createSendToken(newUser, 201, res, message);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

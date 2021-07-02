@@ -45,4 +45,5 @@ exports.uploadEventImage = uploadImage.single("EventPicture");
 exports.uploadStartupImage = uploadImage.single("startupImage");
 exports.uploadLocationLogo = uploadImage.single("LocationLogo");
 exports.uploadProposalAvatar = uploadImage.single('avatar');
+exports.uploadActivityImage = uploadImage.single("image");
 

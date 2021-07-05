@@ -23,6 +23,10 @@ const EventSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  Virtual:{
+    type: Boolean,
+    default: false,
+  },
   eventName: {
     type: String,
     required: true,

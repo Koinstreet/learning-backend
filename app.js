@@ -21,6 +21,7 @@ const startupRoutes = require('./routes/startup');
 const locationRoutes = require('./routes/locationRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const chapterStatsRoutes = require('./routes/chapterRouters');
+const fundedRoutes = require('./routes/fundedRoutes');
 
 const app = express();
 
@@ -66,5 +67,6 @@ app.use('/api/v1/startup', startupRoutes);
 app.use('/api/v1/location', locationRoutes);
 app.use('/api/v1/service', serviceRoutes);
 app.use('/api/v1/chapter_stats', chapterStatsRoutes);
+app.use('/api/v1/funded', fundedRoutes);
 
 module.exports = app;

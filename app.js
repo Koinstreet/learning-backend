@@ -20,6 +20,7 @@ const mentorshipRoutes = require('./routes/mentorShip');
 const startupRoutes = require('./routes/startup');
 const locationRoutes = require('./routes/locationRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
+const chapterStatsRoutes = require('./routes/chapterRouters');
 
 const app = express();
 
@@ -64,5 +65,6 @@ app.use('/api/v1/mentorship', mentorshipRoutes);
 app.use('/api/v1/startup', startupRoutes);
 app.use('/api/v1/location', locationRoutes);
 app.use('/api/v1/service', serviceRoutes);
+app.use('/api/v1/chapter_stats', chapterStatsRoutes);
 
 module.exports = app;

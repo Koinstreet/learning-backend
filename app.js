@@ -24,6 +24,7 @@ const chapterStatsRoutes = require('./routes/chapterRouters');
 const fundedRoutes = require('./routes/fundedRoutes');
 const minorityEarnedRoutes = require('./routes/minority_earnedRoutes');
 const proposalRoutes = require('./routes/proposalRoutes');
+const activityRoutes = require('./routes/activityRouters')
 
 const app = express();
 
@@ -72,5 +73,6 @@ app.use('/api/v1/chapter_stats', chapterStatsRoutes);
 app.use('/api/v1/funded', fundedRoutes);
 app.use('/api/v1/minority_earned', minorityEarnedRoutes);
 app.use('/api/v1/proposal', proposalRoutes);
+app.use('/api/v1/activity', activityRoutes);
 
 module.exports = app;

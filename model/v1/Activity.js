@@ -19,16 +19,11 @@ const activitySchema = new mongoose.Schema({
     description: {
         type: String
     },
+    // quiz: [{type: mongoose.SchemaType.ObjectId, ref: 'Quiz'}]
     quiz: {
-        correctAnswer: {
-            type: String
-        },
-        question: {
-            type: String
-        },
-        answers: {
-            type: [String]
-        }
+        correctAnswer: String,
+        question: String,
+        answers: [String]
     }
 });
 

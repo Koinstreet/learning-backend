@@ -1,8 +1,8 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
-import sendEmail from '../../../utils/email/emailService';
-import emailTemplate from '../../../utils/email/sendEmail';
+import sendEmail from '../../../utils/email/sendEmail';
+import emailTemplate from '../../../utils/email/emailService';
 
 const { UNAUTHORIZED, BAD_REQUEST } = require("http-status-codes");
 
@@ -32,8 +32,8 @@ exports.signupUser = async (req, res, next) => {
     }
     const newUser = await User.create({ ...req.body });
 
-    // const subject = 'MPA Account Successfuly created!';
-    // sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
+    const subject = 'MPA Account Successfuly created!';
+    sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
     const message = `Dear ${newUser.firstName} , Successfully Registered your account! login with your email and password`;
     createSendToken(newUser, 201, res, message);
   } catch (err) {

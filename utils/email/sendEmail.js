@@ -9,12 +9,15 @@ dotenv.config();
 
 export  default (message, subject, userEmail) => {
         try{const transporter = nodemailer.createTransport({
-                service: 'gmail',
+                host: "mail.minorityprogrammers.org",
+                port: 465,
+                secure: true,
                 auth: {
                     user: process.env.PARENT_EMAIL,
                     pass: process.env.PARENT_PASSWORD
                 }
             });
+
             transporter.sendMail({
                 from: process.env.PARENT_EMAIL,
                 to: `${userEmail}`,

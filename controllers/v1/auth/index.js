@@ -32,9 +32,9 @@ exports.signupUser = async (req, res, next) => {
     }
     const newUser = await User.create({ ...req.body });
 
-    const subject = 'MPA Account Successfuly created!';
-    sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
-    const message = `Dear ${newUser.firstName} , An email to confirm a successful account creation has been sent to your email.`;
+    // const subject = 'MPA Account Successfuly created!';
+    // sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
+    const message = `Dear ${newUser.firstName} , Successfully Registered your account! login with your email and password`;
     createSendToken(newUser, 201, res, message);
   } catch (err) {
     console.log(err);

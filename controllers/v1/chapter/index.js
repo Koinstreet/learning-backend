@@ -15,7 +15,8 @@ exports.createChapter = async (req, res, next) => {
     try {
         let chapter;
         chapter = {
-            ...req.body
+            ...req.body,
+            userId: req.user.id,
         }
         const newChapter = await Chapter.create(chapter);
         console.log(newChapter)
@@ -60,7 +61,8 @@ exports.updateChapter = async (req, res, next) => {
       let chapter;
 
       chapter = {
-          ...req.body
+          ...req.body,
+          userId: req.user.id,
       };
 
       const modifiedChapter = await Chapter.findOneAndUpdate(

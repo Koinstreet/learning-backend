@@ -26,7 +26,7 @@ const minorityEarnedRoutes = require('./routes/minority_earnedRoutes');
 const proposalRoutes = require('./routes/proposalRoutes');
 const activityRoutes = require('./routes/activityRouters')
 const chapterRoutes = require('./routes/chapter');
-
+const socialRoutes = require('./routes/socialAuthRoutes');
 const app = express();
 
 if (process.env === "development") {
@@ -76,5 +76,6 @@ app.use('/api/v1/minority_earned', minorityEarnedRoutes);
 app.use('/api/v1/proposal', proposalRoutes);
 app.use('/api/v1/activity', activityRoutes);
 app.use('/api/v1/chapter', chapterRoutes);
+app.use('/', socialRoutes)
 
 module.exports = app;

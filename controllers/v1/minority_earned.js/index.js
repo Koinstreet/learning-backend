@@ -15,7 +15,8 @@ exports.createMinorityEarned = async (req, res, next) => {
     try {
         let minority_earned;
         minority_earned = {
-            ...req.body
+            ...req.body,
+            user_id: req.user.id,
         }
         const newMinorityEarned = await MinorityEarned.create(minority_earned);
         console.log(newMinorityEarned)
@@ -60,7 +61,8 @@ exports.updateMinorityEarned = async (req, res, next) => {
       let minority_earned;
 
       minority_earned = {
-          ...req.body
+          ...req.body,
+          user_id: req.user.id,
       };
 
       const modifiedMinorityEarned = await MinorityEarned.findOneAndUpdate(

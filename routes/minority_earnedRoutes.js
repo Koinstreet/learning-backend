@@ -1,7 +1,7 @@
 const express = require('express');
 
 // NEW CONTROLLER
-const minority_earned = require("../controllers/v1/minority_earned.js");
+const minority_earned = require("../controllers/v1/minority_earned");
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
 

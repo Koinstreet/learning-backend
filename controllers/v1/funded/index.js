@@ -19,7 +19,7 @@ exports.createFund = async (req, res, next) => {
         startup_id: req.body.startup_id,
         user_id : req.user.id
       };
-    const fund = await Funded.findById(req.body.startup_id).populate(
+    const fund = await Startups.findById(req.body.startup_id).populate(
               "_id"
             );
     if (!fund) {

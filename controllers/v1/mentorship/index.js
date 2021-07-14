@@ -44,8 +44,7 @@ exports.createMentorship = async (req, res, next) => {
 
 exports.getAllMentorship= async (req, res, next) => {
   try {
-    const mentorships = await Mentorship.find({})
-      .populate("mentor_id","mentee_id",)
+    const mentorships = await Mentorship.find({}).populate("mentor_id").populate("mentee_id")
       .sort("-createdAt");
     return successWithData(res, OK, "mentorship fetched successfully", mentorships);
   } catch (err) {
@@ -57,10 +56,7 @@ exports.getAllMentorship= async (req, res, next) => {
 
 exports.getMentorship = async (req, res, next) => {
   try {
-    const mentorships = await Mentorship.findById(req.params.id).populate(
-      "mentor_id",
-      "mentee_id"
-    );
+    const mentorships = await Mentorship.findById(req.params.id).populate("mentor_id").populate("mentee_id")
     if (!mentorships) return AppError.tryCatchError(res, err);
     return successWithData(res, OK, "Mentorship fetched successfully", mentorships);
   } catch (err) {

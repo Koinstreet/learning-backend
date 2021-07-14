@@ -1,4 +1,6 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
+import sendEmail from '../../../utils/email/sendEmail';
+import emailTemplate from '../../../utils/email/chapter/chapterEmail';
 
 // DB
 const Chapter = require("../../../model/v1/chapter");
@@ -19,6 +21,9 @@ exports.createChapter = async (req, res, next) => {
             userId: req.user.id,
         }
         const newChapter = await Chapter.create(chapter);
+        const subject = 'Registered to starting a Chapter!';
+        sendEmail(emailTemplate(req.user.firstName), subject, req.user.email);
+
         console.log(newChapter)
         return successWithData(
             res,

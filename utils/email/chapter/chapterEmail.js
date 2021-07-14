@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default (firstName, eventpic, eventName,  EventDescription, eventLink)=>{
+export default (firstName)=>{
 
     const message = `
     <!DOCTYPE html>
@@ -88,13 +88,9 @@ export default (firstName, eventpic, eventName,  EventDescription, eventLink)=>{
           </div>
           <div class="row2">
           <p>Hello ${firstName},</p>
-            <h1>You have Successfully Registered for An event!</h1>
-            <img src=${eventpic} />
-            <p>Event Name ${eventName}</p><br>
-            <p>Event Description: ${EventDescription}</p><br>
-            <p>Event Link: ${eventLink}</p><br>
+            <h1>You have Successfully Registered for A chapter!</h1>
 
-    
+            <p class="">This email hereby confirms a succeful registration for the chapter, you will soon get more detailed information on how to proceed</p><br/><br/>
             <p><i>Please reply to this email if you have any comments, questions or feedback.<br>
     
                 Cheerfully yours,<br>

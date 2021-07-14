@@ -4,8 +4,8 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const SavedEvents = require("../../../model/v1/SavedEvents");
 const Events = require("../../../model/v1/Events");
 
-import sendEmail from '../../../utils/email/event/eventEmails';
-import emailTemplate from '../../../utils/email/emailService';
+import sendEmail from '../../../utils/email/sendEmail';
+import emailTemplate from '../../../utils/email/event/eventEmails';
 
 // Validation
 const validateSavedEvent = require("../../../validators/savedEvents");

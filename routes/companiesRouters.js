@@ -1,0 +1,28 @@
+const express = require("express");
+
+
+// NEW CONTROLLERS
+const companies = require("../controllers/v1/companies");
+
+// MIDDLEWARE
+const authMiddleware = require("../middleware/auth");
+
+const router = express.Router();
+
+router.get("/", companies.getAllCompany);
+
+router.get("/:id", companies.getCompany);
+
+router.use(authMiddleware.protect);
+
+router.post(
+  "/",
+  companies.createCompanies
+);
+router
+  .route("/:id")
+  .put(companies.updateCompany)
+  .delete(companies.deleteCompany);
+
+
+module.exports = router;

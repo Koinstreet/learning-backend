@@ -12,6 +12,10 @@ const jobSchema = new Schema({
     type: String,
     required: true,
   },
+  application_link: {
+    type: String,
+    required: true,
+  },
   job_description: {
     type: String,
     required: true,
@@ -48,7 +52,7 @@ const jobSchema = new Schema({
     type: Number,
   },
   min_requirements: {
-    type: Number,
+    type: Array,
   },
 }, {
   timestamps: true

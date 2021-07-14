@@ -83,7 +83,7 @@ export default (firstName)=>{
         <div class="content">
           <div class="parent">
             <div class="row1">
-                <p class="">Event <span>Attendance Team</span></p>
+                <p class="">Chapter <span>Attendance Team</span></p>
             </div>
           </div>
           <div class="row2">

@@ -28,6 +28,7 @@ const activityRoutes = require('./routes/activityRouters')
 const chapterRoutes = require('./routes/chapter');
 const socialRoutes = require('./routes/socialAuthRoutes');
 const savedEventsRoutes = require('./routes/savedEventsRoutes');
+const companiesRoutes = require('./routes/companiesRouters');
 const app = express();
 
 if (process.env === "development") {
@@ -78,6 +79,7 @@ app.use('/api/v1/proposal', proposalRoutes);
 app.use('/api/v1/activity', activityRoutes);
 app.use('/api/v1/chapter', chapterRoutes);
 app.use('/api/v1/saveEvent', savedEventsRoutes);
+app.use('/api/v1/company', companiesRoutes);
 app.use('/', socialRoutes)
 
 module.exports = app;

@@ -28,6 +28,7 @@ const activityRoutes = require('./routes/activityRouters')
 const chapterRoutes = require('./routes/chapter');
 const socialRoutes = require('./routes/socialAuthRoutes');
 const savedEventsRoutes = require('./routes/savedEventsRoutes');
+const savedJobsRoutes = require('./routes/savedJobsRoutes')
 const companiesRoutes = require('./routes/companiesRouters');
 const app = express();
 
@@ -79,6 +80,7 @@ app.use('/api/v1/proposal', proposalRoutes);
 app.use('/api/v1/activity', activityRoutes);
 app.use('/api/v1/chapter', chapterRoutes);
 app.use('/api/v1/saveEvent', savedEventsRoutes);
+app.use('/api/v1/saveJob', savedJobsRoutes);
 app.use('/api/v1/company', companiesRoutes);
 app.use('/', socialRoutes)
 

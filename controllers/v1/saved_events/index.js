@@ -79,9 +79,9 @@ exports.getAllSavedEvents= async (req, res, next) => {
 
 exports.getSavedEvents = async (req, res, next) => {
   try {
-    const SavedEventss = await SavedEvents.find({}).populate("user_id").populate("event_id").sort("-createdAt");
+    const SavedEventss = await SavedEvents.findById(req.params.id).populate("user_id").populate("event_id").sort("-createdAt");
     if (!SavedEventss) return AppError.tryCatchError(res, err);
-    return successWithData(res, OK, "SavedEvents fetched successfully", SavedEventss);
+    return successWithData(res, OK, "SavedEvent fetched successfully", SavedEventss);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

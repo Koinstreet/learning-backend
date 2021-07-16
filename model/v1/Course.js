@@ -9,17 +9,43 @@ const courseSchema = new Schema({
     required: true,
     ref: "User",
   },
+  moduleId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Module",
+  },
+  totalModules: {
+    type: Number,
+  },
+  completedModules: {
+    type: Number,
+  },
   name: {
     type: String,
     required: true,
+  },
+  tags: {
+    type: Array,
   },
   highlight: {
     type: String,
     required: true,
   },
-  overview: {
+  earn: {
     type: String,
     required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  featured: {
+    type: Boolean,
+    default: false,
+  },
+  completed: {
+    type: Boolean,
+    default: false,
   },
   audience: String,
   perequisites: String,

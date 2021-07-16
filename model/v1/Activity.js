@@ -7,8 +7,15 @@ const activitySchema = new mongoose.Schema({
     image: {
         type: String
     },
+    url: {
+        type: String
+    },
     status: {
         type: String
+    },
+    completed: {
+        type: String,
+        default: false,
     },
     completionRate: {
         type: String

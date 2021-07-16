@@ -19,6 +19,9 @@ const validateSignup = (data) => {
   if (!data.lastName) {
     errors.lastName = "Last name field is required";
   }
+  if (!data.userName) {
+    errors.userName = "user Name field is required";
+  }
   if (!data.email) {
     errors.email = "Email field is required";
   }

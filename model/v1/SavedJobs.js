@@ -12,6 +12,7 @@ const SavedJobsSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Jobs",
     required: true,
+    unique: true
   }
 }, {
   timestamps: true

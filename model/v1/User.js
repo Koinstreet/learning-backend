@@ -16,6 +16,15 @@ const userSchema = new Schema({
     type: String,
     unique: false
   },
+  userName: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  publicAddress: {
+    type: String,
+    unique: true
+  },
   password: {
     type: String,
     min: 8,

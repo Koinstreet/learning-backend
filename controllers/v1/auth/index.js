@@ -3,8 +3,12 @@ const jwt = require("jsonwebtoken");
 
 import sendEmail from '../../../utils/email/sendEmail';
 import emailTemplate from '../../../utils/email/emailService';
+const { UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
-const { UNAUTHORIZED, BAD_REQUEST } = require("http-status-codes");
+const {
+  successWithData,
+  successNoData,
+} = require("../../../utils/successHandler");
 
 // DB
 const User = require("../../../model/v1/User");
@@ -17,6 +21,17 @@ const AppError = require("../../../utils/appError");
 
 const createSendToken = require("./createSendToken");
 
+
+exports.getAllUser= async (req, res, next) => {
+  try {
+    const users = await User.find({})
+      .sort("-createdAt");
+    return successWithData(res, OK, "Users fetched successfully", users);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
 
 exports.signupUser = async (req, res, next) => {
   try {

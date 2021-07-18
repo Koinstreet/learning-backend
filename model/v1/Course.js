@@ -9,11 +9,6 @@ const courseSchema = new Schema({
     required: true,
     ref: "User",
   },
-  moduleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Module",
-  },
   totalModules: {
     type: Number,
   },
@@ -32,8 +27,7 @@ const courseSchema = new Schema({
     required: true,
   },
   earn: {
-    type: String,
-    required: true,
+    type: Number,
   },
   description: {
     type: String,

@@ -32,17 +32,17 @@ router.post(
 );
 router
   .route("/:id")
-  .put(courseMiddleware.uploadCourseImage, course.updateCourse)
+  .patch(courseMiddleware.uploadCourseImage, course.updateCourse)
   .delete(course.deleteCourse);
 
 router
   .route("/:courseId/module")
-  .post(courseMiddleware.uploadModuleVideo, courseModule.createModule)
+  .post(courseMiddleware.uploadCourseImage, courseMiddleware.uploadModuleVideo, courseModule.createModule)
   // .get(moduleController.getCourseAllModule);
 
 router
   .route("/:courseId/module/:id")
-  .put(courseModule.updateModule)
+  .patch(courseMiddleware.uploadCourseImage, courseMiddleware.uploadModuleVideo, courseModule.updateModule)
   .delete(courseModule.deleteModule);
 
 module.exports = router;

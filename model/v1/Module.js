@@ -13,16 +13,13 @@ const moduleSchema = new Schema({
     required: true,
     ref: "Course",
   },
-  ActivityId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Activity",
+  image: {
+    type: String
+  },
+  url: {
+      type: String
   },
   name: {
-    type: String,
-    required: true,
-  },
-  week: {
     type: String,
     required: true,
   },
@@ -40,11 +37,15 @@ const moduleSchema = new Schema({
   },
   type: {
     type: String,
-    required: true,
+  },
+  duration: {
+    type: String
+  },
+  description: {
+    type: String
   },
   content: {
     type: Object,
-    required: true,
   },
 },
 {

@@ -37,12 +37,12 @@ router
 
 router
   .route("/:courseId/module")
-  .post(courseMiddleware.uploadCourseImage, courseMiddleware.uploadModuleVideo, courseModule.createModule)
+  .post(courseMiddleware.uploadModuleImage, courseMiddleware.uploadModuleVideo, courseModule.createModule)
   // .get(moduleController.getCourseAllModule);
 
 router
   .route("/:courseId/module/:id")
-  .patch(courseMiddleware.uploadCourseImage, courseMiddleware.uploadModuleVideo, courseModule.updateModule)
+  .patch(courseMiddleware.uploadModuleImage, courseMiddleware.uploadModuleVideo, courseModule.updateModule)
   .delete(courseModule.deleteModule);
 
 module.exports = router;

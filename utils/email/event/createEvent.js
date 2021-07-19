@@ -88,9 +88,12 @@ export default (firstName, eventpic, eventName,  EventDescription, eventLink)=>{
           </div>
           <div class="row2">
           <p>Hello ${firstName},</p>
-            <h1>You have Successfully Registered for An event!</h1>
+            <h1>You have Successfully Created An event!</h1><br>
+
+            <h3>Below are Detailed info of your Created Event, you will be informed when your event is approved!</h3>
+
             <img src=${eventpic} />
-            <p>Event Name ${eventName}</p><br>
+            <p>Event Name: ${eventName}</p><br>
             <p>Event Description: ${EventDescription}</p><br>
             <p>Event Link: ${eventLink}</p><br>
 

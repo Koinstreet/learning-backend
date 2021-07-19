@@ -10,10 +10,14 @@ const EventSchema = new Schema({
   },
   EventPicture: {
     type: String,
+    default: 'http://res.cloudinary.com/djhbhzex4/image/upload/v1626716733/images/2021-07-19T17_45_29.803Z-events_medium.jpeg.jpg'
+  },
+  approved: {
+    type: Boolean,
+    default: false
   },
   catName: {
     type: String,
-    required: true,
   },
   EventDescription: {
     type: String,
@@ -40,11 +44,9 @@ const EventSchema = new Schema({
   },
   actionLink: {
       type: String,
-      required: true,
     },
     callToAction: {
         type: String,
-        required: true,
     },
 }, {
   timestamps: true

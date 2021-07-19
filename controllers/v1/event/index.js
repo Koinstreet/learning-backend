@@ -5,6 +5,9 @@ const Event = require("../../../model/v1/Events");
 
 const validateEvent  = require("../../../validators/event");
 
+import sendEmail from '../../../utils/email/sendEmail';
+import emailTemplate from '../../../utils/email/event/createEvent';
+
 const uploadImage = require("../../../utils/uploadImage");
 
 const {
@@ -38,6 +41,11 @@ exports.createEvent = async (req, res, next) => {
     }
 
     const newEvent= await Event.create(event);
+
+    const subject = 'Event Successfuly Created!';
+    sendEmail(emailTemplate(req.user.firstName, newEvent.EventPicture, newEvent.eventName, newEvent.EventDescription, newEvent.eventLink), subject, req.user.email);
+
+
     return successWithData(
       res,
       CREATED,

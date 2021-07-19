@@ -27,7 +27,6 @@ exports.createCourse = async (req, res, next) => {
       course = {
         ...req.body,
         authorId: req.user.id,
-        moduleId: req.body.moduleId,
         image: data.url,
       };
     } else {
@@ -108,7 +107,6 @@ exports.updateCourse = async (req, res, next) => {
       course = {
         ...req.body,
         authorId: req.user.id,
-        moduleId: req.body.moduleId,
         image: data.url,
       };
     } else {

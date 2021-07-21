@@ -10,7 +10,10 @@ const PORT = process.env.PORT || 5000;
 
 DB.connect().then(() => {
   console.log("Database connection successful");
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}...`);
   });
+  // setting up socket
+  const io = require('socket.io')(server);
+  app.set('socketio', io);
 });

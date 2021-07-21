@@ -2,39 +2,36 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const LocationSchema = new Schema({
+const ChapterToolKitSchema = new Schema({
   added_by: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
-  LocationLogo: {
+  image: {
     type: String,
   },
-  LocationName: {
+  name: {
     type: String,
   },
-  title: {
+  slug: {
     type: String,
     required: true,
   },
-  latitude: {
-    type: Number,
-  },
-  longitude: {
-    type: Number,
+  subtitle: {
+    type: String,
   },
   description: {
     type: String,
   },
-  chapter_leader: {
-    type: String,
-  },
-  chapter_type: {
-    type: String,
-  },
-  member_size: {
-    type: String,
+  documents: {
+    type: [
+        {
+            title:  String,
+            subtitle:  String,
+            download_link: String
+        }
+    ],
   },
   date_founded: {
       type: Date,
@@ -43,6 +40,6 @@ const LocationSchema = new Schema({
   timestamps: true
 });
 
-const Location = mongoose.model("Location", LocationSchema);
+const ChapterToolKit = mongoose.model("ChapterToolKit", ChapterToolKitSchema);
 
-module.exports = Location;
+module.exports = ChapterToolKit;

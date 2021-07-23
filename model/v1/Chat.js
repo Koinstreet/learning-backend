@@ -11,7 +11,14 @@ const chatSchema = new Schema({
     type: Boolean,
     default: false,
   },
-
+  blocked: {
+    type: Boolean,
+    default: false,
+  },
+  blocking_user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
 }, {
   timestamps: true
 });

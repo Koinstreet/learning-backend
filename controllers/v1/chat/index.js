@@ -21,11 +21,6 @@ exports.createChat = async (req, res, next) => {
     
     const {errors, isValid } = validateChat(users1);
 
-    if (req.user.id == req.body.receiverId) {
-      errors.msg = "A user cannot create a chat with themself";
-      return AppError.validationError(res, UNAUTHORIZED, errors);
-    }
-
     const chatExists = await Chat.findOne({ $or: [ {users:users1}, {users:users2} ] });
     if (chatExists) {
       errors.msg = "A chat between these users already exists";
@@ -46,6 +41,7 @@ exports.createChat = async (req, res, next) => {
 
 exports.acceptChat = async (req, res, next) => {
   try {
+    let errors={};
     const chatid = req.body.chatid;
     const update = {accepted: true};
 
@@ -78,9 +74,49 @@ exports.acceptChat = async (req, res, next) => {
   }
 };
 
+exports.setBlockStatus = async (req, res, next) => {
+  try {
+    let errors={};
+    const chatid = req.body.chatid;
+    const chat = await Chat.findById(chatid);
+    if(req.user.id != chat.users[0] && req.user.id != chat.users[1]) {
+      errors.msg = "user is not a member of this chat";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+    }
+    let blocked = chat.blocked;
+    if (!blocked) {
+      let update = {blocked: true, blocking_user: req.user.id};
+      const updatedChat = await Chat.findByIdAndUpdate(chatid, update, {new:true});
+      return successWithData(
+        res,
+        OK,
+        "Chat status has been updated",
+        updatedChat
+      );
+    } else {
+      if (chat.blocking_user == req.user.id) {
+        let update = {blocked: false, blocking_user: null};
+        const updatedChat = await Chat.findByIdAndUpdate(chatid, update, {new:true});
+        return successWithData(
+          res,
+          OK,
+          "Chat status has been updated",
+          updatedChat
+        );
+      }
+        errors.msg = "user cannot unblock this chat";
+        return AppError.validationError(res, UNAUTHORIZED, errors);
+    }
+
+  }catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getAllChats = async (req, res, next) => {
   try {
-    const userChats = await Chat.find({ users: { $in:[req.user.id] } }).populate("users").sort("-createdAt");
+    const userChats = await Chat.find({ users: { $in:[req.user.id] }, blocked: { $in: ["false",false] }, accepted: { $in: ["true",true] } }).populate("users").sort("-createdAt");
     return successWithData(
       res, 
       OK,
@@ -95,6 +131,7 @@ exports.getAllChats = async (req, res, next) => {
 
 exports.getChat = async (req, res, next) => {
   try {
+    let errors={};
     const checkChat = await Chat.findById(req.params.id);
     if (!checkChat) return AppError.tryCatchError(res, err);
     if(req.user.id != checkChat.users[0] && req.user.id != checkChat.users[1]) {
@@ -109,6 +146,38 @@ exports.getChat = async (req, res, next) => {
       "Chat fetched successfully",
       userChat
     )
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getPendingChats = async (req, res, next) => {
+  try {
+    const userChats = await Chat.find({ users: { $in:[req.user.id] }, blocked: { $in: ["false",false] }, accepted: { $in: ["false",false] } }).populate("users").sort("-createdAt");
+    return successWithData(
+      res, 
+      OK,
+      "Pending chats fetched successfully",
+      userChats
+    );
+
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getBlockedChats = async (req, res, next) => {
+  try {
+    const userChats = await Chat.find({ users: { $in:[req.user.id] }, blocked: { $in: ["true",true] } }).populate("users").sort("-createdAt");
+    return successWithData(
+      res, 
+      OK,
+      "Blocked chats fetched successfully",
+      userChats
+    );
+
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

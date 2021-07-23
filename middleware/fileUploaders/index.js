@@ -46,4 +46,6 @@ exports.uploadStartupImage = uploadImage.single("startupImage");
 exports.uploadLocationLogo = uploadImage.single("LocationLogo");
 exports.uploadProposalAvatar = uploadImage.single('avatar');
 exports.uploadModuleImage = uploadImage.single("image");
+exports.uploadChatImage = uploadImage.single("image");
+exports.uploadChatVideo = uploadVideo.single("video");
 

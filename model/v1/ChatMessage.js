@@ -16,6 +16,9 @@ const chatMessageSchema = new Schema({
   message: {
     type: String
   },
+  file: {
+    type:String
+  },
   seen: {
     type: Boolean,
     default: false,

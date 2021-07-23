@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(service.updateService)
+  .patch(service.updateService)
   .delete(service.deleteService);
 
 

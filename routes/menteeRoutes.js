@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(mentee.updateMentee)
+  .patch(mentee.updateMentee)
   .delete(mentee.deleteMentee);
 
 

@@ -115,8 +115,6 @@ exports.updateJoinedChapter = async (req, res, next) => {
 
     let JoinedChapter = {
         ...req.body,
-        chapterLocation_id: req.body.chapterLocation_id,
-        user_id : req.user.id,
       };
     
     const modifiedJoinedChapter = await JoinChapter.findOneAndUpdate(

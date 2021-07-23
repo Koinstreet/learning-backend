@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(SavedJobs.updateSavedJobs)
+  .patch(SavedJobs.updateSavedJobs)
   .delete(SavedJobs.deleteSavedJobs);
 
 

@@ -21,7 +21,7 @@ router.post(
   );
 router
   .route("/:id")
-  .put(fileUploader.uploadCourseImage, ChapterToolKit.updateChapterToolKit)
+  .patch(fileUploader.uploadCourseImage, ChapterToolKit.updateChapterToolKit)
   .delete(ChapterToolKit.deleteChapterToolKit);
 
 module.exports = router;

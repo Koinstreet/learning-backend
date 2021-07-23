@@ -95,23 +95,20 @@ exports.updateSavedEvents = async (req, res, next) => {
     const SavedEventsUpdate = await SavedEvents.findById(req.params.id);
     if (!SavedEventsUpdate) { let error = {message: "undefined Saved Event"}; return AppError.tryCatchError(res, error);}
 
-
-    let savedEvents = {
+      let savedEvents = {
         ...req.body,
-        event_id: req.body.event_id,
-        user_id : req.user.id,
       };
-
-    if(req.body.attending === "yes"){
-      const subject = 'Event Successfuly Registered!';
-      sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
-      }
     
     const modifiedSavedEvents = await SavedEvents.findOneAndUpdate(
       { _id: req.params.id },
       { ...savedEvents },
       { new: true }
     );
+
+    if(req.body.attending === "yes"){
+      const subject = 'Event Successfuly Registered!';
+      sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
+      }
     return successWithData(res, OK, "SavedEvents modified", modifiedSavedEvents);
   } catch (err) {
     console.log(err);

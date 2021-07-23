@@ -21,7 +21,7 @@ router.post(
   );
 router
   .route("/:id")
-  .put(fileUploader.uploadLocationLogo, location.updateLocation)
+  .patch(fileUploader.uploadLocationLogo, location.updateLocation)
   .delete(location.deleteLocation);
 
 module.exports = router;

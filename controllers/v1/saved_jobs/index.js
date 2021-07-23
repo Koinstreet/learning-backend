@@ -85,8 +85,6 @@ exports.updateSavedJobs = async (req, res, next) => {
 
     let savedJobs = {
         ...req.body,
-        job_id: req.body.job_id,
-        user_id : req.user.id,
       };
     
     const modifiedSavedJobs = await SavedJobs.findOneAndUpdate(

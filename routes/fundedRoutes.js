@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(Funded.updateFund)
+  .patch(Funded.updateFund)
   .delete(Funded.deleteFund);
 
 

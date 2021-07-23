@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(SavedEvents.updateSavedEvents)
+  .patch(SavedEvents.updateSavedEvents)
   .delete(SavedEvents.deleteSavedEvents);
 
 

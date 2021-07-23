@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(companies.updateCompany)
+  .patch(companies.updateCompany)
   .delete(companies.deleteCompany);
 
 

@@ -72,8 +72,6 @@ exports.updateFund = async (req, res, next) => {
 
     let Fund = {
         ...req.body,
-        startup_id: req.body.startup_id,
-        user_id : req.user.id
       };
     
     const modifiedFund = await Funded.findOneAndUpdate(

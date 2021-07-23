@@ -23,7 +23,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(joinChapter.updateJoinedChapter)
+  .patch(joinChapter.updateJoinedChapter)
   .delete(joinChapter.deleteJoinedChapter);
 
 

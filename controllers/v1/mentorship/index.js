@@ -74,8 +74,6 @@ exports.updateMentorship = async (req, res, next) => {
 
     let mentorship = {
         ...req.body,
-        mentor_id: req.body.mentor_id,
-        mentee_id : req.user.id,
       };
     
     const modifiedMentorship = await Mentorship.findOneAndUpdate(

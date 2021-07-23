@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(mentorship.updateMentorship)
+  .patch(mentorship.updateMentorship)
   .delete(mentorship.deleteMentorship);
 
 

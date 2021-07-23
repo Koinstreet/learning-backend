@@ -31,6 +31,7 @@ exports.createMessage = async (req, res, next) => {
       else {
         content = {
           user: req.user.id,
+          file: data.url,
           message: req.body.message,
           chat: req.body.chatId
         }

@@ -68,7 +68,7 @@ exports.getChapterToolKit = async (req, res, next) => {
       "added_by",
       "-password"
     );
-    if (!chapterToolKit) return AppError.tryCatchError(res, err);
+    if (!chapterToolKit) { let error = {message: "undefined chapter toolkit"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "ChapterToolKit fetched successfully", chapterToolKit);
   } catch (err) {
     console.log(err);
@@ -85,7 +85,8 @@ exports.updateChapterToolKit = async (req, res, next) => {
     }
 
     const ChapterToolKitUpdate = await ChapterToolKit.findById(req.params.id);
-    if (!ChapterToolKitUpdate) return AppError.tryCatchError(res, err);
+    if (!ChapterToolKitUpdate) { let error = {message: "undefined chapter toolkit"}; return AppError.tryCatchError(res, error);}
+
     let chapterToolKit;
     if (req.file) {
       const image = await uploadImage(req.file);

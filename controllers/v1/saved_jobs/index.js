@@ -69,7 +69,7 @@ exports.getAllSavedJobs= async (req, res, next) => {
 exports.getSavedJobs = async (req, res, next) => {
   try {
     const SavedJobss = await SavedJobs.findById(req.params.id).populate("user_id").populate("job_id").sort("-createdAt");
-    if (!SavedJobss) return AppError.tryCatchError(res, err);
+    if (!SavedJobss) { let error = {message: "undefined saved jobs"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "SavedJobs fetched successfully", SavedJobss);
   } catch (err) {
     console.log(err);
@@ -80,7 +80,8 @@ exports.getSavedJobs = async (req, res, next) => {
 exports.updateSavedJobs = async (req, res, next) => {
   try {
     const SavedJobsUpdate = await SavedJobs.findById(req.params.id);
-    if (!SavedJobsUpdate) return AppError.tryCatchError(res, err);
+    if (!SavedJobsUpdate) { let error = {message: "undefined saved job"}; return AppError.tryCatchError(res, error);}
+
 
     let savedJobs = {
         ...req.body,
@@ -103,7 +104,7 @@ exports.updateSavedJobs = async (req, res, next) => {
 exports.deleteSavedJobs = async (req, res, file) => {
   try {
     const deletedJob = await SavedJobs.findOneAndDelete({ _id: req.params.id });
-    if (!deletedJob) return AppError.tryCatchError(res, err);
+    if (!deletedJob) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
     return successNoData(res, OK, "SavedJobs deleted");
   } catch (err) {
     console.log(err);

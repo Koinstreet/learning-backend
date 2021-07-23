@@ -50,10 +50,10 @@ exports.createSavedEvents = async (req, res, next) => {
       "-password"
     );
 
-
+    if(req.body.attending === "yes"){
     const subject = 'Event Successfuly Registered!';
     sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
-
+    }
     return successWithData(
       res,
       CREATED,
@@ -80,7 +80,7 @@ exports.getAllSavedEvents= async (req, res, next) => {
 exports.getSavedEvents = async (req, res, next) => {
   try {
     const SavedEventss = await SavedEvents.findById(req.params.id).populate("user_id").populate("event_id").sort("-createdAt");
-    if (!SavedEventss) return AppError.tryCatchError(res, err);
+    if (!SavedEventss) { let error = {message: "undefined saved events"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "SavedEvent fetched successfully", SavedEventss);
   } catch (err) {
     console.log(err);
@@ -93,13 +93,19 @@ exports.updateSavedEvents = async (req, res, next) => {
   try {
 
     const SavedEventsUpdate = await SavedEvents.findById(req.params.id);
-    if (!SavedEventsUpdate) return AppError.tryCatchError(res, err);
+    if (!SavedEventsUpdate) { let error = {message: "undefined Saved Event"}; return AppError.tryCatchError(res, error);}
+
 
     let savedEvents = {
         ...req.body,
         event_id: req.body.event_id,
         user_id : req.user.id,
       };
+
+    if(req.body.attending === "yes"){
+      const subject = 'Event Successfuly Registered!';
+      sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
+      }
     
     const modifiedSavedEvents = await SavedEvents.findOneAndUpdate(
       { _id: req.params.id },

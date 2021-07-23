@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default (firstName)=>{
+export default (firstName, chapterName, location)=>{
 
     const message = `
     <!DOCTYPE html>
@@ -88,10 +88,10 @@ export default (firstName)=>{
           </div>
           <div class="row2">
           <p>Hello ${firstName},</p>
-            <h1>You have Successfully Registered for A chapter!</h1>
+            <h1>Your request to Join ${chapterName} Chapter is Being processed!</h1>
 
-            <p class="">This email hereby confirms a succeful registration for the chapter, you will soon get more detailed information on how to proceed</p><br/><br/>
-            <p><i>Please reply to this email if you have any comments, questions or feedback.<br>
+            <p class="">This email hereby confirms that you have Requested to join ${chapterName} Chapter located at ${location}</p><br/><br/>
+            <p><i>You will be notified when the chapter Leader approves your join request! please standby<br>
     
                 Cheerfully yours,<br>
                 

@@ -56,7 +56,7 @@ exports.getCompany = async (req, res, next) => {
       "authorId",
       "-password"
     );
-    if (!company) return AppError.tryCatchError(res, err);
+    if (!company) { let error = {message: "undefined company"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "company fetched successfully", company);
   } catch (err) {
     console.log(err);
@@ -73,7 +73,7 @@ exports.updateCompany = async (req, res, next) => {
     }
 
     const companyUpdate = await Companies.findById(req.params.id);
-    if (!companyUpdate) return AppError.tryCatchError(res, err);
+    if (!companyUpdate) { let error = {message: "undefined company"}; return AppError.tryCatchError(res, error);}
 
     let company = {
         ...req.body,

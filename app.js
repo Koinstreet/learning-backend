@@ -30,6 +30,7 @@ const savedEventsRoutes = require('./routes/savedEventsRoutes');
 const savedJobsRoutes = require('./routes/savedJobsRoutes')
 const companiesRoutes = require('./routes/companiesRouters');
 const chapterToolKitRoutes = require('./routes/chapterToolKit');
+const joinChapterRoutes = require('./routes/joinChapterRoutes');
 const app = express();
 
 if (process.env === "development") {
@@ -82,6 +83,7 @@ app.use('/api/v1/saveEvent', savedEventsRoutes);
 app.use('/api/v1/saveJob', savedJobsRoutes);
 app.use('/api/v1/company', companiesRoutes);
 app.use('/api/v1/chapterToolKit', chapterToolKitRoutes);
+app.use('/api/v1/joinChapter', joinChapterRoutes);
 app.use('/', socialRoutes)
 
 module.exports = app;

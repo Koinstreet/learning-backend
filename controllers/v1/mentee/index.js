@@ -52,7 +52,7 @@ exports.getMentee = async (req, res, next) => {
       "user_id",
       "-password"
     );
-    if (!mentee) return AppError.tryCatchError(res, err);
+    if (!mentee) { let error = {message: "undefined mentee"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Mentee fetched successfully", mentee);
   } catch (err) {
     console.log(err);
@@ -65,7 +65,7 @@ exports.updateMentee = async (req, res, next) => {
   try {
 
     const menteeUpdate = await Mentee.findById(req.params.id);
-    if (!menteeUpdate) return AppError.tryCatchError(res, err);
+    if (!menteeUpdate) { let error = {message: "undefined mentee"}; return AppError.tryCatchError(res, error);}
 
     let mentee = {
         ...req.body,

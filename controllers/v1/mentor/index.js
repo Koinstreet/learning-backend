@@ -58,7 +58,7 @@ exports.getMentor = async (req, res, next) => {
       "user_id",
       "-password"
     );
-    if (!mentor) return AppError.tryCatchError(res, err);
+    if (!mentor) { let error = {message: "undefined mentor"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Mentor fetched successfully", mentor);
   } catch (err) {
     console.log(err);
@@ -70,7 +70,7 @@ exports.updateMentor = async (req, res, next) => {
   
   try {
     const mentorUpdate = await Mentor.findById(req.params.id);
-    if (!mentorUpdate) return AppError.tryCatchError(res, err);
+    if (!mentorUpdate) { let error = {message: "undefined mentor"}; return AppError.tryCatchError(res, error);}
 
     let mentor = {
         ...req.body,

@@ -13,8 +13,9 @@ const LocationSchema = new Schema({
   },
   LocationName: {
     type: String,
+    required: true,
   },
-  title: {
+  location: {
     type: String,
     required: true,
   },
@@ -26,6 +27,7 @@ const LocationSchema = new Schema({
   },
   description: {
     type: String,
+    required: true
   },
   chapter_leader: {
     type: String,

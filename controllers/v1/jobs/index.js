@@ -56,7 +56,7 @@ exports.getJob = async (req, res, next) => {
       "authorId",
       "-password"
     );
-    if (!job) return AppError.tryCatchError(res, err);
+    if (!job) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Job fetched successfully", job);
   } catch (err) {
     console.log(err);
@@ -73,7 +73,7 @@ exports.updateJob = async (req, res, next) => {
     }
 
     const jobUpdate = await Jobs.findById(req.params.id);
-    if (!jobUpdate) return AppError.tryCatchError(res, err);
+    if (!jobUpdate) { let error = {message: "undefined Job"}; return AppError.tryCatchError(res, error);}
 
     let job = {
         ...req.body,

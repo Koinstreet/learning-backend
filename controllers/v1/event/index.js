@@ -76,7 +76,7 @@ exports.getEvent = async (req, res, next) => {
       "host",
       "-password"
     );
-    if (!event) return AppError.tryCatchError(res, err);
+    if (!event) { let error = {message: "undefined event"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Event fetched successfully", event);
   } catch (err) {
     console.log(err);
@@ -93,7 +93,8 @@ exports.updateEvent = async (req, res, next) => {
     }
 
     const eventUpdate = await Event.findById(req.params.id);
-    if (!eventUpdate) return AppError.tryCatchError(res, err);
+    if (!eventUpdate) { let error = {message: "undefined event"}; return AppError.tryCatchError(res, error);}
+
     let event;
     if (req.file) {
       const data = await uploadImage(req.file);

@@ -81,7 +81,7 @@ exports.getCourse = async (req, res, next) => {
       "authorId",
       "-password"
     );
-    if (!course) return AppError.tryCatchError(res, err);
+    if (!course) { let error = {message: "undefined course"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Course fetched successfully", course);
   } catch (err) {
     console.log(err);
@@ -98,7 +98,7 @@ exports.updateCourse = async (req, res, next) => {
     }
 
     const courseUpdate = await Course.findById(req.params.id);
-    if (!courseUpdate) return AppError.tryCatchError(res, err);
+    if (!courseUpdate) { let error = {message: "undefined course"}; return AppError.tryCatchError(res, error);}
     let course;
     if (req.file) {
       const data = await uploadImage(req.file);

@@ -55,7 +55,7 @@ exports.getAllFund= async (req, res, next) => {
 exports.getFund = async (req, res, next) => {
   try {
     const Fund = await Funded.findById(req.params.id).populate("user_id").populate("startup_id");
-    if (!Fund) return AppError.tryCatchError(res, err);
+    if (!Fund) { let error = {message: "undefined Fund"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Fund fetched successfully", Fund);
   } catch (err) {
     console.log(err);
@@ -68,7 +68,7 @@ exports.updateFund = async (req, res, next) => {
   try {
 
     const FundUpdate = await Funded.findById(req.params.id);
-    if (!FundUpdate) return AppError.tryCatchError(res, err);
+    if (!FundUpdate) { let error = {message: "undefined Fund"}; return AppError.tryCatchError(res, error);}
 
     let Fund = {
         ...req.body,

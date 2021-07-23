@@ -3,9 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const chapterStatSchema = new Schema({
-  number: {
-    type: Number,
-  },
   place: {
     type: String,
   },

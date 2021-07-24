@@ -105,6 +105,11 @@ exports.updateSavedEvents = async (req, res, next) => {
       { new: true }
     );
 
+    const savedEvent = await Events.findById(req.body.event_id).populate(
+      "host",
+      "-password"
+    );
+
     if(req.body.attending === "yes"){
       const subject = 'Event Successfuly Registered!';
       sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);

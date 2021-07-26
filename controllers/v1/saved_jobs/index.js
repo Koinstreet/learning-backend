@@ -35,7 +35,7 @@ exports.createSavedJobs = async (req, res, next) => {
     const SavedJobss = await SavedJobs.find({user_id: req.user.id}).populate("user_id").populate("job_id").sort("-createdAt");
 
     SavedJobss.map((saved) => {
-      if (saved.job_id === req.body.job_id){
+      if ((saved.job_id).toString() === (req.body.job_id).toString()){
       errors.msg = "Already Saved this Job";
       return AppError.validationError(res, UNAUTHORIZED, errors);
       }

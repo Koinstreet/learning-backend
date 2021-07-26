@@ -32,10 +32,10 @@ exports.createSavedJobs = async (req, res, next) => {
     console.log('no job found')
     }
 
-    const SavedJobss = await SavedJobs.find({}).populate("user_id").populate("job_id").sort("-createdAt");
+    const SavedJobss = await SavedJobs.find({user_id: req.user.id}).populate("user_id").populate("job_id").sort("-createdAt");
 
     SavedJobss.map((saved) => {
-      if (saved.job_id === req.body.job_id && saved.user_id === req.user.id){
+      if ((saved.job_id).toString() === (req.body.job_id).toString()){
       errors.msg = "Already Saved this Job";
       return AppError.validationError(res, UNAUTHORIZED, errors);
       }
@@ -58,6 +58,17 @@ exports.createSavedJobs = async (req, res, next) => {
 exports.getAllSavedJobs= async (req, res, next) => {
   try {
     const SavedJobss = await SavedJobs.find({}).populate("user_id").populate("job_id").sort("-createdAt");
+    return successWithData(res, OK, "SavedJobs fetched successfully", SavedJobss);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getUserSavedJobs = async (req, res, next) => {
+  try {
+    const SavedJobss = await SavedJobs.find({user_id : req.user.id}).populate("user_id").populate("job_id").sort("-createdAt");
+    if (!SavedJobss) { let error = {message: "undefined saved jobs"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "SavedJobs fetched successfully", SavedJobss);
   } catch (err) {
     console.log(err);

@@ -11,9 +11,11 @@ const router = express.Router();
 
 router.get("/", SavedJobs.getAllSavedJobs);
 
-router.get("/:id", SavedJobs.getSavedJobs);
-
 router.use(authMiddleware.protect);
+
+router.get("/userJobs", SavedJobs.getUserSavedJobs);
+
+router.get("/:id", SavedJobs.getSavedJobs);
 
 router.post(
   "/",

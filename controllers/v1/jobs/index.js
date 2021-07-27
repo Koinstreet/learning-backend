@@ -48,8 +48,6 @@ exports.getAllJobs= async (req, res, next) => {
     
     let time = 100;
 
-    let job_type = (parsedQs.job_type).split(",")
-
     if (parsedQs.date_posted === 'week'){
       time = 7
     }
@@ -68,8 +66,9 @@ exports.getAllJobs= async (req, res, next) => {
     let payFilter = parsedQs.pay ? { pay: { '$gt': pay, '$lt': 150000} } : {};
     let remoteFilter = parsedQs.remote ? { remote: parsedQs.remote } : {};
     let jobTypeFilter = parsedQs.job_type ? { job_type: { $in: (parsedQs.job_type).split(",") } }: {};
+    let job_industry = parsedQs.job_industry ? { job_industry: { $in: (parsedQs.job_industry).split(",") } }: {};
 
-    let allFilter = ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter]}) ? ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter]}) : {};
+    let allFilter = ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) ? ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) : {};
 
     const jobs = await Jobs.find(allFilter)
       .populate("authorId", "-password")

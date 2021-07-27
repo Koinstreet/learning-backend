@@ -1,4 +1,7 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
+const moment = require('moment');
+const url = require('url');
+const querystring = require('querystring');
 
 // DB
 const Jobs = require("../../../model/v1/Jobs");
@@ -39,7 +42,36 @@ exports.createJob = async (req, res, next) => {
 
 exports.getAllJobs= async (req, res, next) => {
   try {
-    const jobs = await Jobs.find({})
+
+    let parsedUrl = url.parse(req.url);
+    let parsedQs = querystring.parse(parsedUrl.query);
+    
+    let time = 100;
+
+    let job_type = (parsedQs.job_type).split(",")
+
+    if (parsedQs.date_posted === 'week'){
+      time = 7
+    }
+    else if(parsedQs.date_posted === 'day'){
+      time = 1
+    }
+    else if(parsedQs.date_posted === 'month'){
+      time = 30
+    }
+    else {
+      time = 100
+    }
+
+    let pay = parsedQs.pay ? parsedQs.pay : 0;
+    let timeFilter = parsedQs.date_posted ? { updatedAt: { $gte: new Date(moment().subtract(time, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss')), $lt: new Date() } }: {};
+    let payFilter = parsedQs.pay ? { pay: { '$gt': pay, '$lt': 150000} } : {};
+    let remoteFilter = parsedQs.remote ? { remote: parsedQs.remote } : {};
+    let jobTypeFilter = parsedQs.job_type ? { job_type: { $in: (parsedQs.job_type).split(",") } }: {};
+
+    let allFilter = ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter]}) ? ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter]}) : {};
+
+    const jobs = await Jobs.find(allFilter)
       .populate("authorId", "-password")
       .sort("-createdAt");
     return successWithData(res, OK, "Jobs fetched successfully", jobs);

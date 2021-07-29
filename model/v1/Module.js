@@ -23,18 +23,7 @@ const moduleSchema = new Schema({
     type: String,
     required: true,
   },
-  completed: {
-    type: String,
-    default: false,
-  },
-  completionStatus: {
-    type: String,
-    default: 'uncompleted',
-  },
-  completionRate: {
-    type: Number,
-    default: 0,
-  },
+  
   type: {
     type: String,
   },

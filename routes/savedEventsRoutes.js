@@ -9,11 +9,12 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+router.use(authMiddleware.protect);
+router.get("/userEvents", SavedEvents.getUserEvents);
+
 router.get("/", SavedEvents.getAllSavedEvents);
 
 router.get("/:id", SavedEvents.getSavedEvents);
-
-router.use(authMiddleware.protect);
 
 router.post(
   "/",

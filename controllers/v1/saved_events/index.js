@@ -32,9 +32,11 @@ exports.createSavedEvents = async (req, res, next) => {
       );
     if (!findEVent) {
     console.log('no event found')
+    errors.msg = "Invalid Event";
+    return AppError.validationError(res, BAD_REQUEST, errors);
     }
 
-    const SavedEventss = await SavedEvents.find({}).populate("user_id").populate("event_id").sort("-createdAt");
+    const SavedEventss = await SavedEvents.find({}).sort("-createdAt");
 
     SavedEventss.map((saved) => {
       if (saved.event_id === req.body.event_id && saved.user_id === req.user.id){
@@ -82,6 +84,17 @@ exports.getSavedEvents = async (req, res, next) => {
     const SavedEventss = await SavedEvents.findById(req.params.id).populate("user_id").populate("event_id").sort("-createdAt");
     if (!SavedEventss) { let error = {message: "undefined saved events"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "SavedEvent fetched successfully", SavedEventss);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getUserEvents = async (req, res, next) => {
+  try {
+    const userEvents = await SavedEvents.find({user_id : req.user.id}).populate("user_id").populate("event_id").sort("-createdAt");
+    if (!userEvents) { let error = {message: "you have not saved any Event"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "user saved events fetched successfully", userEvents);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

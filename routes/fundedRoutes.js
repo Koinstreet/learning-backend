@@ -9,11 +9,11 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", Funded.getAllFund);
+router.use(authMiddleware.protect);
+
+router.get("/userFunded", Funded.getUserFund);
 
 router.get("/:id", Funded.getFund);
-
-router.use(authMiddleware.protect);
 
 router.post(
   "/",
@@ -24,5 +24,8 @@ router
   .patch(Funded.updateFund)
   .delete(Funded.deleteFund);
 
+router.use(authMiddleware.restrictTo("admin"));
+
+router.get("/", Funded.getAllFund);
 
 module.exports = router;

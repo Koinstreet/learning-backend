@@ -24,7 +24,17 @@ exports.createFund = async (req, res, next) => {
             );
     if (!fund) {
         console.log('no Startup found')
+        let error = {message: "undefined startup"}; return AppError.tryCatchError(res, error);
     }
+
+    const fundedStartups = await Funded.find({user_id: req.user.id}).sort("-createdAt");
+
+    fundedStartups.map((funded) => {
+      if ((funded.startup_id).toString() === (req.body.startup_id).toString()){
+      errors = "Already funded this Startup";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+      }
+    })
 
     const newFund= await Funded.create(Fund);
 
@@ -45,6 +55,17 @@ exports.getAllFund= async (req, res, next) => {
     const Funds = await Funded.find({}).populate("user_id").populate("startup_id")
       .sort("-createdAt");
     return successWithData(res, OK, "Fund fetched successfully", Funds);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getUserFund = async (req, res, next) => {
+  try {
+    const userFund = await Funded.find({user_id : req.user.id}).populate("user_id").populate("startup_id").sort("-createdAt");
+    if (!userFund) { let error = {message: "you have not funded any startup"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "user funded startups fetched successfully", userFund);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

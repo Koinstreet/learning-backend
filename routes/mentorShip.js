@@ -9,8 +9,6 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", mentorship.getAllMentorship);
-
 router.get("/:id", mentorship.getMentorship);
 
 router.use(authMiddleware.protect);
@@ -24,5 +22,8 @@ router
   .patch(mentorship.updateMentorship)
   .delete(mentorship.deleteMentorship);
 
+router.use(authMiddleware.restrictTo("admin"));
+
+router.get("/", mentorship.getAllMentorship);
 
 module.exports = router;

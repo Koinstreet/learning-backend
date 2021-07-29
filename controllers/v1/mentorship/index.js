@@ -26,6 +26,7 @@ exports.createMentorship = async (req, res, next) => {
             );
     if (!mentor) {
         console.log('no mentor found')
+        let error = {message: "undefined mentor"}; return AppError.tryCatchError(res, error);
     }
 
     const newMentorship= await Mentorship.create(mentorship);
@@ -57,7 +58,7 @@ exports.getAllMentorship= async (req, res, next) => {
 exports.getMentorship = async (req, res, next) => {
   try {
     const mentorships = await Mentorship.findById(req.params.id).populate("mentor_id").populate("mentee_id")
-    if (!mentorships) return AppError.tryCatchError(res, err);
+    if (!mentorships) {let error = {message: "undefined mentorship"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Mentorship fetched successfully", mentorships);
   } catch (err) {
     console.log(err);
@@ -70,7 +71,7 @@ exports.updateMentorship = async (req, res, next) => {
   try {
 
     const mentorshipUpdate = await Mentorship.findById(req.params.id);
-    if (!mentorshipUpdate) return AppError.tryCatchError(res, err);
+    if (!mentorshipUpdate) {let error = {message: "undefined mentorship"}; return AppError.tryCatchError(res, error)};
 
     let mentorship = {
         ...req.body,

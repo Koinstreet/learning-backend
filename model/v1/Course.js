@@ -12,9 +12,6 @@ const courseSchema = new Schema({
   totalModules: {
     type: Number,
   },
-  completedModules: {
-    type: Number,
-  },
   name: {
     type: String,
     required: true,
@@ -34,10 +31,6 @@ const courseSchema = new Schema({
     required: true,
   },
   featured: {
-    type: Boolean,
-    default: false,
-  },
-  completed: {
     type: Boolean,
     default: false,
   },

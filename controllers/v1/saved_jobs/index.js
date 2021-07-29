@@ -30,9 +30,11 @@ exports.createSavedJobs = async (req, res, next) => {
       );
     if (!findJob) {
     console.log('no job found')
+    errors.msg = "Invalid Job";
+      return AppError.validationError(res, BAD_REQUEST, errors);
     }
 
-    const SavedJobss = await SavedJobs.find({user_id: req.user.id}).populate("user_id").populate("job_id").sort("-createdAt");
+    const SavedJobss = await SavedJobs.find({user_id: req.user.id}).sort("-createdAt");
 
     SavedJobss.map((saved) => {
       if ((saved.job_id).toString() === (req.body.job_id).toString()){

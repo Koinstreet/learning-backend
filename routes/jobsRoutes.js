@@ -9,6 +9,9 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+
+router.post("/search", jobs.getSearch);
+
 router.get("/", jobs.getAllJobs);
 
 router.get("/:id", jobs.getJob);

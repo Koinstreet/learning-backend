@@ -24,6 +24,11 @@ const connect = () => {
           useUnifiedTopology: true,
         })
         .then((res, err) => {
+          // console.log(res.connection.db.getCollectionNames())
+          module.exports.db = res.connection.db;
+          res.connection.db.listCollections().toArray(function (err, names) {
+            module.exports.Collection = names;
+        });
           if (err) return reject(err);
           resolve();
         });
@@ -47,5 +52,6 @@ const close = () => {
   // return mongoose.connection.close()
   return mongoose.disconnect();
 };
+
 
 module.exports = { connect, close };

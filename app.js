@@ -6,6 +6,7 @@ import "@babel/polyfill";
 import passport from 'passport';
 
 import socialAuthRoutes from './routes/socialAuthRoutes';
+import { getSearch } from './controllers/v1/search';
 
 // ROUTES
 const userRoutes = require('./routes/userRoutes');
@@ -90,6 +91,7 @@ app.use('/api/v1/joinChapter', joinChapterRoutes);
 app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/chat_message', chatMessageRoutes);
 app.use('/api/v1/learn', learnRoutes);
+app.use('/api/v1/search', getSearch);
 app.use('/', socialRoutes)
 
 module.exports = app;

@@ -80,6 +80,45 @@ exports.getAllJobs= async (req, res, next) => {
   }
 };
 
+exports.getSearch = async (req, res, next) => {
+  try {
+    if (!req.body.job_title || req.body.location) {
+      console.log('please enter any keyword to search')
+      errors.msg = "please enter any keyword to search";
+        return AppError.validationError(res, BAD_REQUEST, errors);
+      }
+
+    let job_title = req.body.job_title ? req.body.job_title : '';
+    let location = req.body.location ? req.body.location : '';
+    
+      let text = job_title + location;
+  
+     const searchJobs = await Jobs.aggregate([
+      {
+        '$search': {
+          'index': 'default', 
+          'text': {
+            'query': text !== '' ? text : true,
+            'path': [
+              'job_title', 'job_description', 'location', 'job_industry',
+            ]
+          }
+        }
+      },
+    ])
+        return successWithData(
+          res,
+          CREATED,
+          "search result",
+          searchJobs
+        );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+
 
 exports.getJob = async (req, res, next) => {
   try {

@@ -30,6 +30,7 @@ const socialRoutes = require('./routes/socialAuthRoutes');
 const savedEventsRoutes = require('./routes/savedEventsRoutes');
 const savedJobsRoutes = require('./routes/savedJobsRoutes')
 const companiesRoutes = require('./routes/companiesRouters');
+const learnRoutes = require('./routes/learnRoutes');
 const app = express();
 
 if (process.env === "development") {
@@ -83,5 +84,6 @@ app.use('/api/v1/saveEvent', savedEventsRoutes);
 app.use('/api/v1/saveJob', savedJobsRoutes);
 app.use('/api/v1/company', companiesRoutes);
 app.use('/', socialRoutes)
+app.use('/api/v1/learn', learnRoutes);
 
 module.exports = app;

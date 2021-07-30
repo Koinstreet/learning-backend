@@ -84,7 +84,7 @@ exports.getSearch = async (req, res, next) => {
   try {
     if (!req.body.job_title || req.body.location) {
       console.log('please enter any keyword to search')
-      errors.msg = "please enter any keyword to search";
+     let  errors = "please enter any keyword to search";
         return AppError.validationError(res, BAD_REQUEST, errors);
       }
 

@@ -13,38 +13,28 @@ const moduleSchema = new Schema({
     required: true,
     ref: "Course",
   },
-  ActivityId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Activity",
+  image: {
+    type: String
+  },
+  url: {
+      type: String
   },
   name: {
     type: String,
     required: true,
   },
-  week: {
+  level: {
     type: String,
-    required: true,
+    enum: ["beginner", "intermediate", "advanced"]
   },
-  completed: {
-    type: String,
-    default: false,
+  duration: {
+    type: String
   },
-  completionStatus: {
-    type: String,
-    default: 'uncompleted',
-  },
-  completionRate: {
-    type: Number,
-    default: 0,
-  },
-  type: {
-    type: String,
-    required: true,
+  description: {
+    type: String
   },
   content: {
     type: Object,
-    required: true,
   },
 },
 {

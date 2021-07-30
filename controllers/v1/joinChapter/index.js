@@ -38,12 +38,14 @@ exports.createJoinChapter = async (req, res, next) => {
     return AppError.validationError(res, UNAUTHORIZED, errors);
     }
 
-    if((findLocation.added_by._id).toString() === (req.user.id).toString()){
+    if((findLocation.added_by).toString() === (req.user.id).toString()){
     console.log('You can not join a chapter you created')
     errors.msg = "You can not join a chapter you created";
     return AppError.validationError(res, BAD_REQUEST, errors);
     }
-    const JoinChapters = await JoinChapter.find({}).populate("user_id").populate("chapterLocation_id").sort("-createdAt");
+
+  
+    const JoinChapters = await JoinChapter.find({}).sort("-createdAt");
 
     JoinChapters.map((joined) => {
       if ((joined.chapterLocation_id).toString() === (req.body.chapterLocation_id).toString() && (joined.user_id).toString() === (req.user.id).toString()){
@@ -52,7 +54,7 @@ exports.createJoinChapter = async (req, res, next) => {
       }
     })
 
-    if((findLocation.added_by._id).toString() !== (req.user.id).toString()){
+    if((findLocation.added_by).toString() !== (req.user.id).toString()){
     const newJoinChapter= await JoinChapter.create(joinChapter);
 
     const subject = `Successfully Requested to join ${findLocation.LocationName} Chapter`;

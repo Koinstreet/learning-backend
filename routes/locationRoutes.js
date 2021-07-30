@@ -10,8 +10,8 @@ const fileUploader = require("../middleware/fileUploaders");
 
 const router = express.Router();
 
-router.get("/", location.getAllLocations);
 router.get("/:id", location.getLocation);
+router.get("/", location.getAllLocations);
 
 router.use(authMiddleware.protect);
 router.post(

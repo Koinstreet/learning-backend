@@ -64,12 +64,9 @@ exports.getAllLocations = async (req, res, next) => {
 
 exports.getLocation = async (req, res, next) => {
   try {
-    const Location = await Location.findById(req.params.id).populate(
-      "added_by",
-      "-password"
-    );
-    if (!Location) { let error = {message: "undefined Location"}; return AppError.tryCatchError(res, error);}
-    return successWithData(res, OK, "Location fetched successfully", Location);
+    const location = await Location.findById(req.params.id).populate("added_by").sort("-createdAt");
+    if (!location) { let error = {message: "undefined location"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "locationfetched successfully", location);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);
@@ -105,7 +102,7 @@ exports.updateLocation = async (req, res, next) => {
     }
     const modifiedLocation = await Location.findOneAndUpdate(
       { _id: req.params.id },
-      { ...Location },
+      { ...location },
       { new: true }
     );
     return successWithData(res, OK, "Location modified", modifiedLocation);

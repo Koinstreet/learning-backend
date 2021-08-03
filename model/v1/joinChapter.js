@@ -11,6 +11,7 @@ const JoinChapterSchema = new Schema({
   chapterLocation_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Location",
+    unique: false,
     required: true,
   },
   approved: {

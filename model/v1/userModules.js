@@ -12,7 +12,6 @@ const userModulesSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Module",
     required: true,
-    unique: true,
   },
   completed: {
     type: Boolean,

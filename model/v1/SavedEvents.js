@@ -12,7 +12,6 @@ const SavedEventsSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Event",
     required: true,
-    unique: true
   },
   attending: {
     type: String,

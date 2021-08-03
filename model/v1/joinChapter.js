@@ -12,7 +12,6 @@ const JoinChapterSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Location",
     required: true,
-    unique: true
   },
   approved: {
       type: Boolean,

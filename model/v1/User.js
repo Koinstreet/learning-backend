@@ -23,7 +23,6 @@ const userSchema = new Schema({
   },
   publicAddress: {
     type: String,
-    unique: true
   },
   password: {
     type: String,

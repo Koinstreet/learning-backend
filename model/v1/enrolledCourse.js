@@ -12,7 +12,6 @@ const EnrolledCourseSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
     required: true,
-    unique: true,
   },
   completed: {
     type: Boolean,

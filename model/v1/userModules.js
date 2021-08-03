@@ -20,7 +20,7 @@ const userModulesSchema = new Schema({
   },
   completionStatus: {
     type: String,
-    default: 'uncompleted',
+    default: 'incomplete',
   },
   completionRate: {
     type: Number,

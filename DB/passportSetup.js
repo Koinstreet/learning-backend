@@ -23,7 +23,7 @@ passport.deserializeUser((id, done) => {
 // google social auth
 
 passport.use(new GoogleStrategy({
-  clientID: process.env.CLIENT_ID,
+  clientID: '560139434715-36o7v8kif9lfp2s7sc99o6cfmtshrpre.apps.googleusercontent.com',
   clientSecret: process.env.CLIENT_SECRET,
   callbackURL: 'https://koinstreet-learn-api.herokuapp.com/auth/google/redirect',
 },
@@ -58,7 +58,7 @@ passport.use(new GoogleStrategy({
 passport.use(
     new FacebookStrategy(
       {
-        clientID: process.env.FACEBOOK_APP_ID,
+        clientID: 460712018474173,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
         callbackURL: 'https://koinstreet-learn-api.herokuapp.com/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'name','email', 'gender', 'picture.type(large)']
@@ -89,7 +89,7 @@ passport.use(
   // github social auth
 
   passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
+    clientID: '903f1822e37b95f9fb87',
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: "https://koinstreet-learn-api.herokuapp.com/auth/github/callback"
   },
@@ -117,7 +117,7 @@ passport.use(
 // linkedin social auth
 
 passport.use(new LinkedinStrategy({
-    clientID: process.env.LINKEDIN_API_KEY,
+    clientID: '78d8zhef4ewsrp',
     clientSecret: process.env.LINKEDIN_SECRET_KEY,
     callbackURL: "https://koinstreet-learn-api.herokuapp.com/auth/linkedin/callback",
     scope: ['r_emailaddress', 'r_basicprofile'],

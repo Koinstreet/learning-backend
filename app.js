@@ -48,7 +48,7 @@ app.options('*', cors());
 app.use(cookieSession({
   // milliseconds of a day
   maxAge: 24*60*60*1000,
-  keys:process.env.cookieKey,
+  keys:12345678,
 }));
 
 app.use(passport.initialize());
@@ -58,7 +58,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => res.send("working"));
+app.get("/", (req, res) => {res.send("working"); res.status(200)});
 
 
 

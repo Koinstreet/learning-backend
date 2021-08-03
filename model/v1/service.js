@@ -16,9 +16,6 @@ const serviceSchema = new Schema({
   budget_currency: {
     type: String,
   },
-  front_end_tags: {
-    type: Array,
-  },
   project_stacks: {
     type: Array,
   },

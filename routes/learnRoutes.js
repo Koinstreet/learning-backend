@@ -39,8 +39,6 @@ router
 .patch(UserModule.updateUserModules)
 .delete(UserModule.deleteUserModule);
 
-router.use(authMiddleware.restrictTo("admin"));
-
 router.get("/", EnrolledCourse.getAllEnrolledCourse);
 
 

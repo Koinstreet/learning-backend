@@ -2,6 +2,8 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 //DB
 const Chat = require('../../../model/v1/Chat');
+const ChatMessage = require('../../../model/v1/ChatMessage');
+const User = require('../../../model/v1/User');
 
 //Validation
 const validateChat = require("../../../validators/chat");
@@ -133,7 +135,10 @@ exports.getChat = async (req, res, next) => {
   try {
     let errors={};
     const checkChat = await Chat.findById(req.params.id);
-    if (!checkChat) return AppError.tryCatchError(res, err);
+    if (!checkChat) {
+      errors.msg = "that chat does not exist";
+      return AppError.tryCatchError(res, err);
+    } 
     if(req.user.id != checkChat.users[0] && req.user.id != checkChat.users[1]) {
       errors.msg = "user is not a member of this chat";
       return AppError.validationError(res, UNAUTHORIZED, errors);
@@ -168,6 +173,39 @@ exports.getPendingChats = async (req, res, next) => {
   }
 };
 
+exports.deleteChat = async (req, res, next) => {
+  try {
+    const errors = {};
+    const chatid = req.body.chatid;
+
+    const checkChat = await Chat.findById(chatid);
+    if (!checkChat) {
+      errors.msg = "that chat does not exist";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+    }
+    if (req.user.id != checkChat.users[0] && req.user.id != checkChat.users[1]) {
+      errors.msg = "user does not have access to this chat";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+    }
+    const chatMessages = await ChatMessage.find({ chat: chatid });
+    if (chatMessages) {
+      if (chatMessages.length == 1) {
+        await ChatMessage.deleteOne({ chat: chatid });
+      }
+      else {
+        await ChatMessage.deleteMany({ chat: chatid });
+      }
+    }
+    await Chat.findByIdAndDelete(chatid);
+
+    return successNoData(res, OK, "chat deleted");
+
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getBlockedChats = async (req, res, next) => {
   try {
     const userChats = await Chat.find({ users: { $in:[req.user.id] }, blocked: { $in: ["true",true] } }).populate("users").sort("-createdAt");
@@ -176,6 +214,52 @@ exports.getBlockedChats = async (req, res, next) => {
       OK,
       "Blocked chats fetched successfully",
       userChats
+    );
+
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.searchChats = async (req, res, next) => {
+  try {
+    const query = req.params.query;
+    const self = req.user.id;
+    const userChats = await Chat.find({ users: { $in:[self] }}).populate("users");
+    let userChatsIds = [];
+    userChats.forEach((chat)=>{
+      userChatsIds.push(chat._id);
+    });
+
+    const userResults = await User.find({$or:[
+      {firstName: {$regex:query, $options:'i'}},
+      {lastName: {$regex:query, $options:'i'}},
+      {userName: {$regex:query, $options:'i'}}
+    ]});
+
+    const chatResults = [];
+    userChats.forEach((chat) => {
+      userResults.forEach((user)=> {
+        if(user._id.toString() === self.toString()) {
+          return;
+        }
+        if (chat.users[0]._id.toString() === user._id.toString() || chat.users[1]._id.toString() === user._id.toString()){
+          chatResults.push(chat)
+        }
+      });
+    });
+
+    const messageResults = await ChatMessage.find({ $and:
+      [{chat: {$in:userChatsIds}},
+      {message: {$regex:query, $options:'i' }}]}).populate("chat").populate("user");
+
+    let results = {chats: chatResults, messages: messageResults};
+    return successWithData(
+      res, 
+      OK,
+      "searched successfully",
+      results
     );
 
   } catch (err) {

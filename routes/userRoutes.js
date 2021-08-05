@@ -15,6 +15,8 @@ router.post("/login", authUser.loginUser);
 
 router.get("/", authUser.getAllUser)
 
+router.get("/search/:query", user.searchUsersByName);
+
 router.route('/:id').get(user.getUser);
 
 router.use(authMiddleware.protect);

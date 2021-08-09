@@ -31,7 +31,7 @@ exports.updateUser = async (req, res, next) => {
     
     const user = await User.findById(req.params.id);
 
-    if (!courseUpdate) { let error = {message: "undefined user"}; return AppError.tryCatchError(res, error);}
+    if (!user) { let error = {message: "undefined user"}; return AppError.tryCatchError(res, error);}
     
     let updatedUser;
     if (req.file) {

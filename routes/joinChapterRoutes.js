@@ -9,11 +9,14 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+router.use(authMiddleware.protect);
+
+router.get("/userJoinedRequests", joinChapter.getUserJoinRequests);
+
+
 router.get("/", joinChapter.getAllJoinedChapter);
 
 router.get("/:id", joinChapter.getJoinedChapter);
-
-router.use(authMiddleware.protect);
 
 router.get("/:location/accept/:id", joinChapter.acceptJoinRequest);
 

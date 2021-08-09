@@ -84,6 +84,17 @@ exports.getAllJoinedChapter= async (req, res, next) => {
   }
 };
 
+exports.getUserJoinRequests= async (req, res, next) => {
+  try {
+    const userJoinRequests = await JoinChapter.find({user_id : req.user.id}).populate("user_id").populate("event_id").sort("-createdAt");
+    if (!userJoinRequests) { let error = {message: "you have not any join Request"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "user Join Requests fetched successfully", userJoinRequests);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 
 exports.getJoinedChapter = async (req, res, next) => {
   try {

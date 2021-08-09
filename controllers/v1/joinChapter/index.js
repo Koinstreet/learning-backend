@@ -23,36 +23,39 @@ const AppError = require("../../../utils/appError");
 exports.createJoinChapter = async (req, res, next) => {
   const { errors, isValid } = validateJoinChapter(req.body);
   try {
-    let joinChapter = {
-        ...req.body,
-        chapterLocation_id: req.body.chapterLocation_id,
-        user_id : req.user.id,
-      };
-
     const findLocation = await Locations.findById(req.body.chapterLocation_id).populate(
     "_id"
     );
     if (!findLocation) {
-    let error = "no Chapter found";
-    return AppError.tryCatchError(res, error);
+    console.log('no Chapter found')
+    errors.msg = "no Chapter found";
+    return AppError.validationError(res, UNAUTHORIZED, errors);
     }
 
-    if((findLocation.added_by).toString() === (req.user.id).toString()){
-    let error = "You can not join a chapter you created";
-    return AppError.tryCatchError(res, error);
+    else if((findLocation.added_by).toString() === (req.user.id).toString()){
+    console.log('You can not join a chapter you created')
+    errors.msg = "You can not join a chapter you created";
+    return AppError.validationError(res, BAD_REQUEST, errors);
     }
+
+    else{
+
+      let joinChapter = {
+        ...req.body,
+        chapterLocation_id: req.body.chapterLocation_id,
+        user_id : req.user.id,
+      };
 
   
     const JoinChapters = await JoinChapter.find({}).sort("-createdAt");
 
     JoinChapters.map((joined) => {
       if ((joined.chapterLocation_id).toString() === (req.body.chapterLocation_id).toString() && (joined.user_id).toString() === (req.user.id).toString()){
-      let error = "Already joined this Chapter";
-      return AppError.tryCatchError(res, error);
+      errors.msg = "Already joined this Chapter";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
       }
     })
 
-    if((findLocation.added_by).toString() !== (req.user.id).toString()){
     const newJoinChapter= await JoinChapter.create(joinChapter);
 
     const subject = `Successfully Requested to join ${findLocation.LocationName} Chapter`;
@@ -66,6 +69,7 @@ exports.createJoinChapter = async (req, res, next) => {
     );
     }
   } catch (err) {
+    console.log(err);
     return AppError.tryCatchError(res, err);
   }
 };

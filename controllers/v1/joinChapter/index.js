@@ -33,15 +33,13 @@ exports.createJoinChapter = async (req, res, next) => {
     "_id"
     );
     if (!findLocation) {
-    console.log('no Chapter found')
-    errors.msg = "no Chapter found";
-    return AppError.validationError(res, UNAUTHORIZED, errors);
+    let error = "no Chapter found";
+    return AppError.tryCatchError(res, error);
     }
 
     if((findLocation.added_by).toString() === (req.user.id).toString()){
-    console.log('You can not join a chapter you created')
-    errors.msg = "You can not join a chapter you created";
-    return AppError.validationError(res, BAD_REQUEST, errors);
+    let error = "You can not join a chapter you created";
+    return AppError.tryCatchError(res, error);
     }
 
   
@@ -49,8 +47,8 @@ exports.createJoinChapter = async (req, res, next) => {
 
     JoinChapters.map((joined) => {
       if ((joined.chapterLocation_id).toString() === (req.body.chapterLocation_id).toString() && (joined.user_id).toString() === (req.user.id).toString()){
-      errors.msg = "Already joined this Chapter";
-      return AppError.validationError(res, UNAUTHORIZED, errors);
+      let error = "Already joined this Chapter";
+      return AppError.tryCatchError(res, error);
       }
     })
 
@@ -68,7 +66,6 @@ exports.createJoinChapter = async (req, res, next) => {
     );
     }
   } catch (err) {
-    console.log(err);
     return AppError.tryCatchError(res, err);
   }
 };

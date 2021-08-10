@@ -62,3 +62,26 @@ exports.updateUser = async (req, res, next) => {
     return AppError.tryCatchError(res, err);
   }
 };
+
+
+exports.searchUsersByName = async (req, res, next) => {
+  try {
+    const query = req.params.query;
+
+    const userResults = await User.find({$or:[
+      {firstName: {$regex:query, $options:'i'}},
+      {lastName: {$regex:query, $options:'i'}},
+      {userName: {$regex:query, $options:'i'}}
+    ]});
+    return successWithData(
+      res, 
+      OK,
+      "searched successfully",
+      userResults
+    );
+
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+}

@@ -22,11 +22,15 @@ router.get("/pending", Chat.getPendingChats);
 
 router.get("/block", Chat.getBlockedChats);
 
+router.get("/search/:query", Chat.searchChats);
+
 router.get("/:id", Chat.getChat);
 
 router.post("/", Chat.createChat);
 
 router.put("/", Chat.acceptChat);
+
+router.delete("/", Chat.deleteChat);
 
 router.put("/block", Chat.setBlockStatus);
 

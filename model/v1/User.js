@@ -18,7 +18,6 @@ const userSchema = new Schema({
   },
   userName: {
     type: String,
-    unique: true,
     default: '',
   },
   publicAddress: {

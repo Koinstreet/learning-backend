@@ -6,8 +6,10 @@ const {
 } = require("../utils/successHandler");
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const router = express.Router();
-
+import socialAuth from '../controllers/v1/socialAuth'
 //google routes
+
+router.post("/googleLogin", socialAuth.googleLogin);
 
 router.get("/auth/google", passport.authenticate("google", {
     scope: ["profile", "email"]

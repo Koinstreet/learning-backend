@@ -91,7 +91,7 @@ app.use('/api/v1/joinChapter', joinChapterRoutes);
 app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/chat_message', chatMessageRoutes);
 app.use('/api/v1/learn', learnRoutes);
-app.use('/api/v1/search', getSearch);
+app.post('/api/v1/search', getSearch);
 app.use('/', socialRoutes)
 
 module.exports = app;

@@ -160,8 +160,8 @@ exports.deleteUserModule = async (req, res, file) => {
     console.log('no Module found')
     let error = {message: "undefined user Module"}; return AppError.tryCatchError(res, error);
     }
-    const Module = await UserModules.findOneAndDelete({ _id: req.params.id });
-    if (!Module) { let error = {message: "undefined user Module"}; return AppError.tryCatchError(res, error);}
+    const module = await UserModules.findOneAndDelete({ _id: req.params.id });
+    if (!module) { let error = {message: "undefined user Module"}; return AppError.tryCatchError(res, error);}
     return successNoData(res, OK, "user Module deleted");
   } catch (err) {
     console.log(err);

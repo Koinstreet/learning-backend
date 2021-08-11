@@ -76,6 +76,18 @@ const startupSchema = new Schema({
   vision: {
     type: String,
   },
+  problem: {
+    type: String,
+  },
+  solution: {
+    type: String,
+  },
+  business_model: {
+    type: String,
+  },
+  revenue_stream: {
+    type: String,
+  },
   found: {
     type: String,
   },

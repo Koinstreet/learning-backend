@@ -10,6 +10,9 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+router.get("/", EnrolledCourse.getAllEnrolledCourse);
+
+
 router.use(authMiddleware.protect);
 
 // courses
@@ -38,8 +41,5 @@ router
 .route("/:courseId/:moduleId/:id")
 .patch(UserModule.updateUserModules)
 .delete(UserModule.deleteUserModule);
-
-router.get("/", EnrolledCourse.getAllEnrolledCourse);
-
 
 module.exports = router;

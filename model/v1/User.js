@@ -9,6 +9,24 @@ const userSchema = new Schema({
   firstName: {
     type: String,
   },
+  primaryLanguage: {
+    type: String,
+  },
+  passions: {
+    type: Array,
+  },
+  avatarOptions: {
+    type: Array,
+  },
+  softSkills: {
+    type: Array,
+  },
+  programmingSkills: {
+    type: Array,
+  },
+  skills: {
+    type: Array,
+  },
   lastName: {
     type: String,
   },
@@ -79,6 +97,21 @@ const userSchema = new Schema({
   },
   Nationality: {
     type: String
+  },
+  educationLevel: {
+    type: String,
+  },
+  schoolName: {
+    type: String,
+  },
+  expectedGraduationYear: {
+    type: Date,
+  },
+  graduationStatus: {
+    type: String,
+  },
+  degree: {
+    type: String,
   },
   Ethnicity: {
     type: String

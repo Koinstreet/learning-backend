@@ -1,4 +1,8 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
+const moment = require('moment');
+const url = require('url');
+const querystring = require('querystring');
+
 
 // DB
 const Event = require("../../../model/v1/Events");
@@ -60,7 +64,29 @@ exports.createEvent = async (req, res, next) => {
 
 exports.getAllEvents = async (req, res, next) => {
   try {
-    const events = await Event.find({})
+    let parsedUrl = url.parse(req.url);
+    let parsedQs = querystring.parse(parsedUrl.query);
+    
+    let time = 100;
+
+    if (parsedQs.event_time === 'week'){
+      time = 7
+    }
+    else if(parsedQs.event_time === 'month'){
+      time = 30
+    }
+    else {
+      time = 100
+    }
+    let timeFilter = parsedQs.event_time ? { time: { $gte: new Date(moment().subtract(time, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss')), $lt: new Date() } }: {};
+    let virtualFilter = parsedQs.Virtual ? { Virtual: parsedQs.Virtual } : {};
+    let featuredFilter = parsedQs.Featured ? { Featured: parsedQs.Featured } : {};
+    let catNameFilter = parsedQs.catName ? { catName: { $in: (parsedQs.catName).split(",") } }: {};
+
+    let allFilter = ({$and: [timeFilter, virtualFilter, featuredFilter, catNameFilter]}) ? ({$and: [timeFilter, virtualFilter, featuredFilter, catNameFilter]}) : {};
+
+
+    const events = await Event.find(allFilter)
       .populate("host", "-password")
       .sort("-createdAt");
     return successWithData(res, OK, "Events fetched successfully", events);

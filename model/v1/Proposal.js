@@ -7,8 +7,10 @@ const proposalSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
-    username: {
-        type: String
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
     },
     replies: {
         type: Number

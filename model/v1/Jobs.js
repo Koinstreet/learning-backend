@@ -8,9 +8,19 @@ const jobSchema = new Schema({
     required: true,
     ref: "User",
   },
+  companyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    default: "60f1b3820739be002a24dcae",
+    ref: "Company",
+  },
   job_title: {
     type: String,
     required: true,
+  },
+  easy_apply: {
+    type: Boolean,
+    default: false,
   },
   application_link: {
     type: String,

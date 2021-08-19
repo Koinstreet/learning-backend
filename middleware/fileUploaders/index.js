@@ -21,6 +21,13 @@ const multerImageFilter = (req, file, cb) => {
   } else cb(new Error("invalid filetype"), false);
 };
 
+const multerFileFilter = (req, file, cb) => {
+  console.log(file.mimetype);
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else cb(new Error("invalid filetype"), false);
+};
+
 const multerVideoFilter = (req, file, cb) => {
   console.log(file.mimetype);
   if (file.mimetype.startsWith("video")) {
@@ -31,6 +38,11 @@ const multerVideoFilter = (req, file, cb) => {
 const uploadImage = multer({
   storage: multerStorage,
   fileFilter: multerImageFilter,
+});
+
+const uploadDoc = multer({
+  storage: multerStorage,
+  fileFilter: multerFileFilter,
 });
 
 const uploadVideo = multer({
@@ -48,4 +60,5 @@ exports.uploadProposalAvatar = uploadImage.single('avatar');
 exports.uploadModuleImage = uploadImage.single("image");
 exports.uploadChatImage = uploadImage.single("image");
 exports.uploadChatVideo = uploadVideo.single("video");
+exports.uploadResume = uploadDoc.single("resume");
 

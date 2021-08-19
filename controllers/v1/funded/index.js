@@ -31,7 +31,7 @@ exports.createFund = async (req, res, next) => {
 
     fundedStartups.map((funded) => {
       if ((funded.startup_id).toString() === (req.body.startup_id).toString()){
-      errors = "Already funded this Startup";
+      let errors = "Already funded this Startup";
       return AppError.validationError(res, UNAUTHORIZED, errors);
       }
     })

@@ -71,7 +71,7 @@ exports.getAllJobs= async (req, res, next) => {
     let allFilter = ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) ? ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) : {};
 
     const jobs = await Jobs.find(allFilter)
-      .populate("authorId", "-password")
+      .populate("companyId")
       .sort("-createdAt");
     return successWithData(res, OK, "Jobs fetched successfully", jobs);
   } catch (err) {

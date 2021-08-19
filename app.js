@@ -35,6 +35,7 @@ const joinChapterRoutes = require('./routes/joinChapterRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const chatMessageRoutes = require('./routes/chatMessageRoutes');
 const learnRoutes = require('./routes/learnRoutes');
+const easyApplyRoutes = require('./routes/easyApplyRoutes');
 const app = express();
 
 if (process.env === "development") {
@@ -92,6 +93,7 @@ app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/chat_message', chatMessageRoutes);
 app.use('/api/v1/learn', learnRoutes);
 app.post('/api/v1/search', getSearch);
+app.use('/api/v1/easyApply', easyApplyRoutes);
 app.use('/', socialRoutes)
 
 module.exports = app;

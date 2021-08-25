@@ -45,6 +45,9 @@ const EasyApplySchema = new Schema({
   resume: {
     type: String,
   },
+  approved: {
+    type: Boolean,
+  },
 }, {
   timestamps: true
 });

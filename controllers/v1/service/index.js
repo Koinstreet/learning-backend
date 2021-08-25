@@ -4,6 +4,8 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const Services = require("../../../model/v1/service");
 
 const validateService = require("../../../validators/service");
+import sendEmail from '../../../utils/email/sendEmail';
+import emailTemplate from '../../../utils/email/consultancy/createProject';
 
 const {
   successWithData,
@@ -21,7 +23,12 @@ exports.createService = async (req, res, next) => {
     }
     let service = {
         ...req.body,
+        authorId: req.user.id,
       };
+
+    const subject = `Your project has been submitted, you will be notified once your project is claimed`;
+
+    sendEmail(emailTemplate(req.user.firstName, req.body.project_name ? req.body.project_name : '', req.body.project_details ? req.body.project_details : '', req.body.launch_date ? req.body.launch_date : ''), subject, req.user.email);
 
     const newService= await Services.create(service);
     return successWithData(
@@ -76,6 +83,7 @@ exports.updateService = async (req, res, next) => {
 
     let service = {
         ...req.body,
+        authorId: req.user.id,
       };
     
     const modifiedService = await Services.findOneAndUpdate(

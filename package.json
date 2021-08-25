@@ -10,7 +10,7 @@
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
     "heroku-postbuild": "npm install --production",
-    "test": "mocha ./tests/ --require @babel/register -r dotenv/config --timeout 3000 --exit ",
+    "test": "mocha ./tests/ --require @babel/register -r dotenv/config --timeout 30000 --exit ",
     "coverage": "nyc npm run test "
   },
   "author": "Koinstreet",

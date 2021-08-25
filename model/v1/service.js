@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const serviceSchema = new Schema({
+  authorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
   project_name: {
     type: String,
     required: true,
@@ -53,6 +58,10 @@ const serviceSchema = new Schema({
   },
   pay_option: {
     type: String,
+  },
+  claimed: {
+    type: Boolean,
+    default: false
   },
 }, {
   timestamps: true

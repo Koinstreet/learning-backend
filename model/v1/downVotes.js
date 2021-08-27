@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const UpVoteSchema = new Schema({
+const DownVoteSchema = new Schema({
   authorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -17,6 +17,6 @@ const UpVoteSchema = new Schema({
   timestamps: true
 });
 
-const UpVote = mongoose.model("UpVote", UpVoteSchema);
+const DownVote = mongoose.model("DownVote", DownVoteSchema);
 
-module.exports = UpVote;
+module.exports = DownVote;

@@ -12,9 +12,10 @@ const EventSchema = new Schema({
     type: String,
     default: 'http://res.cloudinary.com/djhbhzex4/image/upload/v1626716733/images/2021-07-19T17_45_29.803Z-events_medium.jpeg.jpg'
   },
-  approved: {
-    type: Boolean,
-    default: false
+  eventStatus: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending"
   },
   catName: {
     type: String,

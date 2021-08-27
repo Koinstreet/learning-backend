@@ -20,6 +20,6 @@ const repliesSchema = new Schema({
   timestamps: true
 });
 
-const Replies = mongoose.model("ProposalReplies", repliesSchema);
+const Replies = mongoose.model("Replies", repliesSchema);
 
 module.exports = Replies;

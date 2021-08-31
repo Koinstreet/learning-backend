@@ -1,7 +1,7 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
-const DownVotes = require("../../../model/v1/DownVotes");
+const DownVotes = require("../../../model/v1/downVotes");
 const Startup = require("../../../model/v1/Startups");
 const Proposal = require("../../../model/v1/Proposal");
 

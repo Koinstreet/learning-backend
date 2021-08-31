@@ -13,6 +13,11 @@ const UpVoteSchema = new Schema({
     ref: "Proposal",
     required: true,
   },
+  startup_Id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Startup",
+    required: true,
+  },
 }, {
   timestamps: true
 });

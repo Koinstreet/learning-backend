@@ -6,6 +6,8 @@ const querystring = require('querystring');
 // DB
 const Jobs = require("../../../model/v1/Jobs");
 
+const EasyApply = require("../../../model/v1/easyApply");
+
 const validateJob = require("../../../validators/job");
 
 const {
@@ -118,6 +120,34 @@ exports.getSearch = async (req, res, next) => {
   }
 };
 
+exports.getUserJobs = async (req, res, next) => {
+  try {
+    const jobs = await Jobs.find({authorId : req.user.id}).populate("authorId").sort("-createdAt");
+    if (!jobs) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "jobs fetched successfully", jobs);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+
+exports.getCandidates = async (req, res, next) => {
+  try {
+    const easyApplied = await EasyApply.find({}).populate("authorId").populate("job_id").sort("-createdAt");
+    let allEmployerJobs = [];
+    easyApplied.map((all)=>{
+      if(all.job_id.authorId.toString() === (req.user.id).toString()){
+        allEmployerJobs.push(all)
+      }
+    })
+
+    return successWithData(res, OK, "jobs you posted and candidates fetched successfully", allEmployerJobs);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
 
 
 exports.getJob = async (req, res, next) => {

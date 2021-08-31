@@ -18,7 +18,7 @@ router.get(":id/relies", proposal.getProposalReplies);
 
 router.use(authMiddleware.protect);
 
-router.post("/:id/reply", proposal.createReplies);
+router.post("/:id/reply",proposalMiddleware.uploadProposalAvatar, proposal.createReplies);
 
 router.get("/userProposal", proposal.getUserProposal);
 

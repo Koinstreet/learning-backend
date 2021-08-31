@@ -37,6 +37,8 @@ const chatMessageRoutes = require('./routes/chatMessageRoutes');
 const learnRoutes = require('./routes/learnRoutes');
 const easyApplyRoutes = require('./routes/easyApplyRoutes');
 const claimedProjects = require('./routes/claimedProjects');
+const upvotes = require('./routes/upvotes');
+const downvotes = require('./routes/downVotes');
 const app = express();
 
 if (process.env === "development") {
@@ -96,6 +98,8 @@ app.use('/api/v1/learn', learnRoutes);
 app.post('/api/v1/search', getSearch);
 app.use('/api/v1/easyApply', easyApplyRoutes);
 app.use('/api/v1/claimProject', claimedProjects);
+app.use('/api/v1/upVotes', upvotes);
+app.use('/api/v1/downVotes', downvotes);
 app.use('/', socialRoutes)
 
 module.exports = app;

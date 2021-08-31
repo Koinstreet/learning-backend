@@ -10,22 +10,26 @@ const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 
 
+router.get("/userJobs",authMiddleware.protect, jobs.getUserJobs);
+router.get("/candidates",authMiddleware.protect, jobs.getCandidates);
+
+
+
+router.post(
+  "/",authMiddleware.protect,
+  jobs.createJob
+);
+router
+  .route("/:id")
+  .patch(authMiddleware.protect, jobs.updateJob)
+  .delete(authMiddleware.protect, jobs.deleteJob);
+
+
 router.post("/search", jobs.getSearch);
 
 router.get("/", jobs.getAllJobs);
 
 router.get("/:id", jobs.getJob);
-
-router.use(authMiddleware.protect);
-
-router.post(
-  "/",
-  jobs.createJob
-);
-router
-  .route("/:id")
-  .patch(jobs.updateJob)
-  .delete(jobs.deleteJob);
 
 
 module.exports = router;

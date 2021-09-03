@@ -21,6 +21,8 @@ router.post(
   fileUploader.uploadResume,
   easyApply.createEasyApply
 );
+router.get("/approve/:id", easyApply.approveCandidate);
+router.get("/deny/:id", easyApply.denyCandidate);
 router
   .route("/:id")
   .patch(fileUploader.uploadResume, easyApply.updateEasyApply)

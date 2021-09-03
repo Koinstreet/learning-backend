@@ -2,10 +2,13 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 import sendEmail from '../../../utils/email/sendEmail';
 import emailTemplateAuthor from '../../../utils/email/easyApply/jobAuthor';
 import emailTemplateUser from '../../../utils/email/easyApply/user';
+import emailTemplateApproved from '../../../utils/email/careers/approvedCandidates';
+import emailTemplateDenied from '../../../utils/email/careers/deniedCandidates';
 
 // DB
 const EasyApply = require("../../../model/v1/easyApply");
 const Jobs = require("../../../model/v1/Jobs");
+const Companies = require("../../../model/v1/Companies");
 
 // Validation
 const validateEasyApply = require("../../../validators/easyAppy");
@@ -110,6 +113,7 @@ exports.getEasyApply = async (req, res, next) => {
   try {
     const easyApply = await EasyApply.findById(req.params.id).populate("authorId").populate("job_id").sort("-createdAt");
     if (!easyApply) { let error = {message: "undefined easy apply"}; return AppError.tryCatchError(res, error);}
+
     return successWithData(res, OK, "EasyApply fetched successfully", easyApply);
   } catch (err) {
     console.log(err);
@@ -122,6 +126,12 @@ exports.updateEasyApply = async (req, res, next) => {
     const EasyApplyUpdate = await EasyApply.findById(req.params.id);
     if (!EasyApplyUpdate) { let error = {message: "undefined easy apply"}; return AppError.tryCatchError(res, error);}
 
+    const appliedJob = await EasyApply.findById(req.params.id).populate("authorId").populate("job_id").sort("-createdAt");
+    if (!appliedJob) { let error = {message: "undefined applied job"}; return AppError.tryCatchError(res, error);}
+
+    if(appliedJob.authorId._id.toString() !== req.user.id.toString()){
+      let error = {message: "you don't have access to this candidate and job"}; return AppError.tryCatchError(res, error);
+    }
 
     let easyApply;
     if (req.file) {
@@ -142,6 +152,80 @@ exports.updateEasyApply = async (req, res, next) => {
       { ...easyApply },
       { new: true }
     );
+
+    return successWithData(res, OK, "EasyApply modified", modifiedEasyApply);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.approveCandidate = async (req, res, next) => {
+  try {
+    const EasyApplyUpdate = await EasyApply.findById(req.params.id);
+    if (!EasyApplyUpdate) { let error = {message: "undefined applied job"}; return AppError.tryCatchError(res, error);}
+
+
+    let easyApply = {
+      approved: true,
+    };
+
+    const modifiedEasyApply = await EasyApply.findOneAndUpdate(
+      { _id: req.params.id },
+      { ...easyApply },
+      { new: true }
+    );
+
+    const appliedJob = await EasyApply.findById(req.params.id).populate("authorId").populate("job_id").sort("-createdAt");
+    if (!appliedJob) { let error = {message: "undefined applied job"}; return AppError.tryCatchError(res, error);}
+    
+    const company = await Companies.findById(appliedJob.job_id.companyId).populate("authorId")
+    if (!company) { let error = {message: "undefined company"}; return AppError.tryCatchError(res, error);}
+
+    if(company.authorId._id.toString() !== req.user.id.toString()){
+      let error = {message: "you don't have access to this candidate and job"}; return AppError.tryCatchError(res, error);
+    }
+
+    const subjectApproved = `${appliedJob.job_id.job_title} Job application status at ${company.company_name}`;
+
+    sendEmail(emailTemplateApproved(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
+
+    return successWithData(res, OK, "EasyApply modified", modifiedEasyApply);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.denyCandidate = async (req, res, next) => {
+  try {
+    const EasyApplyUpdate = await EasyApply.findById(req.params.id);
+    if (!EasyApplyUpdate) { let error = {message: "undefined applied job"}; return AppError.tryCatchError(res, error);}
+
+
+    let easyApply = {
+      approved: false,
+    };
+
+    const modifiedEasyApply = await EasyApply.findOneAndUpdate(
+      { _id: req.params.id },
+      { ...easyApply },
+      { new: true }
+    );
+
+    const appliedJob = await EasyApply.findById(req.params.id).populate("authorId").populate("job_id").sort("-createdAt");
+    if (!appliedJob) { let error = {message: "undefined applied job"}; return AppError.tryCatchError(res, error);}
+    
+    const company = await Companies.findById(appliedJob.job_id.companyId).populate("authorId")
+    if (!company) { let error = {message: "undefined company"}; return AppError.tryCatchError(res, error);}
+
+    if(company.authorId._id.toString() !== req.user.id.toString()){
+      let error = {message: "you don't have access to this candidate and job"}; return AppError.tryCatchError(res, error);
+    }
+
+    const subjectApproved = `${appliedJob.job_id.job_title} Job application status at ${company.company_name}`;
+
+    sendEmail(emailTemplateApproved(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
 
     return successWithData(res, OK, "EasyApply modified", modifiedEasyApply);
   } catch (err) {

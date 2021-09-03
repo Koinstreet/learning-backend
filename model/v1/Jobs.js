@@ -55,6 +55,11 @@ const jobSchema = new Schema({
   additional_compensation: {
     type: String,
   }, 
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "inactive",
+  },
   benefits: {
     type: String,
   },

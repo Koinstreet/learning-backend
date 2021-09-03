@@ -11,12 +11,12 @@ const UpVoteSchema = new Schema({
   proposal_Id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Proposal",
-    required: true,
+    required: false,
   },
   startup_Id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Startup",
-    required: true,
+    required: false,
   },
 }, {
   timestamps: true

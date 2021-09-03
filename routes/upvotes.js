@@ -7,17 +7,17 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", Upvote.getAllUpVotes);
+router.get("/startupUpvote/:id", authMiddleware.protect, Upvote.getStartupUpVotes);
 
-router.get("/:id", Upvote.getUpVote);
-
-router.get("/startupUpvote", Upvote.getStartupUpVotes);
-
-router.get("/proposalUpvote", Upvote.getProposalUpVotes);
+router.get("/proposalUpvote/:id", authMiddleware.protect, Upvote.getProposalUpVotes);
 
 router.use(authMiddleware.protect);
 
 router.get("/userUpvotes", Upvote.getUserUpVotes);
+
+router.get("/", Upvote.getAllUpVotes);
+
+router.get("/:id", Upvote.getUpVote);
 
 router.post(
   "/",

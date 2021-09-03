@@ -40,6 +40,6 @@ const proposalSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-const Proposal = mongoose.model("ProposalReplies", proposalSchema);
+const Proposal = mongoose.model("Proposal", proposalSchema);
 
 module.exports = Proposal;

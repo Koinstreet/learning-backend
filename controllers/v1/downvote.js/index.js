@@ -24,30 +24,48 @@ exports.createDownVotes = async (req, res, next) => {
 
       if(req.body.startup_Id){
 
-      const findStartDown= await Startup.findById(req.body.startup_Id).populate(
+      const findStartup= await Startup.findById(req.body.startup_Id).populate(
         "_id"
       );
 
-    if (!findStartDown) {
-    console.log('no StartDown found')
-    let errors = "Invalid StartDown";
+
+    if (!findStartup) {
+    console.log('no Startup found')
+    let errors = "Invalid Startup";
         return AppError.validationError(res, BAD_REQUEST, errors);
     }
 
-    if(req.body.proposal_Id){
+    const voted = await DownVotes.find({}).sort("-createdAt");
 
-        const findproposal= await Proposal.findById(req.body.proposal_Id).populate(
-            "_id"
-        );
+    voted.map((v) => {
+      if ((v.startup_Id).toString() === (req.body.startup_Id).toString() && (v.authorId).toString() === (req.user.id).toString()){
+      let errors = "Already voted";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+      }
+    })
     
-        if (!findproposal) {
-            console.log('no proposal found')
-            let errors = "Invalid proposal";
-            return AppError.validationError(res, BAD_REQUEST, errors);
-        }
-    }
+  }
+if(req.body.proposal_Id){
+
+  const findproposal= await Proposal.findById(req.body.proposal_Id).populate(
+      "_id"
+  );
+
+  if (!findproposal) {
+      console.log('no proposal found')
+      let errors = "Invalid proposal";
+      return AppError.validationError(res, BAD_REQUEST, errors);
+  }
+
+  const voted = await DownVotes.find({}).sort("-createdAt");
+
+    voted.map((v) => {
+      if ((v.proposal_Id).toString() === (req.body.proposal_Id).toString() && (v.authorId).toString() === (req.user.id).toString()){
+      let errors = "Already voted";
+      return AppError.validationError(res, UNAUTHORIZED, errors);
+      }
+    })
 }
-    
 
     const newDownVotes= await DownVotes.create(downVotes);
 
@@ -62,6 +80,7 @@ exports.createDownVotes = async (req, res, next) => {
     return AppError.tryCatchError(res, err);
   }
 };
+
 
 exports.getAllDownVotes= async (req, res, next) => {
   try {
@@ -84,9 +103,9 @@ exports.getUserDownVotes = async (req, res, next) => {
   }
 };
 
-exports.getStartupVotes = async (req, res, next) => {
+exports.getStartDownVotes = async (req, res, next) => {
     try {
-      const DownVotess = await DownVotes.find({startup_Id : req.user.id}).populate("authorId").populate("proposal_Id").populate("startup_Id").sort("-createdAt");
+      const DownVotess = await DownVotes.find({startup_Id : req.params.id}).populate("authorId").populate("proposal_Id").populate("startup_Id").sort("-createdAt");
       if (!DownVotess) { let error = {message: "undefined Downvote"}; return AppError.tryCatchError(res, error);}
       return successWithData(res, OK, "DownVotes fetched successfully", DownVotess);
     } catch (err) {
@@ -97,7 +116,7 @@ exports.getStartupVotes = async (req, res, next) => {
 
   exports.getProposalDownVotes = async (req, res, next) => {
     try {
-      const DownVotess = await DownVotes.find({proposal_Id : req.user.id}).populate("authorId").populate("proposal_Id").populate("startup_Id").sort("-createdAt");
+      const DownVotess = await DownVotes.find({proposal_Id : req.params.id}).populate("authorId").populate("proposal_Id").populate("startup_Id").sort("-createdAt");
       if (!DownVotess) { let error = {message: "undefined Downvote"}; return AppError.tryCatchError(res, error);}
       return successWithData(res, OK, "DownVotes fetched successfully", DownVotess);
     } catch (err) {

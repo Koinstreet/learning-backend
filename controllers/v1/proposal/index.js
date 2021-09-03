@@ -12,7 +12,7 @@ const {
 
 // Error
 const AppError = require("../../../utils/appError");
-const validateReplies = require("../../../validators/Replies");
+const validateProposal = require("../../../validators/proposal");
 
 exports.createProposal = async (req, res, next) => {
     try {
@@ -22,11 +22,13 @@ exports.createProposal = async (req, res, next) => {
         if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
         proposal = {
           ...req.body,
+          userId : req.user.id,
           avatar: data.url,
         };
       } else {
         proposal = {
-          ...req.body
+          ...req.body,
+          userId : req.user.id,
         };
       }
   
@@ -44,12 +46,12 @@ exports.createProposal = async (req, res, next) => {
   };
 
   exports.createReplies = async (req, res, next) => {
-    const { errors, isValid } = validateReplies(req.body);
+    const { errors, isValid } = validateProposal(req.body);
     try {
       let replies = {
           ...req.body,
           proposal_id: req.body.proposal_id,
-          authorId : req.user.id,
+          userId : req.user.id,
         };
   
         const findProposal = await Proposal.findById(req.params.id).populate(
@@ -89,17 +91,18 @@ exports.createProposal = async (req, res, next) => {
   exports.getProposal = async (req, res, next) => {
     try {
       const proposal = await Proposal.findById(req.params.id).populate("userId").populate("startUp_id").populate("event_id").populate("project_id");
+      let err = "can not find proposal"
       if (!proposal) return AppError.tryCatchError(res, err);
       return successWithData(res, OK, "proposal fetched successfully", proposal);
-    } catch (err) {
-      console.log(err);
-      return AppError.tryCatchError(res, err);
+    } catch (error) {
+      console.log(error);
+      return AppError.tryCatchError(res, error);
     }
   };
 
   exports.getProposalReplies= async (req, res, next) => {
     try {
-      const Repliess = await Replies.find({proposal_id: req.params.id}).populate("authorId").populate("proposal_id").sort("-createdAt");
+      const Repliess = await Replies.find({proposal_id: req.params.id}).populate("userId").populate("proposal_id").sort("-createdAt");
       return successWithData(res, OK, "Replies fetched successfully", Repliess);
     } catch (err) {
       console.log(err);
@@ -109,9 +112,9 @@ exports.createProposal = async (req, res, next) => {
 
   exports.getUserProposal = async (req, res, next) => {
     try {
-      const proposal = await Proposal.find({userId : req.user.id}).populate("userId").populate("startUp_id").populate("event_id").populate("project_id");
-      if (!proposal) return AppError.tryCatchError(res, err);
-      return successWithData(res, OK, "proposal fetched successfully", proposal);
+      const proposals = await Proposal.find({userId: req.user.id}).populate("userId").populate("startUp_id").populate("event_id").populate("project_id")
+        .sort("-createdAt");
+      return successWithData(res, OK, "Proposals fetched successfully", proposals);
     } catch (err) {
       console.log(err);
       return AppError.tryCatchError(res, err);
@@ -164,7 +167,7 @@ exports.createProposal = async (req, res, next) => {
     try {
       const RepliesUpdate = await Replies.findById(req.params.id);
       if (!RepliesUpdate) { let error = {message: "undefined Reply"}; return AppError.tryCatchError(res, error);}
-      if (RepliesUpdate.authorId.toString() !== req.user.id.toString()){
+      if (RepliesUpdate.userId.toString() !== req.user.id.toString()){
         let error = {message: "You do not have permission to update this comment"}; return AppError.tryCatchError(res, error);
       }
       if(RepliesUpdate.proposal_id.toString() !== req.params.proposalId.toString()){
@@ -189,15 +192,16 @@ exports.createProposal = async (req, res, next) => {
   
   exports.deleteReplies = async (req, res, file) => {
     try {
-      const deleteProposal = await Replies.findOneAndDelete({ _id: req.params.id });
-      if (!deleteProposal) { let error = {message: "undefined Reply"}; return AppError.tryCatchError(res, error);}
-      if (deleteProposal.authorId.toString() !== req.user.id.toString()){
+      const findReply = await Replies.find({ _id: req.params.id });
+      if (!findReply) { let error = {message: "undefined Reply"}; return AppError.tryCatchError(res, error);}
+      if (findReply.userId.toString() !== req.user.id.toString()){
         let error = {message: "You do not have permission to delete this comment"}; return AppError.tryCatchError(res, error);
       }
-      if(deleteProposal.proposal_id.toString() !== req.params.proposalId.toString()){
+      if(findReply.proposal_id.toString() !== req.params.proposalId.toString()){
         let error = {message: "this comment doesn't belong to this proposal"}; return AppError.tryCatchError(res, error);
       }
-  
+      const deleteReply= await Replies.findOneAndDelete({ _id: req.params.id });
+      if (!deleteReply) { let error = {message: "undefined Reply"}; return AppError.tryCatchError(res, error);}
       return successNoData(res, OK, "Reply deleted");
     } catch (err) {
       console.log(err);

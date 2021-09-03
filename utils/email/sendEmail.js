@@ -24,8 +24,8 @@ export  default (message, subject, userEmail) => {
                 subject: `${subject}`,
                 html: `${message}`
             });
-           
     }catch(error){
+        console.log(error)
         const _error = `Failed sending the email to ${userEmail}, Please try again ...`;
         return AppError.tryCatchError(res, _error);
     }

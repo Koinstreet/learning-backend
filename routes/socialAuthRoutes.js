@@ -27,6 +27,7 @@ router.get("/auth/google", passport.authenticate("google", {
   });
 
   //facebook route
+  router.post("/facebookLogin", socialAuth.facebookLogin);
   router.get('/auth/facebook',passport.authenticate('facebook' ,{ scope : ['email', 'public_profile'] }));
   router.get('/auth/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: '/login' }),
@@ -38,7 +39,7 @@ router.get("/auth/google", passport.authenticate("google", {
   });
 
   //github routes
-
+  router.post("/githubLogin", socialAuth.githubLogin);
   router.get('/auth/github',
   passport.authenticate('github'));
 
@@ -52,7 +53,7 @@ router.get("/auth/google", passport.authenticate("google", {
   });
 
 // linkedin routes
-
+router.post("/linkedinLogin", socialAuth.linkedinLogin);
 router.get('/auth/linkedin',
   passport.authenticate('linkedin'));
 

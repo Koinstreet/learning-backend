@@ -7,6 +7,7 @@ const {
 const Jobs = require("../../../model/v1/Jobs");
 const Location = require("../../../model/v1/Locations");
 const Startup = require("../../../model/v1/Startups");
+const User = require("../../../model/v1/User");
 
 // Error
 const AppError = require("../../../utils/appError");
@@ -19,54 +20,42 @@ exports.getSearch = async (req, res, next) => {
               return AppError.validationError(res, BAD_REQUEST, errors);
         }
         
-        let text = req.body.keyword ? req.body.keyword : '';
+        let query = req.body.keyword ? req.body.keyword : '';
+
+        
     
-       const jobs = await Jobs.aggregate([
-        {
-          '$search': {
-            'index': 'default', 
-            'text': {
-              'query': text, 
-              'path': [
-                'job_title', 'job_title', 'location', 'job_industry',
-              ]
-            }
-          }
-        },
-      ])
+       const jobs = await Jobs.find({$or:[
+        {job_title: {$regex:query, $options:'i'}},
+        {location: {$regex:query, $options:'i'}},
+        {job_industry: {$regex:query, $options:'i'}}
+      ]})
 
-      const chapter = await Location.aggregate([
-        {
-          '$search': {
-            'index': 'default', 
-            'text': {
-              'query': text, 
-              'path': [
-                'description', 'location', 'LocationName'
-              ]
-            }
-          }
-        },
-      ])
+      const chapter = await Location.find({$or:[
+        {description: {$regex:query, $options:'i'}},
+        {location: {$regex:query, $options:'i'}},
+        {LocationName: {$regex:query, $options:'i'}}
+      ]})
 
-      const startups = await Startup.aggregate([
-        {
-          '$search': {
-            'index': 'default', 
-            'text': {
-              'query': text, 
-              'path': [
-                'about', 'location', 'vision', 'roadmap', 'name'
-              ]
-            }
-          }
-        },
-      ])
+      
+      const startups = await Startup.find({$or:[
+        {about: {$regex:query, $options:'i'}},
+        {location: {$regex:query, $options:'i'}},
+        {vision: {$regex:query, $options:'i'}},
+        {roadmap: {$regex:query, $options:'i'}},
+        {name: {$regex:query, $options:'i'}}
+      ]})
+
+      const users = await User.find({$or:[
+        {firstName: {$regex:query, $options:'i'}},
+        {lastName: {$regex:query, $options:'i'}},
+        {userName: {$regex:query, $options:'i'}}
+      ]});
 
     const all = {
         chapter,
         startups,
-        jobs
+        jobs,
+        users
     }
           return successWithData(
             res,

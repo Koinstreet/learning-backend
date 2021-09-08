@@ -19,7 +19,7 @@ router.get("/", authUser.getAllUser)
 
 router.get("/search/:query", user.searchUsersByName);
 
-router.route('/:id').get(user.getUser);
+router.route('/getProfile/:id').get(user.getUser);
 
 
 router.use(authMiddleware.protect);

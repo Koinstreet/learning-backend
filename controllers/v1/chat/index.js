@@ -176,7 +176,7 @@ exports.getPendingChats = async (req, res, next) => {
 exports.deleteChat = async (req, res, next) => {
   try {
     const errors = {};
-    const chatid = req.body.chatid;
+    const chatid = req.params.id;
 
     const checkChat = await Chat.findById(chatid);
     if (!checkChat) {
@@ -252,7 +252,7 @@ exports.searchChats = async (req, res, next) => {
 
     const messageResults = await ChatMessage.find({ $and:
       [{chat: {$in:userChatsIds}},
-      {message: {$regex:query, $options:'i' }}]}).populate("chat").populate("user");
+      {message: {$regex:query, $options:'i' }}]}).populate("user").populate({path:"chat", populate: {path:"users"}});
 
     let results = {chats: chatResults, messages: messageResults};
     return successWithData(

@@ -50,6 +50,17 @@ exports.getAllCompany= async (req, res, next) => {
 };
 
 
+exports.getUserCompanies = async (req, res, next) => {
+  try {
+    const companies = await Companies.find({authorId : req.user.id}).populate("authorId").sort("-createdAt");
+    if (!companies) { let error = {message: "undefined company"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "companies fetched successfully", companies);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getCompany = async (req, res, next) => {
   try {
     const company = await Companies.findById(req.params.id).populate(

@@ -225,7 +225,7 @@ exports.denyCandidate = async (req, res, next) => {
 
     const subjectApproved = `${appliedJob.job_id.job_title} Job application status at ${company.company_name}`;
 
-    sendEmail(emailTemplateApproved(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
+    sendEmail(emailTemplateDenied(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
 
     return successWithData(res, OK, "EasyApply modified", modifiedEasyApply);
   } catch (err) {

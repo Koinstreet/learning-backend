@@ -25,6 +25,8 @@ const chapterStatsRoutes = require('./routes/chapterRouters');
 const fundedRoutes = require('./routes/fundedRoutes');
 const minorityEarnedRoutes = require('./routes/minority_earnedRoutes');
 const proposalRoutes = require('./routes/proposalRoutes');
+const proposalStatusRoutes = require('./routes/proposalStatusRoutes');
+const proposalViewRoutes = require('./routes/proposalViews');
 const chapterRoutes = require('./routes/chapter');
 const socialRoutes = require('./routes/socialAuthRoutes');
 const savedEventsRoutes = require('./routes/savedEventsRoutes');
@@ -100,6 +102,8 @@ app.use('/api/v1/easyApply', easyApplyRoutes);
 app.use('/api/v1/claimProject', claimedProjects);
 app.use('/api/v1/upVotes', upvotes);
 app.use('/api/v1/downVotes', downvotes);
+app.use('/api/v1/proposalStatus', proposalStatusRoutes)
+app.use('/api/v1/proposalViews', proposalViewRoutes)
 app.use('/', socialRoutes)
 
 module.exports = app;

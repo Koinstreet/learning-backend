@@ -83,7 +83,7 @@ export default (firstName, jobTitle, company, recruiterEmail)=>{
         <div class="content">
           <div class="parent">
             <div class="row1">
-                <p class="">Chapter <span>Management Team</span></p>
+                <p class="">Proposal <span>Management Team</span></p>
             </div>
           </div>
           <div class="row2">
@@ -91,7 +91,6 @@ export default (firstName, jobTitle, company, recruiterEmail)=>{
             <h1>Your ${jobTitle} job application at ${company} Has been Denied!</h1>
 
             <p class="">This email hereby confirms that the employer did not take your candidacy to the next steps, keep pushing!</p><br/><br/>
-            <p><i>You will be receiving notifications from this chapter's activities!<br>
     
                 Cheerfully yours,<br>
                 

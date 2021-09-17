@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default (firstName, jobTitle, company, recruiterEmail)=>{
+export default (firstName, proposalName, proposalType, rejectionReason)=>{
 
     const message = `
     <!DOCTYPE html>
@@ -88,9 +88,12 @@ export default (firstName, jobTitle, company, recruiterEmail)=>{
           </div>
           <div class="row2">
           <p>Hello ${firstName},</p>
-            <h1>Your ${jobTitle} job application at ${company} Has been approved!</h1>
+            <h1>Your ${proposalName} ${proposalType} proposal Has been declined!</h1>
 
-            <p class="">This email hereby confirms that the employer took your candidacy to the next steps, please contact the recruiter via ${recruiterEmail}</p><br/><br/>
+            <p class="">This email hereby confirms that your proposal did not make it to the next steps, we highly appreciate the time you took and we look forward to see some of your future proposals. please check the reason of rejection below!</p>
+            <br/>
+            <p>Reasons of rejection: ${rejectionReason}</p>
+            <br/>
     
                 Cheerfully yours,<br>
                 

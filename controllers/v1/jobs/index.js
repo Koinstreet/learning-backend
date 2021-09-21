@@ -136,10 +136,13 @@ exports.getCandidates = async (req, res, next) => {
   try {
     const easyApplied = await EasyApply.find({}).populate("authorId").populate("job_id").sort("-createdAt");
     let allEmployerJobs = [];
+
     easyApplied.map((all)=>{
+      if(all.job_id !== null){
       if(all.job_id.authorId.toString() === (req.user.id).toString()){
         allEmployerJobs.push(all)
       }
+    }
     })
 
     return successWithData(res, OK, "jobs you posted and candidates fetched successfully", allEmployerJobs);

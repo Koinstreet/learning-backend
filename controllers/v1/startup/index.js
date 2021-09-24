@@ -85,7 +85,7 @@ exports.updateStartup = async (req, res, next) => {
     }
 
     const StartupUpdate = await Startup.findById(req.params.id);
-    if (!StartupUpdate) return AppError.tryCatchError(res, err);
+    if (!StartupUpdate){let err = "undefined Startup"; return AppError.tryCatchError(res, err);}
     let startup;
     if (req.file) {
       const data = await uploadImage(req.file);

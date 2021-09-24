@@ -6,6 +6,8 @@ import proposalDenial from '../../../utils/email/ProposalStatus/proposalDenial';
 // DB
 const ProposalStatus = require("../../../model/v1/ProposalStatus");
 const Proposals = require("../../../model/v1/Proposal");
+const Notifications = require("../../../model/v1/notifications");
+
 
 // Validation
 const validateProposalStatus = require("../../../validators/proposalStatus");
@@ -50,32 +52,41 @@ exports.createProposalStatus = async (req, res, next) => {
     if(newProposalStatus.approved === false && findproposal.type.toString() === "Startup".toString()){
         subjectDenied = `your ${findproposal.startUp_id.name} Startup proposal did not make it to the next step`;
         sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.startUp_id.name, 'Startup', newProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id,title: subjectDenied, startUp_id: findproposal.startUp_id._id, type: 'Startup', authorId: null});
     }
 
     if(newProposalStatus.approved === false && findproposal.type.toString() === "Event".toString()){
         subjectDenied = `your ${findproposal.event_id.eventName} Event proposal did not make it to the next step`;
         sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.event_id.eventName, 'Event', newProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectDenied, event_id: findproposal.event_id._id, type: 'Event', authorId: null});
     }
 
     if(newProposalStatus.approved === false && findproposal.type.toString() === "Project".toString()){
-        subjectDenied = `your ${findproposal.event_id.project_name} Project proposal did not make it to the next step`;
-        sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.event_id.project_name, 'Project', newProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        subjectDenied = `your ${findproposal.project_id.project_name} Project proposal did not make it to the next step`;
+        sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.project_id.project_name, 'Project', newProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectDenied, project_id: findproposal.project_id._id, type: 'Project', authorId: null});
 
     }
 
     if(newProposalStatus.approved === true && findproposal.type.toString() === "Startup".toString()){
         subjectApproved = `your ${findproposal.startUp_id.name} Startup proposal has been approved`;
         sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.startUp_id.name, 'Startup', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, startUp_id: findproposal.startUp_id._id, type: 'Startup', authorId: req.user.id});
+
     }
 
     if(newProposalStatus.approved === true && findproposal.type.toString() === "Event".toString()){
         subjectApproved = `your ${findproposal.event_id.eventName} Event proposal has been approved`;
         sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.event_id.eventName, 'Event', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, event_id: findproposal.event_id._id, type: 'Event', authorId: req.user.id});
+
     }
 
     if(newProposalStatus.approved === true && findproposal.type.toString() === "Project".toString()){
-        subjectApproved = `your ${findproposal.event_id.project_name} Project proposal has been approved`;
-        sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.event_id.project_name, 'Project', req.user.email), subjectApproved, findproposal.userId.email);
+        subjectApproved = `your ${findproposal.project_id.project_name} Project proposal has been approved`;
+        sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.project_id.project_name, 'Project', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, project_id: findproposal.project_id._id, type: 'Project', authorId: req.user.id});
+
     }
    
     return successWithData(
@@ -187,32 +198,39 @@ exports.updateProposalStatus = async (req, res, next) => {
     if(modifiedProposalStatus.approved === false && findproposal.type.toString() === "Startup".toString()){
         subjectDenied = `your ${findproposal.startUp_id.name} Startup proposal did not make it to the next step`;
         sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.startUp_id.name, 'Startup', modifiedProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id,title: subjectDenied, startUp_id: findproposal.startUp_id._id, type: 'Startup', authorId: null});
+
     }
 
     if(modifiedProposalStatus.approved === false && findproposal.type.toString() === "Event".toString()){
         subjectDenied = `your ${findproposal.event_id.eventName} Event proposal did not make it to the next step`;
         sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.event_id.eventName, 'Event', modifiedProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectDenied, event_id: findproposal.event_id._id, type: 'Event', authorId: null});
     }
 
     if(modifiedProposalStatus.approved === false && findproposal.type.toString() === "Project".toString()){
         subjectDenied = `your ${findproposal.event_id.project_name} Project proposal did not make it to the next step`;
         sendEmail(proposalDenial(findproposal.userId.firstName, findproposal.event_id.project_name, 'Project', modifiedProposalStatus.denialReason), subjectDenied, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectDenied, project_id: findproposal.project_id._id, type: 'Project', authorId: null});
 
     }
 
     if(modifiedProposalStatus.approved === true && findproposal.type.toString() === "Startup".toString()){
         subjectApproved = `your ${findproposal.startUp_id.name} Startup proposal has been approved`;
         sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.startUp_id.name, 'Startup', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, startUp_id: findproposal.startUp_id._id, type: 'Startup', authorId: req.user.id});
     }
 
     if(modifiedProposalStatus.approved === true && findproposal.type.toString() === "Event".toString()){
         subjectApproved = `your ${findproposal.event_id.eventName} Event proposal has been approved`;
         sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.event_id.eventName, 'Event', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, event_id: findproposal.event_id._id, type: 'Event', authorId: req.user.id});
     }
 
     if(modifiedProposalStatus.approved === true && findproposal.type.toString() === "Project".toString()){
         subjectApproved = `your ${findproposal.event_id.project_name} Project proposal has been approved`;
         sendEmail(proposalApproval(findproposal.userId.firstName, findproposal.event_id.project_name, 'Project', req.user.email), subjectApproved, findproposal.userId.email);
+        const newNotification = await Notifications.create({receiverId: findproposal.userId._id, title: subjectApproved, project_id: findproposal.project_id._id, type: 'Project', authorId: req.user.id});
     }
    
 

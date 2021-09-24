@@ -6,6 +6,7 @@ import emailTemplate2 from '../../../utils/email/learn/finishCourse';
 // DB
 const EnrolledCourse = require("../../../model/v1/enrolledCourse");
 const Course = require("../../../model/v1/Course");
+const Notifications = require("../../../model/v1/notifications");
 
 
 // Validation
@@ -50,6 +51,7 @@ exports.createEnrolledCourse = async (req, res, next) => {
 
     const subject = 'Successfully enrolled in course!';
     sendEmail(emailTemplate(req.user.firstName, findCourse.image, findCourse.name, findCourse.description), subject, req.user.email);
+    const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, course_id: findCourse._id, type: 'Course', authorId: null});
 
 
     return successWithData(
@@ -122,6 +124,8 @@ exports.updateEnrolledCourse = async (req, res, next) => {
         
         const subject = 'Successfully Completed course!';
         sendEmail(emailTemplate2(req.user.firstName, findCourse.image, findCourse.name, findCourse.description), subject, req.user.email);
+        const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, course_id: findCourse._id, type: 'Course', authorId: null});
+
     }
 
     return successWithData(res, OK, "EnrolledCourse modified", modifiedEnrolledCourse);

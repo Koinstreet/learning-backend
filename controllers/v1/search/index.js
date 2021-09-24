@@ -8,6 +8,7 @@ const Jobs = require("../../../model/v1/Jobs");
 const Location = require("../../../model/v1/Locations");
 const Startup = require("../../../model/v1/Startups");
 const User = require("../../../model/v1/User");
+const Event = require("../../../model/v1/Events");
 
 // Error
 const AppError = require("../../../utils/appError");
@@ -28,6 +29,11 @@ exports.getSearch = async (req, res, next) => {
         {job_title: {$regex:query, $options:'i'}},
         {location: {$regex:query, $options:'i'}},
         {job_industry: {$regex:query, $options:'i'}}
+      ]})
+
+      const events = await Event.find({$or:[
+        {EventDescription: {$regex:query, $options:'i'}},
+        {eventName: {$regex:query, $options:'i'}}
       ]})
 
       const chapter = await Location.find({$or:[
@@ -55,7 +61,8 @@ exports.getSearch = async (req, res, next) => {
         chapter,
         startups,
         jobs,
-        users
+        users,
+        events
     }
           return successWithData(
             res,

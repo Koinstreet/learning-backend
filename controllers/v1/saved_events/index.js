@@ -3,6 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const SavedEvents = require("../../../model/v1/SavedEvents");
 const Events = require("../../../model/v1/Events");
+const Notifications = require("../../../model/v1/notifications");
 
 import sendEmail from '../../../utils/email/sendEmail';
 import emailTemplate from '../../../utils/email/event/eventEmails';
@@ -53,8 +54,9 @@ exports.createSavedEvents = async (req, res, next) => {
     );
 
     if(req.body.attending === "yes"){
-    const subject = 'Event Successfuly Registered!';
+    const subject = 'you have registered for an event!';
     sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
+    const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, event_id: req.body.event_id, type: 'Event', authorId: null});
     }
     return successWithData(
       res,
@@ -124,8 +126,9 @@ exports.updateSavedEvents = async (req, res, next) => {
     );
 
     if(req.body.attending === "yes"){
-      const subject = 'Event Successfuly Registered!';
+      const subject = 'you have registered for an event!';
       sendEmail(emailTemplate(req.user.firstName, savedEvent.EventPicture, savedEvent.eventName, savedEvent.EventDescription, savedEvent.eventLink), subject, req.user.email);
+      const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, event_id: modifiedSavedEvents.event_id, type: 'Event', authorId: null});
       }
     return successWithData(res, OK, "SavedEvents modified", modifiedSavedEvents);
   } catch (err) {

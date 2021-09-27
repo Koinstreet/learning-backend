@@ -34,7 +34,7 @@ exports.getSearch = async (req, res, next) => {
       const events = await Event.find({$or:[
         {EventDescription: {$regex:query, $options:'i'}},
         {eventName: {$regex:query, $options:'i'}}
-      ]})
+      ]}).populate("host")
 
       const chapter = await Location.find({$or:[
         {description: {$regex:query, $options:'i'}},

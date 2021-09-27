@@ -29,7 +29,7 @@ exports.getSearch = async (req, res, next) => {
         {job_title: {$regex:query, $options:'i'}},
         {location: {$regex:query, $options:'i'}},
         {job_industry: {$regex:query, $options:'i'}}
-      ]})
+      ]}).populate("companyId")
 
       const events = await Event.find({$or:[
         {EventDescription: {$regex:query, $options:'i'}},

@@ -23,7 +23,7 @@ const moduleSchema = new Schema({
     type: String,
   },
   
-  type: {
+  level: {
     type: String,
   },
   duration: {

@@ -43,6 +43,7 @@ const upvotes = require('./routes/upvotes');
 const downvotes = require('./routes/downVotes');
 const walletRouters = require('./routes/walletRouters');
 const notificationsRouters = require('./routes/notifications');
+const sidebarMenuRouters = require('./routes/SidebarMenu')
 const app = express();
 
 if (process.env === "development") {
@@ -55,8 +56,8 @@ app.options('*', cors());
 
 app.use(cookieSession({
   // milliseconds of a day
-  maxAge: 24*60*60*1000,
-  keys:12345678,
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: 12345678,
 }));
 
 app.use(passport.initialize());
@@ -66,7 +67,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {res.send("working"); res.status(200)});
+app.get("/", (req, res) => { res.send("working"); res.status(200) });
 
 
 
@@ -109,5 +110,6 @@ app.use('/api/v1/proposalViews', proposalViewRoutes)
 app.use('/api/v1/wallets', walletRouters)
 app.use('/api/v1/notification', notificationsRouters)
 app.use('/', socialRoutes)
+app.use('/sidebarmenu', sidebarMenuRouters)
 
 module.exports = app;

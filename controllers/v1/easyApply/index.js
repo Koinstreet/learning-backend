@@ -10,6 +10,7 @@ const EasyApply = require("../../../model/v1/easyApply");
 const Jobs = require("../../../model/v1/Jobs");
 const Companies = require("../../../model/v1/Companies");
 
+
 // Validation
 const validateEasyApply = require("../../../validators/easyAppy");
 
@@ -74,6 +75,7 @@ exports.createEasyApply = async (req, res, next) => {
 
     sendEmail(emailTemplateAuthor(findJob.authorId.firstName, newEasyApply.email ? newEasyApply.email : req.user.email, applierName, applierLocation, newEasyApply.relevant_experience, newEasyApply.company, findJob.job_title, findJob.job_description,  newEasyApply.resume, newEasyApply.coverLetter), subjectAuthor, findJob.authorId.email);
     sendEmail(emailTemplateUser(req.user.firstName, newEasyApply.email ? newEasyApply.email : req.user.email, applierName, applierLocation, newEasyApply.relevant_experience, newEasyApply.company, findJob.job_title, findJob.job_description,  newEasyApply.resume, newEasyApply.coverLetter), subjectUser, req.user.email);
+
 
     return successWithData(
       res,
@@ -225,7 +227,7 @@ exports.denyCandidate = async (req, res, next) => {
 
     const subjectApproved = `${appliedJob.job_id.job_title} Job application status at ${company.company_name}`;
 
-    sendEmail(emailTemplateApproved(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
+    sendEmail(emailTemplateDenied(appliedJob.authorId.firstName, appliedJob.job_id.job_title, company.company_name, req.user.email), subjectApproved, appliedJob.authorId.email);
 
     return successWithData(res, OK, "EasyApply modified", modifiedEasyApply);
   } catch (err) {

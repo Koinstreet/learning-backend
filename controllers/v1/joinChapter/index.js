@@ -3,6 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const JoinChapter = require("../../../model/v1/joinChapter");
 const Locations = require("../../../model/v1/Locations");
+const Notifications = require("../../../model/v1/notifications");
 
 import sendEmail from '../../../utils/email/sendEmail';
 import emailTemplate from '../../../utils/email/chapter/joinChapterEmail';
@@ -60,6 +61,8 @@ exports.createJoinChapter = async (req, res, next) => {
 
     const subject = `Successfully Requested to join ${findLocation.LocationName} Chapter`;
     sendEmail(emailTemplate(req.user.firstName, findLocation.LocationName, findLocation.location), subject, req.user.email);
+    const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, chapter_id: req.body.chapterLocation_id, type: 'Chapter', authorId: null});
+
     
     return successWithData(
       res,
@@ -170,6 +173,7 @@ exports.acceptJoinRequest = async (req, res, next) => {
 
     const subject = `Successfully accepted to join ${findLocation.LocationName} Chapter`;
     sendEmail(emailTemplate2(req.user.firstName, findLocation.LocationName, findLocation.location), subject, req.user.email);
+    const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, chapter_id: findLocation._id, type: 'Chapter', authorId: null});
 
       return successWithData(res, OK, "Request to join chapter approved", acceptRequest);
     } catch (err) {

@@ -122,7 +122,7 @@ exports.getSearch = async (req, res, next) => {
 
 exports.getUserJobs = async (req, res, next) => {
   try {
-    const jobs = await Jobs.find({authorId : req.user.id}).populate("authorId").sort("-createdAt");
+    const jobs = await Jobs.find({authorId : req.user.id}).populate("authorId").populate("companyId").sort("-createdAt");
     if (!jobs) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "jobs fetched successfully", jobs);
   } catch (err) {
@@ -134,12 +134,15 @@ exports.getUserJobs = async (req, res, next) => {
 
 exports.getCandidates = async (req, res, next) => {
   try {
-    const easyApplied = await EasyApply.find({}).populate("authorId").populate("job_id").sort("-createdAt");
+    const easyApplied = await EasyApply.find({}).populate("authorId").populate("job_id").populate("companyId").sort("-createdAt");
     let allEmployerJobs = [];
+
     easyApplied.map((all)=>{
+      if(all.job_id !== null){
       if(all.job_id.authorId.toString() === (req.user.id).toString()){
         allEmployerJobs.push(all)
       }
+    }
     })
 
     return successWithData(res, OK, "jobs you posted and candidates fetched successfully", allEmployerJobs);
@@ -155,7 +158,7 @@ exports.getJob = async (req, res, next) => {
     const job = await Jobs.findById(req.params.id).populate(
       "authorId",
       "-password"
-    );
+    ).populate("companyId");
     if (!job) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Job fetched successfully", job);
   } catch (err) {

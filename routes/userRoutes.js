@@ -10,6 +10,8 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+router.route('/:username').get(user.getUsername);
+
 router.post("/signup", authUser.signupUser);
 router.post("/login", authUser.loginUser);
 
@@ -17,7 +19,8 @@ router.get("/", authUser.getAllUser)
 
 router.get("/search/:query", user.searchUsersByName);
 
-router.route('/:id').get(user.getUser);
+router.route('/getProfile/:id').get(user.getUser);
+
 
 router.use(authMiddleware.protect);
 

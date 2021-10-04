@@ -124,7 +124,7 @@ exports.createProposal = async (req, res, next) => {
   exports.updateProposal = async (req, res, next) => {
     try {
       const proposalUpdate = await Proposal.findById(req.params.id);
-      if (!proposalUpdate) return AppError.tryCatchError(res, err);
+      if (!proposalUpdate){let err = 'undefined notification'; return AppError.tryCatchError(res, err);}
 
       let proposal;
 

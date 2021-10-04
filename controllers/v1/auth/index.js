@@ -12,6 +12,7 @@ const {
 
 // DB
 const User = require("../../../model/v1/User");
+const Notifications = require("../../../model/v1/notifications");
 
 // Validation
 const { validateSignup, validateLogin } = require("../../../validators");
@@ -49,6 +50,7 @@ exports.signupUser = async (req, res, next) => {
 
     const subject = 'MPA Account Successfuly created!';
     sendEmail(emailTemplate(newUser.firstName), subject, newUser.email);
+    const newNotification = await Notifications.create({receiverId: newUser._id, title: subject, type: 'User', description: 'Please create your account profile'});
     const message = `Dear ${newUser.firstName} , Successfully Registered your account! login with your email and password`;
     createSendToken(newUser, 201, res, message);
   } catch (err) {

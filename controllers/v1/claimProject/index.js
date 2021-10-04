@@ -5,6 +5,7 @@ import emailTemplate from '../../../utils/email/consultancy/claimed';
 // DB
 const ClaimedProject = require("../../../model/v1/claimedProjectRequests");
 const Service = require("../../../model/v1/service");
+const Notifications = require("../../../model/v1/notifications");
 
 // Validation
 const validateclaimProject = require("../../../validators/claimedProjects");
@@ -58,6 +59,7 @@ exports.claimProject = async (req, res, next) => {
     const subject = `Your project has been claimed by ${req.user.firstName}`;
 
     sendEmail(emailTemplate(findproject.authorId.firstName, req.user.firstName, req.user.email, findproject.project_name, findproject.project_details? findproject.project_detail : '', findproject.launch_date ? findproject.launch_date : ''), subject, findproject.authorId.email);
+    const newNotification = await Notifications.create({receiverId: findproject.authorId._id, title: subject, project_id: findproject._id, type: 'Project', authorId: req.user.id});
 
     return successWithData(
       res,

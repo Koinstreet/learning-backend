@@ -46,6 +46,11 @@ const jobSchema = new Schema({
   pay: {
     type: Number,
   },
+  paymentDuration: {
+    type: String,
+    default: 'Yr',
+    enum: ['Hr', 'Mo', "Yr"]
+  },
   weekly_hours: {
     type: Number,
   },

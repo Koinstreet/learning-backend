@@ -15,6 +15,8 @@ const {
 // Error
 const AppError = require("../../../utils/appError");
 
+const Notifications = require("../../../model/v1/notifications");
+
 exports.createService = async (req, res, next) => {
   try {
     const { errors, isValid } = validateService(req.body);
@@ -24,13 +26,15 @@ exports.createService = async (req, res, next) => {
     let service = {
         ...req.body,
         authorId: req.user.id,
-      };
+      };    
+
+    const newService= await Services.create(service);
 
     const subject = `Your project has been submitted, you will be notified once your project is claimed`;
 
     sendEmail(emailTemplate(req.user.firstName, req.body.project_name ? req.body.project_name : '', req.body.project_details ? req.body.project_details : '', req.body.launch_date ? req.body.launch_date : ''), subject, req.user.email);
+    const newNotification = await Notifications.create({receiverId: req.user.id, title: subject, project_id: newService._id, type: 'Project', authorId: null});
 
-    const newService= await Services.create(service);
     return successWithData(
       res,
       CREATED,

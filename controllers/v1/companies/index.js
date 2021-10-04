@@ -49,6 +49,17 @@ exports.getAllCompany= async (req, res, next) => {
   }
 };
 
+exports.getuserCompanies = async (req, res, next) => {
+  try {
+    const companies = await Companies.find({authorId: req.user.id})
+      .populate("authorId", "-password")
+      .sort("-createdAt");
+    return successWithData(res, OK, "Companies fetched successfully", companies);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
 
 exports.getCompany = async (req, res, next) => {
   try {

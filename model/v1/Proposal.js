@@ -24,6 +24,9 @@ const proposalSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Service",
     },
+    tags: {
+        type: Array,
+    },
     description: {
         type: String
     },

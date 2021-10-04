@@ -21,10 +21,9 @@ const moduleSchema = new Schema({
   },
   name: {
     type: String,
-    required: true,
   },
   
-  type: {
+  level: {
     type: String,
   },
   duration: {

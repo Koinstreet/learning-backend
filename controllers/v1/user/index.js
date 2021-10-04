@@ -25,6 +25,40 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
+exports.getUsername = async (req, res, next) => {
+  try {
+    const query = req.params.username;
+
+    console.log(query)
+
+    const userResults = await User.aggregate([
+      {
+        '$search': {
+          'index': 'default', 
+          'text': {
+            'query': query, 
+            'path': [
+              'userName',
+            ]
+          }
+        }
+      },
+    ])
+
+    return successWithData(
+      res, 
+      OK,
+      "user returned successfully",
+      userResults
+    );
+
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+
 exports.updateUser = async (req, res, next) => {
   
   try {

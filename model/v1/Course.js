@@ -23,6 +23,10 @@ const courseSchema = new Schema({
     type: String,
     required: true,
   },
+  difficulty: {
+    type: String,
+    enum: ["Beginner", "intermediate", "Advanced"],
+  },
   earn: {
     type: Number,
   },

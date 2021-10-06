@@ -128,13 +128,47 @@ const userSchema = new Schema({
   GithubLink: {
     type: String
   },
+  DribbleLink: {
+    type: String
+  },
   bio:{
     type: String
   },
   backgroundPicture:{
     type: String
-  }
-
+  },
+  profileVisibility: {
+    type: Boolean,
+    default: true,
+  },
+  birthdayVisibility: {
+    type: Boolean,
+    default: true,
+  },
+  locationVisibility: {
+    type: Boolean,
+    default: true,
+  },
+  emailVisibility: {
+    type: Boolean,
+    default: true,
+  },
+  notifyMessages: {
+    type: Boolean,
+    default: true,
+  },
+  notifyAccountActivity: {
+    type: Boolean,
+    default: true,
+  },
+  notifyJobAlerts: {
+    type: Boolean,
+    default: true,
+  },
+  notifyEvents: {
+    type: Boolean,
+    default: true,
+  },
 }, {
   timestamps: true
 });

@@ -9,7 +9,7 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get('/userCompanies', authMiddleware.protect, companies.getuserCompanies);
+router.get("/userCompanies", authMiddleware.protect, companies.getUserCompanies);
 
 router.get("/", companies.getAllCompany);
 

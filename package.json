@@ -27,6 +27,7 @@
     "bcryptjs": "^2.4.3",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
+    "client-oauth2": "^4.3.3",
     "cloudinary": "^1.21.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",

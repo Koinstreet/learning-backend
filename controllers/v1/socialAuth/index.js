@@ -8,14 +8,23 @@ const User = require("../../../model/v1/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const createSendToken = require("../auth/createSendToken");
+var ClientOAuth2 = require('client-oauth2')
+
 
 // Error
 const AppError = require("../../../utils/appError");
 
 const client = new OAuth2Client(process.env.CLIENT_ID)
-const FacebookClient = new OAuth2Client(process.env.FACEBOOK_APP_ID)
-const GithubClient = new OAuth2Client(process.env.GITHUB_CLIENT_ID)
-const LinkedinClient = new OAuth2Client(process.env.LINKEDIN_CLIENT_ID)
+
+var FacebookClient = new ClientOAuth2({
+    clientId: process.env.FACEBOOK_APP_ID,
+})
+const GithubClient = new ClientOAuth2({
+    clientId: process.env.GITHUB_CLIENT_ID,
+})
+const LinkedinClient = new ClientOAuth2({
+    clientId: process.env.LINKEDIN_CLIENT_ID,
+})
 
 exports.googleLogin = async (req, res, next) => {
     try {

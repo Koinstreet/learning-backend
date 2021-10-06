@@ -169,6 +169,12 @@ const userSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  hometown: String,
+  GoogleLink: String,
+  FigmaLink: String,
+  ClickupLink: String,
+  enteredHighSchoolYear: Number,
+  studentStatus: String
 }, {
   timestamps: true
 });

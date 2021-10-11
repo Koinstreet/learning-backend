@@ -114,7 +114,7 @@ const userSchema = new Schema({
     type: String,
   },
   Ethnicity: {
-    type: String
+    type: Array,
   },
   Gender: {
     type: String

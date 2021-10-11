@@ -21,7 +21,14 @@ const SidebarMenuSchema = new Schema({
     },
     comingSoon: {
         type: Boolean
+    },
+    childLinks: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'ChildLink'
     }
+
+
 }, { timestamps: true })
 
 const SidebarMenu = mongoose.model('SidebarMenu', SidebarMenuSchema);

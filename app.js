@@ -110,6 +110,6 @@ app.use('/api/v1/proposalViews', proposalViewRoutes)
 app.use('/api/v1/wallets', walletRouters)
 app.use('/api/v1/notification', notificationsRouters)
 app.use('/', socialRoutes)
-app.use('/sidebarmenu', sidebarMenuRouters)
+app.use('/api/v1/sidebarmenu', sidebarMenuRouters)
 
 module.exports = app;

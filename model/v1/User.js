@@ -173,7 +173,7 @@ const userSchema = new Schema({
   GoogleLink: String,
   FigmaLink: String,
   ClickupLink: String,
-  enteredHighSchoolYear: Number,
+  enteredHighSchoolYear: Date,
   studentStatus: String
 }, {
   timestamps: true

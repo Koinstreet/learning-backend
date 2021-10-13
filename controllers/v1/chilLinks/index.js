@@ -10,7 +10,7 @@ const { successWithData, successNoData } = require("../../../utils/successHandle
 exports.ChildLinkGet = async (req, res) => {
 
     try {
-        const childlink = await ChildLink.find({}).populate("added_by").sort("-createdAt");
+        const childlink = await ChildLink.find({}).populate("added_by").populate("menu").sort("-createdAt");
 
         return successWithData(res, OK, childlink);
 

@@ -24,7 +24,7 @@ exports.SidebarPost = async (req, res) => {
 
     try {
 
-        const sidebarInfo = { ...req.body }
+        const sidebarInfo = { ...req.body, added_by: req.user.id }
 
         const Sidebar = await SidebarMenu.create(sidebarInfo)
 
@@ -60,7 +60,7 @@ exports.SidebarDelete = async (req, res) => {
 
         const { id } = req.params
         await SidebarMenu.findByIdAndRemove(id)
-        return successNoData(res, OK, "startup deleted");
+        return successNoData(res, OK, "ٍSidebar deleted");
 
     } catch (err) {
         console.log(err);

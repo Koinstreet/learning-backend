@@ -12,7 +12,7 @@ const ChildLinkSchema = new Schema({
     menu: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: "SidebarMenu",
+        ref: "Menu",
     },
     name: {
         type: String
@@ -22,27 +22,6 @@ const ChildLinkSchema = new Schema({
     },
     comingSoon: {
         type: Boolean
-    },
-    dashboard: {
-        type: String
-    },
-    mentorship: {
-        type: String
-    },
-    careers: {
-        type: String
-    },
-    create: {
-        type: String
-    },
-    account: {
-        type: String
-    },
-    help: {
-        type: String
-    },
-    manage: {
-        type: String
     }
 
 }, { timestamps: true })
@@ -51,6 +30,6 @@ const ChildLinkSchema = new Schema({
 
 
 
-const ChildLink = mongoose.model('ChildLink', ChildLinkSchema);
+const ChildLink = mongoose.model('Link', ChildLinkSchema);
 
 module.exports = ChildLink

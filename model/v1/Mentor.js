@@ -9,7 +9,7 @@ const mentorSchema = new Schema({
     ref: "User",
   },
   education: {
-      type: String,
+    type: String,
   },
   skill_level: {
     type: Number,
@@ -41,6 +41,9 @@ const mentorSchema = new Schema({
   why_mentor: {
     type: String,
   },
+  suggestions: {
+    type: Array
+  }
 }, {
   timestamps: true
 });

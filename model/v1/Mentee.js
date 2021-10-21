@@ -9,7 +9,7 @@ const menteeSchema = new Schema({
     ref: "User",
   },
   interest_in: {
-      type: Array,
+    type: Array,
   },
   learning_style: {
     type: String,
@@ -47,6 +47,9 @@ const menteeSchema = new Schema({
   goals: {
     type: String,
   },
+  suggestions: {
+    type: Array
+  }
 }, {
   timestamps: true
 });

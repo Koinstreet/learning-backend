@@ -44,7 +44,10 @@ const downvotes = require('./routes/downVotes');
 const walletRouters = require('./routes/walletRouters');
 const notificationsRouters = require('./routes/notifications');
 const sidebarMenuRouters = require('./routes/SidebarMenu');
-const childLinksRoutes = require('./routes/childLinks')
+const childLinksRoutes = require('./routes/childLinks');
+const suggestionsRoutes = require('./routes/suggestionsRoutes');
+
+
 const app = express();
 
 if (process.env === "development") {
@@ -113,6 +116,7 @@ app.use('/api/v1/notification', notificationsRouters)
 app.use('/', socialRoutes)
 app.use('/api/v1/sidebarmenu', sidebarMenuRouters)
 app.use('/api/v1/childlink', childLinksRoutes)
+app.use('/api/v1/suggestions', suggestionsRoutes)
 
 
 module.exports = app;

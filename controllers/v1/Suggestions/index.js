@@ -14,15 +14,20 @@ exports.SuggestionsGet = async (req, res) => {
 
     const sgsInterts = await User.find({}, { "programmingSkills": 1, "passions": 1, "skills": 1 });
 
+    const modifiedSgsIntersts = Object.values(...sgsInterts)
+
+
+    // https://docs.mongodb.com/manual/tutorial/model-data-for-schema-versioning/
 
     try {
 
-        const sgsMentors = await Mentor.find({ suggestions: { $in: [req.body, sgsInterts] } })
+        const sgsMentors = await Mentor.find({ suggestions: { $in: [...modifiedSgsIntersts] } })
 
-        const sgsMentees = await Mentee.find({ suggestions: { $in: [req.body, sgsInterts] } })
+        const sgsMentees = await Mentee.find({ suggestions: { $in: [...modifiedSgsIntersts] } })
 
         const Suggestions = { sgsMentors, sgsMentees };
 
+        console.log('sgsInterts', sgsInterts);
 
         return successWithData(res, OK, Suggestions);
 

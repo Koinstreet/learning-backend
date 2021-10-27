@@ -11,23 +11,25 @@ const AppError = require("../../../utils/appError");
 
 exports.SuggestionsGet = async (req, res) => {
 
+    const { id } = req.body
+    // const sgsInterts = await User.findById(id, { "_id": 0, "programmingSkills": 1, "passions": 1, "skills": 1 });
+    const user = await User.findById(id);
 
-    const sgsInterts = await User.find({}, { "programmingSkills": 1, "passions": 1, "skills": 1 });
+    const SgsIntersts = Object.values(user.passions, user.programmingSkills, user.skills)
 
-    const modifiedSgsIntersts = Object.values(...sgsInterts)
+
 
 
     // https://docs.mongodb.com/manual/tutorial/model-data-for-schema-versioning/
 
     try {
 
-        const sgsMentors = await Mentor.find({ suggestions: { $in: [...modifiedSgsIntersts] } })
+        const sgsMentors = await Mentor.find({ suggestions: { $in: [...SgsIntersts] } })
 
-        const sgsMentees = await Mentee.find({ suggestions: { $in: [...modifiedSgsIntersts] } })
+        const sgsMentees = await Mentee.find({ suggestions: { $in: [...SgsIntersts] } })
 
         const Suggestions = { sgsMentors, sgsMentees };
 
-        console.log('sgsInterts', sgsInterts);
 
         return successWithData(res, OK, Suggestions);
 

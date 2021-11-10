@@ -144,7 +144,7 @@ exports.SuggestionsStartupsGet = async (req, res) => {
 
     try {
         const sgsStartups = await Startup.aggregate([{ $unwind: '$tags' }, { $match: { industry: { $in: [...sgsIntersts] } } }, { $match: { tags: { $in: [...sgsIntersts] } } }])
-        const Suggestions = { Startups };
+        const Suggestions = { sgsStartups };
 
         return successWithData(res, OK, Suggestions);
     } catch (error) {

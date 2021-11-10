@@ -49,6 +49,9 @@ const EventSchema = new Schema({
   callToAction: {
     type: String,
   },
+  tags: {
+    type: []
+  }
 
 }, {
   timestamps: true

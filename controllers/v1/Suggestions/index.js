@@ -22,7 +22,6 @@ exports.SuggestionsMentorsGet = async (req, res) => {
     const SgsIntersts = Object.values(user.passions, user.programmingSkills, user.skills)
 
 
-    console.log(...SgsIntersts)
 
     // https://docs.mongodb.com/manual/tutorial/model-data-for-schema-versioning/
 
@@ -30,6 +29,7 @@ exports.SuggestionsMentorsGet = async (req, res) => {
 
         const sgsMentors = await Mentor.find({ suggestions: { $in: [...SgsIntersts] } })
 
+        console.log(sgsMentors);
 
         const Suggestions = { sgsMentors };
 
@@ -100,6 +100,9 @@ exports.SuggestionsCompaniesGet = async (req, res) => {
     }
 }
 
+
+
+
 exports.SuggestionsEventsGet = async (req, res) => {
 
     const { id } = req.id
@@ -108,7 +111,12 @@ exports.SuggestionsEventsGet = async (req, res) => {
     const sgsIntersts = Object.values(user.passions, user.programmingSkills, user.skills);
 
     try {
-        const sgsEvents = await Event.find({ catName: { $in: [...sgsIntersts] }, eventName: { $in: [...sgsIntersts] }, tags: { $in: [...sgsIntersts] } });
+        // const sgsEventsByCat = await Event.find({ catName: { $in: [...sgsIntersts] } });
+        // const sgsEventsByName = await Event.find({ eventName: { $in: [...sgsIntersts] } });
+
+
+        const sgsEvents = await Event.find({ tags: { $in: [...sgsIntersts] } });
+
         const Suggestions = { sgsEvents };
 
         return successWithData(res, OK, Suggestions);
@@ -125,7 +133,12 @@ exports.SuggestionsJobsGet = async (req, res) => {
     const sgsIntersts = Object.values(user.passions, user.programmingSkills, user.skills);
 
     try {
-        const sgsJobs = await Jobs.aggregate([{ $unwind: '$min_requirements' }, { $match: { min_requirements: { $in: [...sgsIntersts] } } }, { $match: { job_title: { $in: [...sgsIntersts] } } }])
+        const sgsJobs = await Jobs.aggregate([{ $unwind: '$min_requirements' }, { $match: { min_requirements: { $in: [...sgsIntersts] } } }])
+
+        // const sgsJobsByTitle = await Jobs.aggregate([{ $match: { job_title: { $in: [...sgsIntersts] } } }]);
+        // const allSuggested = [...sgsJobsByReq,sgsJobsByTitle]
+        // let sgsJobs = [...new Map(allSuggested.map((item) => [item["id"], item])).values()];
+
         const Suggestions = { sgsJobs };
 
         return successWithData(res, OK, Suggestions);
@@ -143,8 +156,11 @@ exports.SuggestionsStartupsGet = async (req, res) => {
     const sgsIntersts = Object.values(user.passions, user.programmingSkills, user.skills);
 
     try {
-        const sgsStartups = await Startup.aggregate([{ $unwind: '$tags' }, { $match: { industry: { $in: [...sgsIntersts] } } }, { $match: { tags: { $in: [...sgsIntersts] } } }])
+        const sgsStartups = await Startup.aggregate([{ $unwind: '$tags' }, { $match: { tags: { $in: [...sgsIntersts] } } }]);
+
         const Suggestions = { sgsStartups };
+
+        // { $match: { industry: { $in: [...sgsIntersts] } } }, 
 
         return successWithData(res, OK, Suggestions);
     } catch (error) {
@@ -163,15 +179,29 @@ exports.SuggestionsUsersGet = async (req, res) => {
     const sgsprogrammingSkills = Object.values(user.programmingSkills)
 
     try {
-        const sgsUsers = await User.aggregate([
+        const sgsUsersByPassions = await User.aggregate([
             { $match: { id: { $nin: [id] } } },
             { $unwind: '$passions' },
-            { $unwind: '$programmingSkills' },
-            { $unwind: '$skills' },
             { $match: { passions: { $in: [...sgsPassions] } } },
+        ])
+
+        const sgsUsersByProgrammingSkills = await User.aggregate([
+            { $match: { id: { $nin: [id] } } },
+            { $unwind: '$programmingSkills' },
             { $match: { programmingSkills: { $in: [...sgsprogrammingSkills] } } },
+        ])
+
+        const sgsUsersBySkills = await User.aggregate([
+            { $match: { id: { $nin: [id] } } },
+            { $unwind: '$skills' },
             { $match: { skills: { $in: [...sgsSkills] } } }
         ])
+
+
+        const allCategories = [...sgsUsersBySkills, ...sgsUsersByProgrammingSkills, ...sgsUsersByPassions];
+
+
+        let sgsUsers = [...new Map(allCategories.map((item) => [item["id"], item])).values()];
         const Suggestions = { sgsUsers };
 
         return successWithData(res, OK, Suggestions);

@@ -50,7 +50,8 @@ const EventSchema = new Schema({
     type: String,
   },
   tags: {
-    type: []
+    type: Array,
+    required: true
   }
 
 }, {

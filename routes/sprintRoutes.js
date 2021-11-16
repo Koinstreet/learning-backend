@@ -1,7 +1,7 @@
 const express = require("express");
 
 // NEW CONTROLLERS
-const mentorship = require("../controllers/v1/mentorship");
+const sprint = require("../controllers/v1/sprint");
 
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
@@ -10,13 +10,13 @@ const router = express.Router();
 
 router.use(authMiddleware.protect);
 
-router.post("/", mentorship.createMentorship);
-router.get("/", mentorship.getAllMentorship);
-router.get("/:id", mentorship.getMentorship);
+router.post("/", sprint.createSprint);
+router.get("/", sprint.getAllSprint);
+router.get("/:id", sprint.getSprint);
 router
   .route("/:id")
-  .patch(mentorship.updateMentorship)
-  .delete(mentorship.deleteMentorship);
+  .patch(sprint.updateSprint)
+  .delete(sprint.deleteSprint);
 
 router.use(authMiddleware.restrictTo("admin"));
 

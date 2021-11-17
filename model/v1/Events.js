@@ -24,11 +24,11 @@ const EventSchema = new Schema({
     type: String,
     required: true,
   },
-  Featured:{
+  Featured: {
     type: Boolean,
     default: false,
   },
-  Virtual:{
+  Virtual: {
     type: Boolean,
     default: false,
   },
@@ -44,11 +44,12 @@ const EventSchema = new Schema({
     required: true,
   },
   actionLink: {
-      type: String,
-    },
-    callToAction: {
-        type: String,
-    },
+    type: String,
+  },
+  callToAction: {
+    type: String,
+  },
+
 }, {
   timestamps: true
 });

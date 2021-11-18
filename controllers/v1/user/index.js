@@ -14,7 +14,7 @@ const { successWithData } = require("../../../utils/successHandler");
 
 
 exports.getUser = async (req, res, next) => {
-    console.log(req.user)
+  console.log(req.user)
 
   try {
     const user = await User.findById(req.params.id);
@@ -34,9 +34,9 @@ exports.getUsername = async (req, res, next) => {
     const userResults = await User.aggregate([
       {
         '$search': {
-          'index': 'default', 
+          'index': 'default',
           'text': {
-            'query': query, 
+            'query': query,
             'path': [
               'userName',
             ]
@@ -46,7 +46,7 @@ exports.getUsername = async (req, res, next) => {
     ])
 
     return successWithData(
-      res, 
+      res,
       OK,
       "user returned successfully",
       userResults
@@ -60,19 +60,19 @@ exports.getUsername = async (req, res, next) => {
 
 
 exports.updateUser = async (req, res, next) => {
-  
+
   try {
-    
+
     const user = await User.findById(req.params.id);
 
-    if (!user) { let error = {message: "undefined user"}; return AppError.tryCatchError(res, error);}
-    
+    if (!user) { let error = { message: "undefined user" }; return AppError.tryCatchError(res, error); }
+
     let updatedUser;
     if (req.file) {
       const data = await uploadImage(req.file);
       if (!data.url || !data.public_id)
         return AppError.tryCatchError(this.res, err);
-        updatedUser = {
+      updatedUser = {
         ...req.body,
         profilePicture: data.url,
 
@@ -81,7 +81,7 @@ exports.updateUser = async (req, res, next) => {
     } else {
       updatedUser = {
         ...req.body,
-        isUpdated : true
+        isUpdated: true
       };
     }
     const modifieduser = await User.findOneAndUpdate(
@@ -102,13 +102,15 @@ exports.searchUsersByName = async (req, res, next) => {
   try {
     const query = req.params.query;
 
-    const userResults = await User.find({$or:[
-      {firstName: {$regex:query, $options:'i'}},
-      {lastName: {$regex:query, $options:'i'}},
-      {userName: {$regex:query, $options:'i'}}
-    ]});
+    const userResults = await User.find({
+      $or: [
+        { firstName: { $regex: query, $options: 'i' } },
+        { lastName: { $regex: query, $options: 'i' } },
+        { userName: { $regex: query, $options: 'i' } }
+      ]
+    });
     return successWithData(
-      res, 
+      res,
       OK,
       "searched successfully",
       userResults

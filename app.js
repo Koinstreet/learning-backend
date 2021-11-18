@@ -46,6 +46,8 @@ const notificationsRouters = require('./routes/notifications');
 const sidebarMenuRouters = require('./routes/SidebarMenu');
 const childLinksRoutes = require('./routes/childLinks');
 const suggestionsRoutes = require('./routes/suggestionsRoutes');
+const certificateRoutes = require('./routes/certificate');
+
 
 
 const app = express();
@@ -117,6 +119,7 @@ app.use('/', socialRoutes)
 app.use('/api/v1/sidebarmenu', sidebarMenuRouters)
 app.use('/api/v1/childlink', childLinksRoutes)
 app.use('/api/v1/suggestions', suggestionsRoutes)
+app.use('/api/v1/certificate', certificateRoutes)
 
 
 module.exports = app;

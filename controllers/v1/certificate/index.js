@@ -17,22 +17,22 @@ exports.uploadCertificate = async (req, res, next) => {
     try {
 
         const course = await Course.findById(req.body.id);
-
+        const username = req.user.firstName + " " + req.user.lastName;
 
         let options = {
             mode: 'text',
-            args: [course.description, req.user.userName, course.name, course.earn]
+            args: [course.description, username, course.name, course.earn]
         };
 
         PythonShell.run(script, options, function (err, results) {
             if (err) throw err;
 
-            console.log('certificate ' + req.user.userName + ' created');
+            console.log('certificate ' + username + ' created');
 
             console.log("uploading to IPFS...");
             let path = "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/learning-backend/utils/certifcate/images/"
 
-            fs.readFile(path + req.user.userName.replace(/ /g, "_") + ".png", async function (err, file) {
+            fs.readFile(path + username.replace(/ /g, "_") + ".png", async function (err, file) {
                 if (err) throw err;
 
                 let added = await client.add(
@@ -62,14 +62,6 @@ exports.uploadCertificate = async (req, res, next) => {
     }
 };
 
-exports.working = async (req, res, next) => {
-    return successWithData(
-        res,
-        OK,
-        "searched successfully",
-        []
-    );
-}
 
 exports.getUserCertificate = async (req, res, next) => {
 

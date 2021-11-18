@@ -10,6 +10,7 @@ import socialAuth from '../controllers/v1/socialAuth'
 //google routes
 
 router.post("/googleLogin", socialAuth.googleLogin);
+router.post("/nextAuth", socialAuth.nextAuth);
 
 router.get("/auth/google", passport.authenticate("google", {
     scope: ["profile", "email"]

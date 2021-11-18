@@ -6,9 +6,10 @@ const router = express.Router();
 
 
 router.use(authMiddleware.protect);
-router.use(authMiddleware.restrictTo("admin"));
 
 router.get('/', ChildLinksControllers.ChildLinkGet);
+
+router.use(authMiddleware.restrictTo("admin"));
 
 router.post('/', ChildLinksControllers.ChildLinkPost);
 

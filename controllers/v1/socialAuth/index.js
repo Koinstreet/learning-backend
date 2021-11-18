@@ -31,8 +31,7 @@ exports.googleLogin = async (req, res, next) => {
                     if(user){
 
                         User.findOne({ email }).then((user)=>{
-                            createSendToken(user, 201, res, "User Authorized");
-                            return successWithData(res, 200, "user logged in", user);
+                            return  createSendToken(user, 201, res, "User Authorized");
                         });
                         
                     }
@@ -75,4 +74,77 @@ exports.googleLogin = async (req, res, next) => {
       let error = 'something went wrong'
       return AppError.validationError(res, BAD_REQUEST, error);
     }
-  };
+};
+
+
+exports.nextAuth = async (req, res, next) => {
+    try {
+
+        const firstName = req.body?.name?.split(' ')[0]?.toLowerCase();
+        const lastName = req.body?.name?.split(' ')[1]?.toLowerCase();
+
+        const AuthUser = {
+            firstName,
+            lastName,
+            email: req.body.email,
+            profilePicture: req.body.image
+        }
+
+        const findUser = AuthUser.email !== null ? {email : AuthUser.email} : {
+            $or: [
+                   { firstName : AuthUser.firstName },
+                   { lastName: AuthUser.lastName }
+                 ]
+          };
+
+          console.log('finduser', findUser);
+          
+    User.findOne(findUser).exec((err, user)=>{
+        console.log(user)
+        if(err){
+            let error = 'something went wrong'
+            return AppError.validationError(res, BAD_REQUEST, error);
+        }
+        else{
+
+            if(user !== null){
+            return createSendToken(user, 201, res, "User Authorized");
+            }
+
+            else{
+                let password = firstName+process.env.JWT_SECRET+lastName;
+                bcrypt.hash(password, 10, ((err, hash) => {
+                    if (err) {
+                        let error = 'something went wrong'
+                        return AppError.validationError(res, BAD_REQUEST, error);
+                    }
+                    let user = new User({email: AuthUser.email !== null ? AuthUser.email : '', password: hash, firstName, lastName, profilePicture: AuthUser.profilePicture})
+
+                    user.save((err, data) => {
+                        if (err) {
+                            let error = 'something went wrong'
+                            return AppError.validationError(res, BAD_REQUEST, error);
+                            }
+
+                            else{
+                            const token = jwt.sign({ _id: data._id}, process.env.JWT_SECRET, {
+                                expiresIn: process.env.JWT_EXPIRES_IN,
+                                });
+
+                            return successWithData(res, 201, "user created", { token,
+                                user});
+                            }
+                    })
+
+
+                }))
+            }
+        }
+    })
+      
+    } catch (err) {
+      console.log(err);
+      let error = 'something went wrong'
+      return AppError.validationError(res, BAD_REQUEST, error);
+    }
+};

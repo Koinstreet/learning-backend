@@ -7,9 +7,10 @@ const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 
 router.use(authMiddleware.protect);
-router.use(authMiddleware.restrictTo("admin"));
 
 router.get('/', SidebarConrollers.SidebarGet);
+
+router.use(authMiddleware.restrictTo("admin"));
 
 router.post('/', SidebarConrollers.SidebarPost);
 

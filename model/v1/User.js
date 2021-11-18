@@ -179,6 +179,8 @@ const userSchema = new Schema({
   timestamps: true
 });
 
+try{
+
 userSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) return next();
@@ -200,7 +202,10 @@ userSchema.methods.correctPassword = async function (
     console.log('some problems occured while comparing passwords', err)
   }
 };
-
+}
+catch(err) {
+  console.log('some problems occured while creating account', err)
+}
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

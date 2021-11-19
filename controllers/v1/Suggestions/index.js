@@ -220,7 +220,7 @@ exports.SuggestionsUsersGet = async (req, res) => {
                     $or: [
                         { passions: { $in: [...sgsPassions] } },
                         { programmingSkills: { $in: [...sgsprogrammingSkills] } },
-                        { $match: { skills: { $in: [...sgsSkills] } } }
+                        { skills: { $in: [...sgsSkills] } } 
                     ]
                 }
             },

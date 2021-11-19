@@ -4,8 +4,9 @@
   "description": "backend api for koinstreet learning app",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node server.js",
+    "start": "concurrently \"babel-node server.js \" \"babel-node socket.js\"",
     "dev": "nodemon --exec babel-node server.js",
+    "socket": "nodemon socket.js",
     "build": "babel . --out-dir build",
     "start:prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
@@ -28,6 +29,7 @@
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "cloudinary": "^1.21.0",
+    "concurrently": "^6.4.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

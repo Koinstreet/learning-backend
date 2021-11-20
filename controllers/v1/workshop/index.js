@@ -2,7 +2,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
 const Workshop = require("../../../model/v1/Workshop");
-const User = require("../../../model/v1/User");
+const Mentorship = require("../../../model/v1/Mentorship");
 
 const {
   successWithData,
@@ -16,19 +16,13 @@ exports.createWorkshop = async (req, res, next) => {
   try {
     let workshop = {
       ...req.body,
-      mentors: req.body.mentors,
-      mentees: req.body.mentees,
-      status: false,
+      mentorship_id: req.params.mentorship_id,
     };
-    const mentors = await User.find({ _id: { $in: mentors } });
-    const mentees = await User.find({ _id: { $in: mentees } });
-    if (!mentors) {
-      console.log("no mentors found");
-      let error = { message: "undefined mentors" };
-      return AppError.tryCatchError(res, error);
-    } else if (!mentees) {
-      console.log("no mentees found");
-      let error = { message: "undefined mentees" };
+    const mentorship = await Mentorship.findById(req.params.mentorship_id);
+
+    if (!mentorship) {
+      console.log("no mentorship found");
+      let error = { message: "undefined mentorship" };
       return AppError.tryCatchError(res, error);
     }
 
@@ -49,8 +43,7 @@ exports.createWorkshop = async (req, res, next) => {
 exports.getAllWorkshop = async (req, res, next) => {
   try {
     const workshops = await Workshop.find({})
-      .populate("mentors", "-password")
-      .populate("mentees", "-password")
+      .populate("Mentorship")
       .sort("-createdAt");
     return successWithData(
       res,
@@ -66,14 +59,16 @@ exports.getAllWorkshop = async (req, res, next) => {
 
 exports.getWorkshop = async (req, res, next) => {
   try {
-    const workshop = await Workshop.findById(req.params.id)
-      .populate("mentors", "-password")
-      .populate("mentees", "-password");
-    if (!workshop) {
+    const workshops = await Workshop.find({
+      mentorship_id: req.params.mentorship_id,
+    })
+      .populate("mentorship_id")
+      .sort("-createdAt");
+    if (!workshops) {
       let error = { message: "undefined workshop" };
       return AppError.tryCatchError(res, error);
     }
-    return successWithData(res, OK, "workshop fetched successfully", workshop);
+    return successWithData(res, OK, "Workshop fetched successfully", workshops);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);
@@ -82,7 +77,7 @@ exports.getWorkshop = async (req, res, next) => {
 
 exports.updateWorkshop = async (req, res, next) => {
   try {
-    const workshopUpdate = await Workshop.findById(req.params.id);
+    const workshopUpdate = await Workshop.findById(req.params.workshop_id);
     if (!workshopUpdate) {
       let error = { message: "undefined Workshop" };
       return AppError.tryCatchError(res, error);
@@ -93,7 +88,7 @@ exports.updateWorkshop = async (req, res, next) => {
     };
 
     const modifiedWorkshope = await Workshop.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.workshop_id },
       { ...workshop },
       { new: true }
     );
@@ -106,7 +101,7 @@ exports.updateWorkshop = async (req, res, next) => {
 
 exports.deleteWorkshop = async (req, res, file) => {
   try {
-    await Workshop.findOneAndDelete({ _id: req.params.id });
+    await Workshop.findOneAndDelete({ _id: req.params.workshop_id });
     return successNoData(res, OK, "Workshop deleted");
   } catch (err) {
     console.log(err);

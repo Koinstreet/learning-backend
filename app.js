@@ -43,13 +43,6 @@ const upvotes = require("./routes/upvotes");
 const downvotes = require("./routes/downVotes");
 const walletRouters = require("./routes/walletRouters");
 const notificationsRouters = require("./routes/notifications");
-const mentorshipEventRoutes = require("./routes/mentorshipEventsRoutes");
-const capstoneRoutes = require("./routes/capstoneRoutes");
-const workshopRoutes = require("./routes/workshopRoutes");
-const mentorshipCourseRoutes = require("./routes/mentorshipCourseRoutes");
-const mentorshipJobsRoutes = require("./routes/mentorshipJobsRoutes");
-const resourceRoutes = require("./routes/resourceRoutes");
-const sprintRoutes = require("./routes/sprintRoutes");
 const app = express();
 
 if (process.env === "development") {
@@ -116,13 +109,6 @@ app.use("/api/v1/proposalStatus", proposalStatusRoutes);
 app.use("/api/v1/proposalViews", proposalViewRoutes);
 app.use("/api/v1/wallets", walletRouters);
 app.use("/api/v1/notification", notificationsRouters);
-app.use("/api/v1/mentorship/event", mentorshipEventRoutes);
-app.use("/api/v1/mentorship/capstone", capstoneRoutes);
-app.use("/api/v1/mentorship/workshop", workshopRoutes);
-app.use("/api/v1/mentorship/course", mentorshipCourseRoutes);
-app.use("/api/v1/mentorship/job", mentorshipJobsRoutes);
-app.use("/api/v1/mentorship/resource", resourceRoutes);
-app.use("/api/v1/mentorship/sprint", sprintRoutes);
 app.use("/api/v1/mentorship", mentorshipRoutes);
 app.use("/", socialRoutes);
 

@@ -1,8 +1,9 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
+const Mentor = require("../../../model/v1/Mentor");
+const Mentee = require("../../../model/v1/Mentee");
 const Mentorship = require("../../../model/v1/Mentorship");
-const User = require("../../../model/v1/User");
 
 const uploadImage = require("../../../utils/uploadImage");
 
@@ -23,26 +24,32 @@ exports.createMentorship = async (req, res, next) => {
       mentorship = {
         ...req.body,
         qr_code: data.url,
-        mentors: req.body.mentors,
-        mentees: req.body.mentees,
+        mentor_id: req.body.mentor_id,
+        mentee_id: req.body.mentee_id,
       };
     } else {
       mentorship = {
         ...req.body,
-        mentors: req.body.mentors,
-        mentees: req.body.mentees,
+        mentor_id: req.body.mentor_id,
+        mentee_id: req.body.mentee_id,
       };
     }
 
-    const mentors = await User.find({ _id: { $in: mentors } });
-    const mentees = await User.find({ _id: { $in: mentees } });
-    if (!mentors) {
-      console.log("no mentors found");
-      let error = { message: "undefined mentors" };
+    const mentor = await Mentor.findById(req.body.mentor_id).populate(
+      "user_id",
+      "-password"
+    );
+    const mentee = await Mentee.findById(req.body.mentee_id).populate(
+      "user_id",
+      "-password"
+    );
+    if (!mentor) {
+      console.log("no mentor found");
+      let error = { message: "undefined mentor" };
       return AppError.tryCatchError(res, error);
-    } else if (!mentees) {
-      console.log("no mentees found");
-      let error = { message: "undefined mentees" };
+    } else if (!mentee) {
+      console.log("no mentee found");
+      let error = { message: "undefined mentee" };
       return AppError.tryCatchError(res, error);
     }
 
@@ -63,16 +70,8 @@ exports.createMentorship = async (req, res, next) => {
 exports.getAllMentorship = async (req, res, next) => {
   try {
     const mentorships = await Mentorship.find({})
-      .populate("user_id", "-password")
-      .populate("mentors", "-password")
-      .populate("mentees", "-password")
-      .populate("capstones")
-      .populate("resume_workshops")
-      .populate("events")
-      .populate("courses")
-      .populate("job_portals")
-      .populate("resources")
-      .populate("sprints")
+      .populate("mentor_id")
+      .populate("mentee_id")
       .sort("-createdAt");
     return successWithData(
       res,
@@ -89,16 +88,8 @@ exports.getAllMentorship = async (req, res, next) => {
 exports.getMentorship = async (req, res, next) => {
   try {
     const mentorships = await Mentorship.findById(req.params.id)
-      .populate("user_id", "-password")
-      .populate("mentors", "-password")
-      .populate("mentees", "-password")
-      .populate("capstones")
-      .populate("resume_workshops")
-      .populate("events")
-      .populate("courses")
-      .populate("job_portals")
-      .populate("resources")
-      .populate("sprints")
+      .populate("mentor_id")
+      .populate("mentee_id")
       .sort("-createdAt");
     if (!mentorships) {
       let error = { message: "undefined mentorship" };

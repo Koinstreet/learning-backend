@@ -1,6 +1,7 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
+const Mentorship = require("../../../model/v1/Mentorship");
 const Resources = require("../../../model/v1/Resources");
 
 const uploadImage = require("../../../utils/uploadImage");
@@ -22,11 +23,21 @@ exports.createResource = async (req, res, next) => {
       resource = {
         ...req.body,
         icon: data.url,
+        mentorship_id: req.params.mentorship_id,
       };
     } else {
       resource = {
         ...req.body,
+        mentorship_id: req.params.mentorship_id,
       };
+    }
+
+    const mentorship = await Mentorship.findById(req.params.mentorship_id);
+
+    if (!mentorship) {
+      console.log("no mentorship found");
+      let error = { message: "undefined mentorship" };
+      return AppError.tryCatchError(res, error);
     }
     const newResource = await Resources.create(resource);
 
@@ -44,7 +55,9 @@ exports.createResource = async (req, res, next) => {
 
 exports.getAllResources = async (req, res, next) => {
   try {
-    const resources = await Resources.find({}).sort("-createdAt");
+    const resources = await Resources.find({})
+      .populate("Mentorship")
+      .sort("-createdAt");
     return successWithData(
       res,
       OK,
@@ -59,7 +72,11 @@ exports.getAllResources = async (req, res, next) => {
 
 exports.getResource = async (req, res, next) => {
   try {
-    const resource = await Resources.findById(req.params.id);
+    const resource = await Resources.find({
+      mentorship_id: req.params.mentorship_id,
+    })
+      .populate("mentorship_id")
+      .sort("-createdAt");
     return successWithData(res, OK, "Resource fetched successfully", resource);
   } catch (err) {
     console.log(err);
@@ -69,7 +86,7 @@ exports.getResource = async (req, res, next) => {
 
 exports.updateResource = async (req, res, next) => {
   try {
-    const resourceUpdate = await Resources.findById(req.params.id);
+    const resourceUpdate = await Resources.findById(req.params.resource_id);
     if (!resourceUpdate) {
       let error = { message: "undefined Resource" };
       return AppError.tryCatchError(res, error);
@@ -80,7 +97,7 @@ exports.updateResource = async (req, res, next) => {
     };
 
     const modifiedResource = await Resources.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.resource_id },
       { ...resource },
       { new: true }
     );
@@ -93,7 +110,7 @@ exports.updateResource = async (req, res, next) => {
 
 exports.deleteResource = async (req, res, file) => {
   try {
-    await Resources.findOneAndDelete({ _id: req.params.id });
+    await Resources.findOneAndDelete({ _id: req.params.resource_id });
     return successNoData(res, OK, "Resource deleted");
   } catch (err) {
     console.log(err);

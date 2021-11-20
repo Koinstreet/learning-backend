@@ -4,10 +4,8 @@ const Schema = mongoose.Schema;
 
 const mentorshipEventSchema = new Schema(
   {
-    name: String,
-    speakers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    audiences: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    posted_date: String,
+    title: String,
+    mentorship_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mentorship" },
     description: String,
   },
 

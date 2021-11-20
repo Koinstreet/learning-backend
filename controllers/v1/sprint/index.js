@@ -1,8 +1,8 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
+const Mentorship = require("../../../model/v1/Mentorship");
 const Sprint = require("../../../model/v1/Sprint");
-const User = require("../../../model/v1/User");
 
 const {
   successWithData,
@@ -16,22 +16,16 @@ exports.createSprint = async (req, res, next) => {
   try {
     let sprint = {
       ...req.body,
-      mentors: req.body.mentors,
-      mentees: req.body.mentees,
+      mentorship_id: req.params.mentorship_id,
       status: false,
     };
-    const mentors = await User.find({ _id: { $in: mentors } });
-    const mentees = await User.find({ _id: { $in: mentees } });
-    if (!mentors) {
-      console.log("no mentors found");
-      let error = { message: "undefined mentors" };
-      return AppError.tryCatchError(res, error);
-    } else if (!mentees) {
-      console.log("no mentees found");
-      let error = { message: "undefined mentees" };
+    const mentorship = await Mentorship.findById(req.params.mentorship_id);
+
+    if (!mentorship) {
+      console.log("no mentorship found");
+      let error = { message: "undefined mentorship" };
       return AppError.tryCatchError(res, error);
     }
-
     const newSprint = await Sprint.create(sprint);
 
     return successWithData(
@@ -49,8 +43,7 @@ exports.createSprint = async (req, res, next) => {
 exports.getAllSprint = async (req, res, next) => {
   try {
     const Sprints = await Sprint.find({})
-      .populate("mentors", "-password")
-      .populate("mentees", "-password")
+      .populate("Mentorship")
       .sort("-createdAt");
     return successWithData(res, OK, "Sprints fetched successfully", Sprints);
   } catch (err) {
@@ -61,9 +54,11 @@ exports.getAllSprint = async (req, res, next) => {
 
 exports.getSprint = async (req, res, next) => {
   try {
-    const sprint = await Sprint.findById(req.params.id)
-      .populate("mentors", "-password")
-      .populate("mentees", "-password");
+    const sprint = await Sprint.find({
+      mentorship_id: req.params.mentorship_id,
+    })
+      .populate("mentorship_id")
+      .sort("-createdAt");
     if (!sprint) {
       let error = { message: "undefined Sprint" };
       return AppError.tryCatchError(res, error);
@@ -77,7 +72,7 @@ exports.getSprint = async (req, res, next) => {
 
 exports.updateSprint = async (req, res, next) => {
   try {
-    const sprintUpdate = await Sprint.findById(req.params.id);
+    const sprintUpdate = await Sprint.findById(req.params.sprint_id);
     if (!sprintUpdate) {
       let error = { message: "undefined Sprint" };
       return AppError.tryCatchError(res, error);
@@ -88,7 +83,7 @@ exports.updateSprint = async (req, res, next) => {
     };
 
     const modifiedSprint = await Sprint.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.sprint_id },
       { ...sprint },
       { new: true }
     );
@@ -101,7 +96,7 @@ exports.updateSprint = async (req, res, next) => {
 
 exports.deleteSprint = async (req, res, file) => {
   try {
-    await Sprint.findOneAndDelete({ _id: req.params.id });
+    await Sprint.findOneAndDelete({ _id: req.params.sprint_id });
     return successNoData(res, OK, "Sprint deleted");
   } catch (err) {
     console.log(err);

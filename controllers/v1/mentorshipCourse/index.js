@@ -2,7 +2,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 
 // DB
 const MentorshipCourse = require("../../../model/v1/MentorshipCourse");
-const User = require("../../../model/v1/User");
+const Mentorship = require("../../../model/v1/Mentorship");
 
 const {
   successWithData,
@@ -16,19 +16,14 @@ exports.createMentorshipCourse = async (req, res, next) => {
   try {
     let course = {
       ...req.body,
-      mentors: req.body.mentors,
-      mentees: req.body.mentees,
+      mentorship_id: req.params.mentorship_id,
       status: false,
     };
-    const mentors = await User.find({ _id: { $in: mentors } });
-    const mentees = await User.find({ _id: { $in: mentees } });
-    if (!mentors) {
-      console.log("no mentors found");
-      let error = { message: "undefined mentors" };
-      return AppError.tryCatchError(res, error);
-    } else if (!mentees) {
-      console.log("no mentees found");
-      let error = { message: "undefined mentees" };
+    const mentorship = await Mentorship.findById(req.params.mentorship_id);
+
+    if (!mentorship) {
+      console.log("no mentorship found");
+      let error = { message: "undefined mentorship" };
       return AppError.tryCatchError(res, error);
     }
 
@@ -49,8 +44,7 @@ exports.createMentorshipCourse = async (req, res, next) => {
 exports.getAllMentorshipCourse = async (req, res, next) => {
   try {
     const mentorshipCourses = await MentorshipCourse.find({})
-      .populate("mentors", "-password")
-      .populate("mentees", "-password")
+      .populate("Mentorship")
       .sort("-createdAt");
     return successWithData(
       res,
@@ -66,9 +60,11 @@ exports.getAllMentorshipCourse = async (req, res, next) => {
 
 exports.getMentorshipCourse = async (req, res, next) => {
   try {
-    const mentorshipCourse = await MentorshipCourse.findById(req.params.id)
-      .populate("mentors", "-password")
-      .populate("mentees", "-password");
+    const mentorshipCourse = await MentorshipCourse.find({
+      mentorship_id: req.params.mentorship_id,
+    })
+      .populate("mentorship_id")
+      .sort("-createdAt");
     if (!mentorshipCourse) {
       let error = { message: "undefined MentorshipCourse" };
       return AppError.tryCatchError(res, error);
@@ -88,7 +84,7 @@ exports.getMentorshipCourse = async (req, res, next) => {
 exports.updateMentorshipCourse = async (req, res, next) => {
   try {
     const mentorshipCourseUpdate = await MentorshipCourse.findById(
-      req.params.id
+      req.params.course_id
     );
     if (!mentorshipCourseUpdate) {
       let error = { message: "undefined MentorshipCourse" };
@@ -100,7 +96,7 @@ exports.updateMentorshipCourse = async (req, res, next) => {
     };
 
     const modifiedMentorshipCoursee = await MentorshipCourse.findOneAndUpdate(
-      { _id: req.params.id },
+      { _id: req.params.course_id },
       { ...mentorshipCourse },
       { new: true }
     );
@@ -118,7 +114,7 @@ exports.updateMentorshipCourse = async (req, res, next) => {
 
 exports.deleteMentorshipCourse = async (req, res, file) => {
   try {
-    await MentorshipCourse.findOneAndDelete({ _id: req.params.id });
+    await MentorshipCourse.findOneAndDelete({ _id: req.params.course_id });
     return successNoData(res, OK, "MentorshipCourse deleted");
   } catch (err) {
     console.log(err);

@@ -4,11 +4,9 @@ const Schema = mongoose.Schema;
 
 const capstoneSchema = new Schema(
   {
-    name: String,
-    mentors: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    mentees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    mentorship_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mentorship" },
+    title: String,
     progress_percentage: String,
-    posted_date: String,
     description: String,
   },
 

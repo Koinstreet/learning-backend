@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const ResourceSchema = new Schema(
   {
-    name: String,
+    title: String,
+    mentorship_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mentorship" },
     tags: Array,
     icon: String,
     path: String,

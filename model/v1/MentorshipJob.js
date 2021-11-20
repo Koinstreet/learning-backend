@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const mentorshipJobSchema = new Schema(
   {
-    name: String,
+    title: String,
+    mentorship_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mentorship" },
     company: { name: String, location: String, size: String },
-    posted_date: String,
     description: String,
   },
 
@@ -15,6 +15,6 @@ const mentorshipJobSchema = new Schema(
   }
 );
 
-const Capstone = mongoose.model("MentorshipJob", mentorshipJobSchema);
+const MentorshipJob = mongoose.model("MentorshipJob", mentorshipJobSchema);
 
-module.exports = Capstone;
+module.exports = MentorshipJob;

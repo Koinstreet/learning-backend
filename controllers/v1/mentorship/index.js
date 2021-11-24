@@ -4,6 +4,13 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const Mentor = require("../../../model/v1/Mentor");
 const Mentee = require("../../../model/v1/Mentee");
 const Mentorship = require("../../../model/v1/Mentorship");
+const Workshop = require("../../../model/v1/Workshop");
+const Capstone = require("../../../model/v1/Capstone");
+const MentorshipEvent = require("../../../model/v1/MentorshipEvent");
+const MentorshipCourse = require("../../../model/v1/MentorshipCourse");
+const MentorshipJob = require("../../../model/v1/MentorshipJob");
+const Sprint = require("../../../model/v1/Sprint");
+const Resources = require("../../../model/v1/Resources");
 
 const uploadImage = require("../../../utils/uploadImage");
 
@@ -135,6 +142,79 @@ exports.deleteMentorship = async (req, res, file) => {
   try {
     await Mentorship.findOneAndDelete({ _id: req.params.id });
     return successNoData(res, OK, "Mentorship deleted");
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getFullMentorship = async (req, res, next) => {
+  try {
+    let mentorship;
+
+    const mentor = await Mentor.find({
+      user_id: req.params.user_id,
+    });
+    const mentee = await Mentee.find({
+      user_id: req.params.user_id,
+    });
+    if (mentor) {
+      mentorship = await Mentorship.find({
+        mentor_id: mentor[0]._id,
+      })
+        .populate("mentor_id")
+        .populate("mentee_id");
+    } else if (mentee) {
+      mentorship = await Mentorship.find({
+        mentee_id: mentee[0]._id,
+      })
+        .populate("mentor_id")
+        .populate("mentee_id");
+    } else {
+      console.log("no user found");
+      let error = { message: "undefined user" };
+      return AppError.tryCatchError(res, error);
+    }
+
+    if (mentorship) {
+      const workshops = await Workshop.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+      const capstones = await Capstone.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+
+      const mentorshipEvent = await MentorshipEvent.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+
+      const mentorshipCourse = await MentorshipCourse.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+      const mentorshipJob = await MentorshipJob.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+      const sprint = await Sprint.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+      const resource = await Resources.find({
+        mentorship_id: mentorship[0]._id,
+      }).sort("-createdAt");
+
+      return successWithData(res, OK, "Mentorship fetched successfully", {
+        mentorship,
+        resource,
+        sprint,
+        mentorshipJob,
+        mentorshipCourse,
+        mentorshipEvent,
+        capstones,
+        workshops,
+      });
+    } else {
+      let error = { message: "undefined mentorship" };
+      return AppError.tryCatchError(res, error);
+    }
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

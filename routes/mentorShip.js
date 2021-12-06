@@ -35,7 +35,7 @@ router.get("/event", mentorshipEvents.getAllMentorshipEvent);
 
 //Mentorship
 router.get("/:id", mentorship.getMentorship);
-router.get("/mentor/:user_id", mentorship.getFullMentorship);
+router.get("/mentee/:user_id", mentorship.getFullMentorship);
 router
   .route("/:id")
   .patch(mentorship.updateMentorship)

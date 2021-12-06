@@ -162,14 +162,34 @@ exports.getFullMentorship = async (req, res, next) => {
       mentorship = await Mentorship.find({
         mentor_id: mentor[0]._id,
       })
-        .populate("mentor_id")
-        .populate("mentee_id");
+        .populate({
+          path: "mentor_id",
+          populate: {
+            path: "user_id",
+          },
+        })
+        .populate({
+          path: "mentee_id",
+          populate: {
+            path: "user_id",
+          },
+        });
     } else if (mentee) {
       mentorship = await Mentorship.find({
         mentee_id: mentee[0]._id,
       })
-        .populate("mentor_id")
-        .populate("mentee_id");
+        .populate({
+          path: "mentor_id",
+          populate: {
+            path: "user_id",
+          },
+        })
+        .populate({
+          path: "mentee_id",
+          populate: {
+            path: "user_id",
+          },
+        });
     } else {
       console.log("no user found");
       let error = { message: "undefined user" };
@@ -202,7 +222,7 @@ exports.getFullMentorship = async (req, res, next) => {
       }).sort("-createdAt");
 
       return successWithData(res, OK, "Mentorship fetched successfully", {
-        mentorship,
+        mentorship: mentorship[0],
         resource,
         sprint,
         mentorshipJob,

@@ -9,7 +9,7 @@ const PythonShell = require('python-shell').PythonShell;
 const ipfs = require('ipfs-http-client')
 const client = ipfs.create('https://ipfs.infura.io:5001/api/v0')
 const fs = require('fs')
-const script = "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/learning-backend/utils/certifcate/gen.py"
+const script = "utils/certifcate/gen.py"
 
 exports.uploadCertificate = async (req, res, next) => {
 
@@ -30,7 +30,7 @@ exports.uploadCertificate = async (req, res, next) => {
             console.log('certificate ' + username + ' created');
 
             console.log("uploading to IPFS...");
-            let path = "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/learning-backend/utils/certifcate/images/"
+            let path = "utils/certifcate/images/"
 
             fs.readFile(path + username.replace(/ /g, "_") + ".png", async function (err, file) {
                 if (err) throw err;

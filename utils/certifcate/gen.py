@@ -4,10 +4,10 @@ from datetime import datetime
 
 from PIL import ImageFont, ImageDraw, Image
 
-absPath = "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/Server/py/Red_Hat_Display/static"
-regular_fontpath = absPath + "/RedHatDisplay-regular.ttf"
-bold_fontpath = absPath + "/RedHatDisplay-Bold.ttf"
-semi_bold_fontpath = absPath + "/RedHatDisplay-SemiBold.ttf"
+relativePath = "utils/certifcate/Red_Hat_Display/static"
+regular_fontpath = relativePath + "/RedHatDisplay-regular.ttf"
+bold_fontpath = relativePath + "/RedHatDisplay-Bold.ttf"
+semi_bold_fontpath = relativePath + "/RedHatDisplay-SemiBold.ttf"
 
 # fontRegular = ImageFont.load_default()
 fontRegular = ImageFont.truetype(regular_fontpath, 50)

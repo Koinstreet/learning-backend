@@ -61,6 +61,23 @@ exports.getAllCourse = async (req, res, next) => {
   }
 };
 
+exports.approveCourse = async (req, res, next) => {
+  try {
+    const course = await Course.findById(req.params.id)
+      .populate("authorId", "-password")
+      .sort("-createdAt");
+    if (!course) { let error = {message: "undefined course"}; return AppError.tryCatchError(res, error);}
+    const acceptCourse = await Course.findOneAndUpdate(
+      { _id: req.params.id },
+      { published: true }
+    );
+    return successWithData(res, OK, "Course Published", acceptCourse);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getPublishedCourse = async (req, res, next) => {
   try {
     const courses = await Course.find({

@@ -21,9 +21,9 @@ router.use(authMiddleware.protect);
 router.get("/:courseId/module/:moduleId", courseModule.getModule);
 router.get("/user/viewed", courseModule.getViewedCourses);
 
-router.use(authMiddleware.restrictTo("admin"));
+router.get("/admin/courses", authMiddleware.restrictTo("admin"), course.getAllCourse);
 
-router.get("/admin/courses", course.getAllCourse);
+router.patch("/approve/:id", authMiddleware.restrictTo("admin"), course.approveCourse);
 
 router.post(
   "/",

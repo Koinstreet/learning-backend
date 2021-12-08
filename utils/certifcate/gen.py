@@ -87,11 +87,9 @@ if __name__ == "__main__":
     # course_number = "101"
     # course_name_number = course_name + " " + course_number
 
-    image = Image.open(
-        "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/Server/py/certificate.png"
-    )
+    image = Image.open("utils/certifcate/certificate.png")
     draw = ImageDraw.Draw(image)
 
     put_text(draw, name, course_name, description, course_name_number)
-    path = "/Users/user/Documents/Work/Internship/MinorityProgrammer/NFT minting/learning-backend/utils/certifcate/images/"
+    path = "utils/certifcate/images/"
     image.save(path + name.replace(" ", "_") + ".png", "PNG")

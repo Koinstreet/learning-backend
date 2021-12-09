@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const certificateSchema = new Schema({
-    userId: [{
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    }],
-    courseId: [{
+    },
+    courseId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
-    }],
+    },
 
     ipfsURL: { type: String },
 }, {

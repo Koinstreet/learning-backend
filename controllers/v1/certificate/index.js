@@ -83,8 +83,7 @@ exports.getUserCertificate = async (req, res, next) => {
 
 exports.getAllCertificates = async (req, res, next) => {
     try {
-        const certificates = await Certificate.find({})
-            .sort("-createdAt");
+        const certificates = await Certificate.find({}).sort("-createdAt").populate("userId").populate("courseId");
         return successWithData(res, OK, "Certificates fetched successfully", certificates);
     } catch (err) {
         console.log(err);

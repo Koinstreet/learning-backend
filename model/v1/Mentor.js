@@ -44,6 +44,10 @@ const mentorSchema = new Schema(
     why_mentor: {
       type: String,
     },
+    calender_events: [
+      { title: String, event_date: String, description: String },
+    ],
+    qr_code: String,
   },
   {
     timestamps: true,

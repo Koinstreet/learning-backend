@@ -15,12 +15,23 @@ const AppError = require("../../../utils/appError");
 
 exports.createMentee = async (req, res, next) => {
   try {
-    let mentee = {
+    let mentee;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      mentee = {
+        ...req.body,
+        qr_code: data.url,
+        user_id: req.user.id,
+      };
+    } else {
+      mentee = {
         ...req.body,
         user_id: req.user.id,
       };
+    }
 
-    const newMentee= await Mentee.create(mentee);
+    const newMentee = await Mentee.create(mentee);
     return successWithData(
       res,
       CREATED,
@@ -33,7 +44,7 @@ exports.createMentee = async (req, res, next) => {
   }
 };
 
-exports.getAllMentee= async (req, res, next) => {
+exports.getAllMentee = async (req, res, next) => {
   try {
     const mentees = await Mentee.find({})
       .populate("user_id", "-password")
@@ -45,14 +56,16 @@ exports.getAllMentee= async (req, res, next) => {
   }
 };
 
-
 exports.getMentee = async (req, res, next) => {
   try {
     const mentee = await Mentee.findById(req.params.id).populate(
       "user_id",
       "-password"
     );
-    if (!mentee) { let error = {message: "undefined mentee"}; return AppError.tryCatchError(res, error);}
+    if (!mentee) {
+      let error = { message: "undefined mentee" };
+      return AppError.tryCatchError(res, error);
+    }
     return successWithData(res, OK, "Mentee fetched successfully", mentee);
   } catch (err) {
     console.log(err);
@@ -61,17 +74,18 @@ exports.getMentee = async (req, res, next) => {
 };
 
 exports.updateMentee = async (req, res, next) => {
-  
   try {
-
     const menteeUpdate = await Mentee.findById(req.params.id);
-    if (!menteeUpdate) { let error = {message: "undefined mentee"}; return AppError.tryCatchError(res, error);}
+    if (!menteeUpdate) {
+      let error = { message: "undefined mentee" };
+      return AppError.tryCatchError(res, error);
+    }
 
     let mentee = {
-        ...req.body,
-        user_id: req.user.id,
-      };
-    
+      ...req.body,
+      user_id: req.user.id,
+    };
+
     const modifiedMentee = await Mentee.findOneAndUpdate(
       { _id: req.params.id },
       { ...mentee },

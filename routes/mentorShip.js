@@ -11,11 +11,12 @@ const mentorshipCourse = require("../controllers/v1/mentorshipCourse");
 const mentorshipEvents = require("../controllers/v1/mentorshipEvents");
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
+const fileUploader = require("../middleware/fileUploaders");
 
 const router = express.Router();
 
 router.use(authMiddleware.protect);
-
+// Mentorship
 router.post("/", mentorship.createMentorship);
 router.get("/", mentorship.getAllMentorship);
 // workshop get All
@@ -35,7 +36,7 @@ router.get("/event", mentorshipEvents.getAllMentorshipEvent);
 
 //Mentorship
 router.get("/:id", mentorship.getMentorship);
-router.get("/mentee/:user_id", mentorship.getFullMentorship);
+router.get("/user/:user_id", mentorship.getUserMentorship);
 router
   .route("/:id")
   .patch(mentorship.updateMentorship)
@@ -66,11 +67,15 @@ router
   .delete(mentorshipJob.deleteMentorshipJob);
 
 // Resource
-router.post("/resource/:mentorship_id", resources.createResource);
+router.post(
+  "/resource/:mentorship_id",
+  fileUploader.uploadResourceImage,
+  resources.createResource
+);
 router.get("/resource/:mentorship_id", resources.getResource);
 router
   .route("/resource/:resource_id")
-  .patch(resources.updateResource)
+  .patch(fileUploader.uploadResourceImage, resources.updateResource)
   .delete(resources.deleteResource);
 
 // Sprint

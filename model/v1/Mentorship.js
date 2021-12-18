@@ -17,12 +17,6 @@ const mentorshipSchema = new Schema(
       type: Boolean,
       default: false,
     },
-
-    qr_code: String,
-
-    calender_events: [
-      { title: String, event_date: String, description: String },
-    ],
   },
 
   {

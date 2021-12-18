@@ -7,7 +7,9 @@ const sprintSchema = new Schema(
     title: String,
     mentorship_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mentorship" },
     progress_percentage: String,
+    completion_time: String,
     description: String,
+    notes: Array,
   },
 
   {

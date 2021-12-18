@@ -17,6 +17,7 @@ const AppError = require("../../../utils/appError");
 exports.createResource = async (req, res, next) => {
   try {
     let resource;
+
     if (req.file) {
       const data = await uploadImage(req.file);
       if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);

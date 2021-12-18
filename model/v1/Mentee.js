@@ -9,9 +9,6 @@ const menteeSchema = new Schema(
       required: true,
       ref: "User",
     },
-    // mentors: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    // mentees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-
     interest_in: {
       type: Array,
     },
@@ -51,6 +48,10 @@ const menteeSchema = new Schema(
     goals: {
       type: String,
     },
+    calender_events: [
+      { title: String, event_date: String, description: String },
+    ],
+    qr_code: String,
   },
   {
     timestamps: true,

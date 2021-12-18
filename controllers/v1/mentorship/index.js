@@ -24,23 +24,11 @@ const AppError = require("../../../utils/appError");
 
 exports.createMentorship = async (req, res, next) => {
   try {
-    let mentorship;
-    if (req.file) {
-      const data = await uploadImage(req.file);
-      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
-      mentorship = {
-        ...req.body,
-        qr_code: data.url,
-        mentor_id: req.body.mentor_id,
-        mentee_id: req.body.mentee_id,
-      };
-    } else {
-      mentorship = {
-        ...req.body,
-        mentor_id: req.body.mentor_id,
-        mentee_id: req.body.mentee_id,
-      };
-    }
+    let mentorship = {
+      ...req.body,
+      mentor_id: req.body.mentor_id,
+      mentee_id: req.body.mentee_id,
+    };
 
     const mentor = await Mentor.findById(req.body.mentor_id).populate(
       "user_id",
@@ -148,7 +136,7 @@ exports.deleteMentorship = async (req, res, file) => {
   }
 };
 
-exports.getFullMentorship = async (req, res, next) => {
+exports.getUserMentorship = async (req, res, next) => {
   try {
     let mentorship;
 
@@ -158,7 +146,7 @@ exports.getFullMentorship = async (req, res, next) => {
     const mentee = await Mentee.find({
       user_id: req.params.user_id,
     });
-    if (mentor) {
+    if (mentor[0]) {
       mentorship = await Mentorship.find({
         mentor_id: mentor[0]._id,
       })
@@ -174,7 +162,7 @@ exports.getFullMentorship = async (req, res, next) => {
             path: "user_id",
           },
         });
-    } else if (mentee) {
+    } else if (mentee[0]) {
       mentorship = await Mentorship.find({
         mentee_id: mentee[0]._id,
       })

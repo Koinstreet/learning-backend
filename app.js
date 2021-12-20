@@ -47,6 +47,7 @@ const sidebarMenuRouters = require("./routes/SidebarMenu");
 const childLinksRoutes = require("./routes/childLinks");
 const suggestionsRoutes = require("./routes/suggestionsRoutes");
 const certificateRoutes = require("./routes/certificate");
+const reputationRoutes = require("./routes/reputation");
 
 const app = express();
 
@@ -120,6 +121,7 @@ app.use("/api/v1/sidebarmenu", sidebarMenuRouters);
 app.use("/api/v1/childlink", childLinksRoutes);
 app.use("/api/v1/suggestions", suggestionsRoutes);
 app.use("/api/v1/certificate", certificateRoutes);
+app.use("/api/v1/reputation", reputationRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("endpoint Not found...");
@@ -137,13 +139,12 @@ app.use((error, req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  res.status(error.status || 500)
+  res.status(error.status || 500);
   res.json({
     error: {
       message: error.message
     }
-  })
-})
-
+  });
+});
 
 module.exports = app;

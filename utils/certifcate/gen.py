@@ -4,7 +4,7 @@ from datetime import datetime
 
 from PIL import ImageFont, ImageDraw, Image
 
-relativePath = "utils/certifcate/Red_Hat_Display/static"
+relativePath = "./utils/certifcate/Red_Hat_Display/static"
 regular_fontpath = relativePath + "/RedHatDisplay-regular.ttf"
 bold_fontpath = relativePath + "/RedHatDisplay-Bold.ttf"
 semi_bold_fontpath = relativePath + "/RedHatDisplay-SemiBold.ttf"
@@ -87,9 +87,9 @@ if __name__ == "__main__":
     # course_number = "101"
     # course_name_number = course_name + " " + course_number
 
-    image = Image.open("utils/certifcate/certificate.png")
+    image = Image.open("./utils/certifcate/certificate.png")
     draw = ImageDraw.Draw(image)
 
     put_text(draw, name, course_name, description, course_name_number)
-    path = "utils/certifcate/images/"
+    path = "./utils/certifcate/images/"
     image.save(path + name.replace(" ", "_") + ".png", "PNG")

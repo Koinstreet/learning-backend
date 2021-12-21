@@ -1,5 +1,5 @@
 const AppError = require("../../../utils/appError");
-const { CREATED, OK } = require("http-status-codes");
+const { CREATED, OK, UNAUTHORIZED } = require("http-status-codes");
 const {
   successWithData,
   successNoData
@@ -12,11 +12,22 @@ const PythonShell = require("python-shell").PythonShell;
 const ipfs = require("ipfs-http-client");
 const client = ipfs.create("https://ipfs.infura.io:5001/api/v0");
 const fs = require("fs");
-const script = "utils/certifcate/gen.py";
+const script = "./utils/certifcate/gen.py";
 
 exports.uploadCertificate = async (req, res, next) => {
   try {
     const course = await Course.findById(req.body.id);
+    const certificates = await Certificate.find({
+      userId: req.user.id
+    }).sort("-createdAt");
+
+    certificates.map(saved => {
+      if (saved.courseId.toString() === req.body.id.toString()) {
+        let msg = "Already got this certificate";
+        return AppError.validationError(res, UNAUTHORIZED, msg);
+      }
+    });
+
     const username = req.user.firstName + " " + req.user.lastName;
 
     let options = {

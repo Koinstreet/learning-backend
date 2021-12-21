@@ -16,7 +16,7 @@ const uploadImage = require("../../../utils/uploadImage");
 
 const {
   successWithData,
-  successNoData,
+  successNoData
 } = require("../../../utils/successHandler");
 
 // Error
@@ -27,7 +27,7 @@ exports.createMentorship = async (req, res, next) => {
     let mentorship = {
       ...req.body,
       mentor_id: req.body.mentor_id,
-      mentee_id: req.body.mentee_id,
+      mentee_id: req.body.mentee_id
     };
 
     const mentor = await Mentor.findById(req.body.mentor_id).populate(
@@ -111,7 +111,7 @@ exports.updateMentorship = async (req, res, next) => {
     }
 
     let mentorship = {
-      ...req.body,
+      ...req.body
     };
 
     const modifiedMentorship = await Mentorship.findOneAndUpdate(
@@ -141,42 +141,42 @@ exports.getUserMentorship = async (req, res, next) => {
     let mentorship;
 
     const mentor = await Mentor.find({
-      user_id: req.params.user_id,
+      user_id: req.params.user_id
     });
     const mentee = await Mentee.find({
-      user_id: req.params.user_id,
+      user_id: req.params.user_id
     });
     if (mentor[0]) {
       mentorship = await Mentorship.find({
-        mentor_id: mentor[0]._id,
+        mentor_id: mentor[0]._id
       })
         .populate({
           path: "mentor_id",
           populate: {
-            path: "user_id",
-          },
+            path: "user_id"
+          }
         })
         .populate({
           path: "mentee_id",
           populate: {
-            path: "user_id",
-          },
+            path: "user_id"
+          }
         });
     } else if (mentee[0]) {
       mentorship = await Mentorship.find({
-        mentee_id: mentee[0]._id,
+        mentee_id: mentee[0]._id
       })
         .populate({
           path: "mentor_id",
           populate: {
-            path: "user_id",
-          },
+            path: "user_id"
+          }
         })
         .populate({
           path: "mentee_id",
           populate: {
-            path: "user_id",
-          },
+            path: "user_id"
+          }
         });
     } else {
       console.log("no user found");
@@ -186,27 +186,27 @@ exports.getUserMentorship = async (req, res, next) => {
 
     if (mentorship) {
       const workshops = await Workshop.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
       const capstones = await Capstone.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
 
       const mentorshipEvent = await MentorshipEvent.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
 
       const mentorshipCourse = await MentorshipCourse.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
       const mentorshipJob = await MentorshipJob.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
       const sprint = await Sprint.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
       const resource = await Resources.find({
-        mentorship_id: mentorship[0]._id,
+        mentorship_id: mentorship[0]._id
       }).sort("-createdAt");
 
       return successWithData(res, OK, "Mentorship fetched successfully", {
@@ -217,7 +217,100 @@ exports.getUserMentorship = async (req, res, next) => {
         mentorshipCourse,
         mentorshipEvent,
         capstones,
-        workshops,
+        workshops
+      });
+    } else {
+      let error = { message: "undefined mentorship" };
+      return AppError.tryCatchError(res, error);
+    }
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getUserMentorship = async (req, res, next) => {
+  try {
+    let mentorship;
+
+    const mentor = await Mentor.find({
+      user_id: req.params.user_id
+    });
+    const mentee = await Mentee.find({
+      user_id: req.params.user_id
+    });
+    if (mentor[0]) {
+      mentorship = await Mentorship.find({
+        mentor_id: mentor[0]._id
+      })
+        .populate({
+          path: "mentor_id",
+          populate: {
+            path: "user_id"
+          }
+        })
+        .populate({
+          path: "mentee_id",
+          populate: {
+            path: "user_id"
+          }
+        });
+    } else if (mentee[0]) {
+      mentorship = await Mentorship.find({
+        mentee_id: mentee[0]._id
+      })
+        .populate({
+          path: "mentor_id",
+          populate: {
+            path: "user_id"
+          }
+        })
+        .populate({
+          path: "mentee_id",
+          populate: {
+            path: "user_id"
+          }
+        });
+    } else {
+      console.log("no user found");
+      let error = { message: "undefined user" };
+      return AppError.tryCatchError(res, error);
+    }
+
+    if (mentorship) {
+      const workshops = await Workshop.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+      const capstones = await Capstone.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+
+      const mentorshipEvent = await MentorshipEvent.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+
+      const mentorshipCourse = await MentorshipCourse.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+      const mentorshipJob = await MentorshipJob.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+      const sprint = await Sprint.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+      const resource = await Resources.find({
+        mentorship_id: mentorship[0]._id
+      }).sort("-createdAt");
+
+      return successWithData(res, OK, "Mentorship fetched successfully", {
+        mentorship: mentorship[0],
+        resource,
+        sprint,
+        mentorshipJob,
+        mentorshipCourse,
+        mentorshipEvent,
+        capstones,
+        workshops
       });
     } else {
       let error = { message: "undefined mentorship" };

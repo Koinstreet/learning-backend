@@ -11,7 +11,7 @@ const multerStorage = multer.diskStorage({
         file.originalname
       }`
     );
-  },
+  }
 });
 
 const multerImageFilter = (req, file, cb) => {
@@ -37,17 +37,17 @@ const multerVideoFilter = (req, file, cb) => {
 
 const uploadImage = multer({
   storage: multerStorage,
-  fileFilter: multerImageFilter,
+  fileFilter: multerImageFilter
 });
 
 const uploadDoc = multer({
   storage: multerStorage,
-  fileFilter: multerFileFilter,
+  fileFilter: multerFileFilter
 });
 
 const uploadVideo = multer({
   storage: multerStorage,
-  fileFilter: multerVideoFilter,
+  fileFilter: multerVideoFilter
 });
 
 exports.uploadCourseImage = uploadImage.single("image");

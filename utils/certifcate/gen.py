@@ -5,7 +5,7 @@ from datetime import datetime
 from PIL import ImageFont, ImageDraw, Image
 
 relativePath = "./utils/certifcate/Red_Hat_Display/static"
-regular_fontpath = relativePath + "/RedHatDisplay-regular.ttf"
+regular_fontpath = relativePath + "/RedHatDisplay-Regular.ttf"
 bold_fontpath = relativePath + "/RedHatDisplay-Bold.ttf"
 semi_bold_fontpath = relativePath + "/RedHatDisplay-SemiBold.ttf"
 
@@ -28,11 +28,11 @@ def put_text(img, full_name, course_name, description, course_name_num):
     for i, line in enumerate(wrapped_username):
         y = y_name + i * 30
 
-        img.text((x_name, y), line.center(80), font=ImageFont.load_default(), fill=(0, 0, 0, 0))
+        img.text((x_name, y), line.center(80), font=fontBold, fill=(0, 0, 0, 0))
         x_name += int(len(line)) * 4
 
     # Course Name
-    img.text((1350, 680), course_name, font=ImageFont.load_default(), fill=(0, 0, 0, 0))
+    img.text((1350, 680), course_name, font=fontSemiBold, fill=(0, 0, 0, 0))
 
     x_description = 750
     y_description = 800
@@ -42,7 +42,7 @@ def put_text(img, full_name, course_name, description, course_name_num):
         y = y_description + i * 50
 
         img.text(
-            (x_description, y), line.center(80), font=ImageFont.load_default(), fill=(0, 0, 0, 0)
+            (x_description, y), line.center(80), font=fontRegular, fill=(0, 0, 0, 0)
         )
 
     # Course name and number

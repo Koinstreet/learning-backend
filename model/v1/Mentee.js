@@ -10,7 +10,7 @@ const menteeSchema = new Schema(
       ref: "User",
     },
     interest_in: {
-      type: Array,
+      type: String,
     },
     learning_style: {
       type: String,
@@ -18,32 +18,35 @@ const menteeSchema = new Schema(
     personal_type: {
       type: String,
     },
-    gender: {
-      type: String,
-    },
     usage_phone: {
       type: Number,
     },
+    availability: {
+      type: String,
+    },
+    qr_code: String,
+    occupation: String,
+    work_place: String,
     lookingfor_education: {
-      type: Array,
+      type: String,
     },
     lookingfor_skillLevel: {
-      type: Number,
+      type: String,
     },
     lookingfor_learningstyle: {
-      type: Array,
+      type: String,
     },
     lookingfor_gender: {
       type: String,
     },
     lookingfor_availabilty: {
-      type: Number,
+      type: String,
     },
     lookingfor_language: {
       type: Array,
     },
-    lookingfor_country: {
-      type: Array,
+    lookingfor_ethnicity: {
+      type: String,
     },
     goals: {
       type: String,
@@ -51,7 +54,6 @@ const menteeSchema = new Schema(
     calender_events: [
       { title: String, event_date: String, description: String },
     ],
-    qr_code: String,
   },
   {
     timestamps: true,

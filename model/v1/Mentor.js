@@ -9,16 +9,13 @@ const mentorSchema = new Schema(
       required: true,
       ref: "User"
     },
-    education: {
+    interest_in: {
       type: String
     },
     skill_level: {
       type: Number
     },
     availability: {
-      type: Number
-    },
-    gender: {
       type: String
     },
     language: {
@@ -27,17 +24,32 @@ const mentorSchema = new Schema(
     country: {
       type: String
     },
+    personal_type: {
+      type: String
+    },
+    qr_code: String,
+    occupation: String,
+    work_place: String,
     lookingfor_learningstyle: {
-      type: Array
+      type: String
+    },
+    lookingfor_skillLevel: {
+      type: String
     },
     lookingfor_personalType: {
-      type: Array
+      type: String
     },
     lookingfor_availabilty: {
-      type: Number
+      type: String
     },
     lookingfor_interest: {
-      type: Array
+      type: String
+    },
+    lookingfor_ethnicity: {
+      type: String
+    },
+    lookingfor_education: {
+      type: String
     },
     why_mentor: {
       type: String
@@ -47,8 +59,7 @@ const mentorSchema = new Schema(
     },
     calender_events: [
       { title: String, event_date: String, description: String }
-    ],
-    qr_code: String
+    ]
   },
   {
     timestamps: true

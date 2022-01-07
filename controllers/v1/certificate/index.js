@@ -18,6 +18,7 @@ exports.uploadCertificate = async (req, res, next) => {
     try {
         const course = await Course.findById(req.body.id);
         const username = req.user.firstName + " " + req.user.lastName;
+        console.log("\"" + username + "\"");
 
         let options = {
             mode: "text",

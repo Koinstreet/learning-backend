@@ -23,7 +23,7 @@ def put_text(img, full_name, course_name, description, img_size):
     wrapped_username = textwrap.wrap(full_name, width=30)
     x, _ = img_size
 
-    x_name = x - (x * 2.8 / 4)
+    x_name = 1000 - (len(full_name) * 30 / 2)
     y_name = 400 if len(wrapped_username) > 1 else 450
 
     for i, line in enumerate(wrapped_username):
@@ -33,7 +33,12 @@ def put_text(img, full_name, course_name, description, img_size):
         x_name += int(len(line)) * 4
 
     # Course Name
-    img.text((1350, 680), course_name, font=fontSemiBold, fill=(0, 0, 0, 0))
+    img.text(
+        ((1500 - (len(course_name) * 30 / 2)), 680),
+        course_name,
+        font=fontSemiBold,
+        fill=(0, 0, 0, 0),
+    )
 
     x_description = 750
     y_description = 800

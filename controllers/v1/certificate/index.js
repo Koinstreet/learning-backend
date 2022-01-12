@@ -17,18 +17,8 @@ const script = "./utils/certifcate/gen.py";
 exports.uploadCertificate = async (req, res, next) => {
   try {
     const course = await Course.findById(req.body.id);
-    const certificates = await Certificate.find({
-      userId: req.user.id
-    }).sort("-createdAt");
-
-    certificates.map(saved => {
-      if (saved.courseId.toString() === req.body.id.toString()) {
-        let msg = "Already got this certificate";
-        return AppError.validationError(res, UNAUTHORIZED, msg);
-      }
-    });
-
     const username = req.user.firstName + " " + req.user.lastName;
+    console.log('"' + username + '"');
 
     let options = {
       mode: "text",

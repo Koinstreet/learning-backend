@@ -15,14 +15,15 @@ fontBold = ImageFont.truetype(bold_fontpath, 80)
 fontSemiBold = ImageFont.truetype(semi_bold_fontpath, 80)
 
 
-def put_text(img, full_name, course_name, description, course_name_num):
+def put_text(img, full_name, course_name, description, img_size):
 
     global font, fontBold
 
     # Cadidate name
     wrapped_username = textwrap.wrap(full_name, width=30)
+    x, _ = img_size
 
-    x_name = 500
+    x_name = 1000 - (len(full_name) * 30 / 2)
     y_name = 400 if len(wrapped_username) > 1 else 450
 
     for i, line in enumerate(wrapped_username):
@@ -32,7 +33,12 @@ def put_text(img, full_name, course_name, description, course_name_num):
         x_name += int(len(line)) * 4
 
     # Course Name
-    img.text((1350, 680), course_name, font=fontSemiBold, fill=(0, 0, 0, 0))
+    img.text(
+        ((1500 - (len(course_name) * 30 / 2)), 680),
+        course_name,
+        font=fontSemiBold,
+        fill=(0, 0, 0, 0),
+    )
 
     x_description = 750
     y_description = 800
@@ -42,7 +48,10 @@ def put_text(img, full_name, course_name, description, course_name_num):
         y = y_description + i * 50
 
         img.text(
-            (x_description, y), line.center(80), font=fontRegular, fill=(0, 0, 0, 0)
+            (x_description if len(line) > 50 else x - (x * 2.5 / 4), y),
+            line.center(80),
+            font=fontRegular,
+            fill=(0, 0, 0, 0),
         )
 
     # Course name and number
@@ -90,6 +99,6 @@ if __name__ == "__main__":
     image = Image.open("./utils/certifcate/certificate.png")
     draw = ImageDraw.Draw(image)
 
-    put_text(draw, name, course_name, description, course_name_number)
+    put_text(draw, name, course_name, description, image.size)
     path = "./utils/certifcate/images/"
     image.save(path + name.replace(" ", "_") + ".png", "PNG")

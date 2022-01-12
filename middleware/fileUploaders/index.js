@@ -23,7 +23,7 @@ const multerImageFilter = (req, file, cb) => {
 
 const multerFileFilter = (req, file, cb) => {
   console.log(file.mimetype);
-  if (file.mimetype === 'application/pdf') {
+  if (file.mimetype === "application/pdf") {
     cb(null, true);
   } else cb(new Error("invalid filetype"), false);
 };
@@ -54,11 +54,12 @@ exports.uploadCourseImage = uploadImage.single("image");
 exports.uploadModuleVideo = uploadVideo.single("video");
 exports.uploadUserImage = uploadImage.single("profilePicture");
 exports.uploadEventImage = uploadImage.single("EventPicture");
+exports.uploadResourceImage = uploadImage.single("icon");
+exports.uploadQRImage = uploadImage.single("qr_code");
 exports.uploadStartupImage = uploadImage.single("startupImage");
 exports.uploadLocationLogo = uploadImage.single("LocationLogo");
-exports.uploadProposalAvatar = uploadImage.single('avatar');
+exports.uploadProposalAvatar = uploadImage.single("avatar");
 exports.uploadModuleImage = uploadImage.single("image");
 exports.uploadChatImage = uploadImage.single("image");
 exports.uploadChatVideo = uploadVideo.single("video");
 exports.uploadResume = uploadDoc.single("resume");
-

@@ -145,7 +145,7 @@ exports.getUserMentorship = async (req, res, next) => {
     const mentee = await Mentee.find({
       user_id: req.params.user_id
     }).sort("-createdAt");
-    // console.log(mentee[0]);
+
     if (user.is_mentor) {
       mentorship = await Mentorship.find({
         mentor_id: mentor[0]._id
@@ -184,7 +184,7 @@ exports.getUserMentorship = async (req, res, next) => {
       let error = { message: "undefined user" };
       return AppError.tryCatchError(res, error);
     }
-    if (mentorship) {
+    if (mentorship.length !== 0) {
       const workshops = await Workshop.find({
         mentorship_id: mentorship[0]._id
       }).sort("-createdAt");

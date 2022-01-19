@@ -18,6 +18,9 @@ const mentorSchema = new Schema(
     availability: {
       type: String
     },
+    language: {
+      type: String
+    },
     country: {
       type: String
     },
@@ -28,9 +31,6 @@ const mentorSchema = new Schema(
     occupation: String,
     work_place: String,
     lookingfor_learningstyle: {
-      type: String
-    },
-    lookingfor_education: {
       type: String
     },
     lookingfor_skillLevel: {
@@ -45,8 +45,17 @@ const mentorSchema = new Schema(
     lookingfor_interest: {
       type: String
     },
+    lookingfor_ethnicity: {
+      type: String
+    },
+    lookingfor_education: {
+      type: String
+    },
     why_mentor: {
       type: String
+    },
+    suggestions: {
+      type: Array
     },
     calender_events: [
       { title: String, event_date: String, description: String }

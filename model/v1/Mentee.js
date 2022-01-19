@@ -45,15 +45,22 @@ const menteeSchema = new Schema(
     lookingfor_language: {
       type: Array
     },
+    lookingfor_country: {
+      type: Array
+    },
     lookingfor_ethnicity: {
       type: String
     },
     goals: {
       type: String
     },
+    suggestions: {
+      type: Array
+    },
     calender_events: [
       { title: String, event_date: String, description: String }
-    ]
+    ],
+    qr_code: String
   },
   {
     timestamps: true

@@ -9,7 +9,7 @@ const uploadImage = require("../../../utils/uploadImage");
 
 const {
   successWithData,
-  successNoData,
+  successNoData
 } = require("../../../utils/successHandler");
 
 // Error
@@ -24,12 +24,12 @@ exports.createMentor = async (req, res, next) => {
       mentor = {
         ...req.body,
         qr_code: data.url,
-        user_id: req.user.id,
+        user_id: req.user.id
       };
     } else {
       mentor = {
         ...req.body,
-        user_id: req.user.id,
+        user_id: req.user.id
       };
     }
 
@@ -86,7 +86,7 @@ exports.updateMentor = async (req, res, next) => {
 
     let mentor = {
       ...req.body,
-      user_id: req.user.id,
+      user_id: req.user.id
     };
 
     const modifiedMentor = await Mentor.findOneAndUpdate(

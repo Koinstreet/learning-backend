@@ -7,7 +7,7 @@ const validateMentee = require("../../../validators/mentee");
 
 const {
   successWithData,
-  successNoData,
+  successNoData
 } = require("../../../utils/successHandler");
 
 // Error
@@ -22,12 +22,12 @@ exports.createMentee = async (req, res, next) => {
       mentee = {
         ...req.body,
         qr_code: data.url,
-        user_id: req.user.id,
+        user_id: req.user.id
       };
     } else {
       mentee = {
         ...req.body,
-        user_id: req.user.id,
+        user_id: req.user.id
       };
     }
 
@@ -83,7 +83,7 @@ exports.updateMentee = async (req, res, next) => {
 
     let mentee = {
       ...req.body,
-      user_id: req.user.id,
+      user_id: req.user.id
     };
 
     const modifiedMentee = await Mentee.findOneAndUpdate(

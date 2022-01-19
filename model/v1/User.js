@@ -90,7 +90,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
-
+    has_mentorship: {
+      type: Boolean,
+      default: false
+    },
     age: {
       type: Number
     },

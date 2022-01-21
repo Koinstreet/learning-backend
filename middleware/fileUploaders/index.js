@@ -63,3 +63,6 @@ exports.uploadModuleImage = uploadImage.single("image");
 exports.uploadChatImage = uploadImage.single("image");
 exports.uploadChatVideo = uploadVideo.single("video");
 exports.uploadResume = uploadDoc.single("resume");
+exports.uploadPersonalProject = uploadImage.single("image");
+exports.uploadEducation = uploadImage.single("image");
+exports.uploadExperience = uploadImage.single("image");

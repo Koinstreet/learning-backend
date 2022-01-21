@@ -1,9 +1,11 @@
 const validator = require("validator");
 const _ = require("lodash");
 
-const validateJob = (data) => {
+const validateProject = data => {
   let errors = {};
-  data.industry_of_business = data.industry_of_business ? data.industry_of_business : "";
+  data.industry_of_business = data.industry_of_business
+    ? data.industry_of_business
+    : "";
   data.type_of_business = data.type_of_business ? data.type_of_business : "";
 
   if (validator.isEmpty(data.industry_of_business)) {
@@ -15,4 +17,4 @@ const validateJob = (data) => {
   return { errors, isValid: _.isEmpty(errors) };
 };
 
-module.exports = validateJob;
+module.exports = validateProject;

@@ -48,6 +48,10 @@ const childLinksRoutes = require("./routes/childLinks");
 const suggestionsRoutes = require("./routes/suggestionsRoutes");
 const certificateRoutes = require("./routes/certificate");
 const reputationRoutes = require("./routes/reputation");
+const personalProject = require("./routes/PersonalProject");
+const achievements = require("./routes/achievemnt");
+const education = require("./routes/education");
+const experience = require("./routes/experience");
 
 const app = express();
 
@@ -122,6 +126,10 @@ app.use("/api/v1/childlink", childLinksRoutes);
 app.use("/api/v1/suggestions", suggestionsRoutes);
 app.use("/api/v1/certificate", certificateRoutes);
 app.use("/api/v1/reputation", reputationRoutes);
+app.use("/api/v1/personalProject", personalProject);
+app.use("/api/v1/achievement", achievements);
+app.use("/api/v1/education", education);
+app.use("/api/v1/experience", experience);
 
 app.use((req, res, next) => {
   const error = new Error("endpoint Not found...");

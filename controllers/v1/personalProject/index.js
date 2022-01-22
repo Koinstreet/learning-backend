@@ -19,10 +19,22 @@ exports.createPersonalProject = async (req, res, next) => {
     if (!isValid) {
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
-    let PersonalProject = {
-      ...req.body,
-      authorId: req.user.id
-    };
+
+    let PersonalProject;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      PersonalProject = {
+        ...req.body,
+        authorId: req.user.id,
+        image: data.url
+      };
+    } else {
+      PersonalProject = {
+        ...req.body,
+        authorId: req.user.id
+      };
+    }
 
     const newPersonalProject = await PersonalProjects.create(PersonalProject);
     return successWithData(

@@ -4,6 +4,8 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const Education = require("../../../model/v1/education");
 const validateEducation = require("../../../validators/Education");
 
+const uploadImage = require("../../../utils/uploadImage");
+
 const {
   successWithData,
   successNoData
@@ -18,12 +20,24 @@ exports.createEducation = async (req, res, next) => {
     if (!isValid) {
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
-    let Education = {
-      ...req.body,
-      authorId: req.user.id
-    };
 
-    const newEducation = await Education.create(Education);
+    let education;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      education = {
+        ...req.body,
+        authorId: req.user.id,
+        image: data.url
+      };
+    } else {
+      education = {
+        ...req.body,
+        authorId: req.user.id
+      };
+    }
+
+    const newEducation = await Education.create(education);
     return successWithData(
       res,
       CREATED,

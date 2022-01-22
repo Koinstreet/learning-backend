@@ -9,6 +9,8 @@ const {
   successNoData
 } = require("../../../utils/successHandler");
 
+const uploadImage = require("../../../utils/uploadImage");
+
 // Error
 const AppError = require("../../../utils/appError");
 
@@ -18,10 +20,22 @@ exports.createExperience = async (req, res, next) => {
     if (!isValid) {
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
-    let experience = {
-      ...req.body,
-      authorId: req.user.id
-    };
+
+    let experience;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      experience = {
+        ...req.body,
+        authorId: req.user.id,
+        image: data.url
+      };
+    } else {
+      experience = {
+        ...req.body,
+        authorId: req.user.id
+      };
+    }
 
     const newExperience = await Experience.create(experience);
     return successWithData(

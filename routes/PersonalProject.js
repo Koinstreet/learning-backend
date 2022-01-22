@@ -3,19 +3,20 @@ const express = require("express");
 // NEW CONTROLLERS
 const PersonalProject = require("../controllers/v1/personalProject");
 
+const fileUploader = require("../middleware/fileUploaders");
+
 // MIDDLEWARE
 const authMiddleware = require("../middleware/auth");
-const fileUploader = require("../middleware/fileUploaders");
 
 const router = express.Router();
 
 router.get("/", PersonalProject.getAllPersonalProjects);
 
-router.get("/:id", PersonalProject.getPersonalProject);
-
 router.use(authMiddleware.protect);
 
-router.get("/userProjects", PersonalProject.getAllUserPersonalProjects);
+router.get("/userPersonalProject", PersonalProject.getAllUserPersonalProjects);
+
+router.get("/:id", PersonalProject.getPersonalProject);
 
 router.post(
   "/",

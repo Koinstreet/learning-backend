@@ -26,9 +26,6 @@ const ExperienceSchema = new Schema(
     location: {
       type: String
     },
-    major: {
-      type: String
-    },
     to: {
       type: Date
     },

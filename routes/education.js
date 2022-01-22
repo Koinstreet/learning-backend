@@ -1,7 +1,7 @@
 const express = require("express");
 
 // NEW CONTROLLERS
-const Education = require("../controllers/v1/Education");
+const Education = require("../controllers/v1/education");
 
 const fileUploader = require("../middleware/fileUploaders");
 

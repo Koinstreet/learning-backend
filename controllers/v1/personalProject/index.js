@@ -51,9 +51,7 @@ exports.createPersonalProject = async (req, res, next) => {
 
 exports.getAllPersonalProjects = async (req, res, next) => {
   try {
-    const personalProjects = await PersonalProjects.find({})
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    const personalProjects = await PersonalProjects.find({}).sort("-createdAt");
     return successWithData(
       res,
       OK,
@@ -70,9 +68,7 @@ exports.getAllUserPersonalProjects = async (req, res, next) => {
   try {
     const personalProjects = await PersonalProjects.find({
       authorId: req.user.id
-    })
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    }).sort("-createdAt");
     return successWithData(
       res,
       OK,

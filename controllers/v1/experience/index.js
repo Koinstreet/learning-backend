@@ -52,9 +52,7 @@ exports.createExperience = async (req, res, next) => {
 
 exports.getAllExperience = async (req, res, next) => {
   try {
-    const experience = await Experience.find({})
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    const experience = await Experience.find({}).sort("-createdAt");
     return successWithData(
       res,
       OK,
@@ -71,9 +69,7 @@ exports.getAllUserExperience = async (req, res, next) => {
   try {
     const experience = await Experience.find({
       authorId: req.user.id
-    })
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    }).sort("-to");
     return successWithData(
       res,
       OK,

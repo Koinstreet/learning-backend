@@ -38,9 +38,7 @@ exports.createAchievement = async (req, res, next) => {
 
 exports.getAllAchievement = async (req, res, next) => {
   try {
-    const achievement = await Achievement.find({})
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    const achievement = await Achievement.find({}).sort("-createdAt");
     return successWithData(
       res,
       OK,
@@ -57,9 +55,7 @@ exports.getAllUserAchievement = async (req, res, next) => {
   try {
     const achievement = await Achievement.find({
       authorId: req.user.id
-    })
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    }).sort("-createdAt");
     return successWithData(
       res,
       OK,

@@ -52,9 +52,7 @@ exports.createEducation = async (req, res, next) => {
 
 exports.getAllEducation = async (req, res, next) => {
   try {
-    const education = await Education.find({})
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    const education = await Education.find({}).sort("-createdAt");
     return successWithData(
       res,
       OK,
@@ -71,9 +69,7 @@ exports.getAllUserEducation = async (req, res, next) => {
   try {
     const education = await Education.find({
       authorId: req.user.id
-    })
-      .populate("authorId", "-password")
-      .sort("-createdAt");
+    }).sort("-createdAt");
     return successWithData(
       res,
       OK,

@@ -5,6 +5,8 @@ const PersonalProjects = require("../../../model/v1/PersonalProject");
 
 const validatePersonalProject = require("../../../validators/PersonalProject");
 
+const uploadImage = require("../../../utils/uploadImage");
+
 const {
   successWithData,
   successNoData

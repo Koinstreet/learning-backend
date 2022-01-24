@@ -20,7 +20,7 @@ router.post("/", EnrolledCourse.createEnrolledCourse);
 
 router.get("/:id", EnrolledCourse.getEnrolledCourse);
 
-router.get("/:userId", EnrolledCourse.getOnePersonCourses);
+router.get("/user/:userId", EnrolledCourse.getOnePersonCourses);
 
 router
   .route("/:id")

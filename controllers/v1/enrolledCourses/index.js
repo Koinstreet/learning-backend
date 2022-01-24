@@ -138,6 +138,30 @@ exports.getUserEnrolledCourse = async (req, res, next) => {
   }
 };
 
+exports.getOnePersonCourses = async (req, res, next) => {
+  try {
+    const EnrolledCourses = await EnrolledCourse.find({
+      user_id: req.params.userId
+    })
+      .populate("user_id")
+      .populate("courseId")
+      .sort("-createdAt");
+    if (!EnrolledCourses) {
+      let error = { message: "this user has no course" };
+      return AppError.tryCatchError(res, error);
+    }
+    return successWithData(
+      res,
+      OK,
+      "user enrolled courses fetched successfully",
+      EnrolledCourses
+    );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getEnrolledCourse = async (req, res, next) => {
   try {
     const EnrolledCourses = await EnrolledCourse.findById(req.params.id)

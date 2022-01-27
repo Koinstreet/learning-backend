@@ -1,5 +1,6 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 import sendEmail from "../../../utils/email/sendEmail";
 import emailTemplate from "../../../utils/email/emailService";
@@ -9,7 +10,7 @@ import Token from "../../../model/v1/Token";
 
 const {
   successWithData,
-  successNoData
+  successNoData,
 } = require("../../../utils/successHandler");
 
 import emailFormatForgot from "../../../utils/email/forgotPassword/email";
@@ -19,7 +20,12 @@ const User = require("../../../model/v1/User");
 const Notifications = require("../../../model/v1/notifications");
 
 // Validation
-const { validateSignup, validateLogin } = require("../../../validators");
+const {
+  validateSignup,
+  validateLogin,
+  validateForgotPassword,
+  validateResetPassword,
+} = require("../../../validators");
 
 // Error
 const AppError = require("../../../utils/appError");
@@ -56,7 +62,7 @@ exports.signupUser = async (req, res, next) => {
       receiverId: newUser._id,
       title: subject,
       type: "User",
-      description: "Please create your account profile"
+      description: "Please create your account profile",
     });
     const message = `Dear ${newUser.firstName} , Successfully Registered your account! login with your email and password`;
     createSendToken(newUser, 201, res, message);
@@ -92,9 +98,9 @@ exports.loginUser = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { errors, isValid } = validateForgotPassword(req.body);
-    if (!isValid) {
-      return AppError.validationError(res, BAD_REQUEST, errors);
-    }
+    // if (!isValid) {
+    //   return AppError.validationError(res, BAD_REQUEST, errors);
+    // }
 
     const user = await User.findOne({ email: req.body.email });
     if (!user)
@@ -104,11 +110,11 @@ exports.forgotPassword = async (req, res, next) => {
     if (!token) {
       token = await new Token({
         userId: user._id,
-        token: crypto.randomBytes(32).toString("hex")
+        token: crypto.randomBytes(32).toString("hex"),
       }).save();
     }
 
-    const link = `https://www.minorityprogrammers.com/reset?userId=${user._id}&&token=${token.token}`;
+    const link = `http://localhost:3000/reset?userId=${user._id}&&token=${token.token}`;
     const subject = "Link to Reset your password!";
     sendEmail(emailFormatForgot(user.firstName, link), subject, user.email);
 
@@ -126,16 +132,16 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
     const { errors, isValid } = validateResetPassword(req.body);
-    if (!isValid) {
-      return AppError.validationError(res, BAD_REQUEST, errors);
-    }
+    // if (!isValid) {
+    //   return AppError.validationError(res, BAD_REQUEST, errors);
+    // }
 
     const user = await User.findById(req.params.userId);
     if (!user) return res.status(400).send("invalid link or expired");
 
     const token = await Token.findOne({
       userId: user._id,
-      token: req.params.token
+      token: req.params.token,
     });
     if (!token) return res.status(400).send("Invalid link or expired");
 

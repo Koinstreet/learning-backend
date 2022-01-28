@@ -133,9 +133,19 @@ exports.mintProfile = async (req, res) => {
     let balancePromise = await wallet.getBalance();
 
     if (ethers.utils.formatEther(balancePromise) === "0.0") {
-      let err = "not enough funds to perform action";
+      let err = { message: "not enough funds to perform action" };
       return AppError.tryCatchError(res, err);
     } else {
+      const checkTransaction = await Transactions.find({
+        userAddress: req.body.userAddress,
+        metadata: req.body.metadata
+      });
+
+      if (checkTransaction.length >= 1) {
+        let err = { message: "You are only allowed to mint NFT once" };
+        return AppError.tryCatchError(res, err);
+      }
+
       let transaction = await collectionContract.mintNFT(
         req.body.userAddress,
         req.body.metadata
@@ -157,7 +167,7 @@ exports.mintProfile = async (req, res) => {
       return successWithData(res, OK, "Profile minted successfully", {
         metadata: req.body.metadata,
         transaction: tx.transactionHash,
-        newTransaction
+        checkTransaction
       });
     }
   } catch (e) {

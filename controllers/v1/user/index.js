@@ -130,13 +130,13 @@ exports.mintProfile = async (req, res) => {
 
     const collectionContract = new ethers.Contract(nftaddress, abi.abi, wallet);
 
-    const signer = new ethers.providers.JsonRpcProvider(
-      `https://polygon-mumbai.infura.io/v3/${process.env.API_PROVIDER}`
-    ).getSigner(req.body.userAddress);
+    // const signer = new ethers.providers.JsonRpcProvider(
+    //   `https://polygon-mumbai.infura.io/v3/${process.env.API_PROVIDER}`
+    // ).getSigner(req.body.userAddress);
 
-    console.log(signer);
+    // console.log(signer);
 
-    const userContract = new ethers.Contract(nftaddress, abi.abi, signer);
+    // const userContract = new ethers.Contract(nftaddress, abi.abi, signer);
 
     let balancePromise = await wallet.getBalance();
 
@@ -147,18 +147,18 @@ exports.mintProfile = async (req, res) => {
       return AppError.tryCatchError(res, err);
     } else {
       let transaction = await collectionContract.mintNFT(
-        nftaddress,
+        req.body.userAddress,
         req.body.metadata
       );
       const tx = await transaction.wait();
-      const event = tx.events[0];
-      const value = event.args[2];
-      const tokenId = value.toNumber();
+      // const event = tx.events[0];
+      // const value = event.args[2];
+      // const tokenId = value.toNumber();
 
-      let transaction2 = await userContract.giveOwnership(nftaddress, tokenId, {
-        value: 10
-      });
-      await transaction2.wait();
+      // let transaction2 = await userContract.giveOwnership(nftaddress, tokenId, {
+      //   value: 10
+      // });
+      // await transaction2.wait();
 
       const link = `${process.env.POLYGON_LINK}/${tx.hash}`;
       const subject = "Your Minted NFT";

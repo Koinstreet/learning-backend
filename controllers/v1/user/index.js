@@ -1,7 +1,7 @@
 const { OK } = require("http-status-codes");
 
 const ethers = require("ethers");
-const { UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
+const { UNAUTHORIZED, BAD_REQUEST } = require("http-status-codes");
 import sendEmail from "../../../utils/email/sendEmail";
 import profileMint from "../../../utils/email/Mint/profileMint";
 import createWallet from "../../../utils/serverWallet";

@@ -130,37 +130,29 @@ exports.mintProfile = async (req, res) => {
 
     const collectionContract = new ethers.Contract(nftaddress, abi.abi, wallet);
 
-    const signer = new ethers.providers.JsonRpcProvider(
-      `https://polygon-mumbai.infura.io/v3/${process.env.API_PROVIDER}`
-    ).getSigner(req.body.userAddress);
-
-    console.log(signer);
-
-    const userContract = new ethers.Contract(nftaddress, abi.abi, signer);
-
     let balancePromise = await wallet.getBalance();
 
-    console.log(ethers.utils.formatEther(balancePromise));
-
     if (ethers.utils.formatEther(balancePromise) === "0.0") {
-      let err = "not enough funds to perform action";
+      let err = { message: "not enough funds to perform action" };
       return AppError.tryCatchError(res, err);
     } else {
+      const checkTransaction = await Transactions.find({
+        userAddress: req.body.userAddress,
+        metadata: req.body.metadata
+      });
+
+      if (checkTransaction.length >= 1) {
+        let err = { message: "You are only allowed to mint NFT once" };
+        return AppError.tryCatchError(res, err);
+      }
+
       let transaction = await collectionContract.mintNFT(
-        nftaddress,
+        req.body.userAddress,
         req.body.metadata
       );
       const tx = await transaction.wait();
-      const event = tx.events[0];
-      const value = event.args[2];
-      const tokenId = value.toNumber();
 
-      let transaction2 = await userContract.giveOwnership(nftaddress, tokenId, {
-        value: 10
-      });
-      await transaction2.wait();
-
-      const link = `${process.env.POLYGON_LINK}/${tx.hash}`;
+      const link = `${process.env.POLYGON_LINK}/${tx.transactionHash}`;
       const subject = "Your Minted NFT";
       sendEmail(
         profileMint(req.user.firstName, req.body.userAddress, link),
@@ -169,13 +161,13 @@ exports.mintProfile = async (req, res) => {
       );
       const newTransaction = await Transactions.create({
         metadata: req.body.metadata,
-        hash: tx.hash,
+        hash: tx.transactionHash,
         userAddress: req.body.userAddress
       });
       return successWithData(res, OK, "Profile minted successfully", {
         metadata: req.body.metadata,
-        transaction: tx.hash,
-        newTransaction
+        transaction: tx.transactionHash,
+        checkTransaction
       });
     }
   } catch (e) {

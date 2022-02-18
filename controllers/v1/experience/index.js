@@ -82,6 +82,23 @@ exports.getAllUserExperience = async (req, res, next) => {
   }
 };
 
+exports.getAllUserExperienceById = async (req, res, next) => {
+  try {
+    const experience = await Experience.find({
+      authorId: req.params.id
+    }).sort("-to");
+    return successWithData(
+      res,
+      OK,
+      "user Experiences fetched successfully",
+      experience
+    );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getExperience = async (req, res, next) => {
   try {
     const experience = await Experience.findById(req.params.id).populate(

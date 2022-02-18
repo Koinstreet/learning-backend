@@ -12,6 +12,11 @@ const router = express.Router();
 
 router.get("/", PersonalProject.getAllPersonalProjects);
 
+router.get(
+  "/PersonalProjectById/:id",
+  PersonalProject.getAllPersonalProjectById
+);
+
 router.use(authMiddleware.protect);
 
 router.get("/userPersonalProject", PersonalProject.getAllUserPersonalProjects);

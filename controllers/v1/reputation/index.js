@@ -106,7 +106,7 @@ exports.getUserReputations = async (req, res, next) => {
   }
 };
 
-exports.getReputationById = async () => {
+exports.getReputationById = async (req, res) => {
   try {
     const reputationss = await Reputations.find({ userId: req.params.id })
       .populate("userId")

@@ -13,6 +13,8 @@ router.get(
   reputation.getUserReputations
 );
 
+router.get("/user/:id", reputation.getReputationById);
+
 router.get("/", authMiddleware.protect, reputation.getAllReputationss);
 
 router.get("/:id", authMiddleware.protect, reputation.getReputation);

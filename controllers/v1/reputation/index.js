@@ -106,6 +106,29 @@ exports.getUserReputations = async (req, res, next) => {
   }
 };
 
+exports.getReputationById = async () => {
+  try {
+    const reputationss = await Reputations.find({ userId: req.params.id })
+      .populate("userId")
+      .populate("startUp_id")
+      .populate("event_id")
+      .populate("project_id")
+      .populate("authorId")
+      .populate("chapter_id")
+      .populate("course_id")
+      .sort("-createdAt");
+    return successWithData(
+      res,
+      OK,
+      "Reputationss fetched successfully",
+      reputationss
+    );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.deleteReputations = async (req, res) => {
   try {
     await Reputations.findOneAndDelete({ _id: req.params.id });

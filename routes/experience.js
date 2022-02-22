@@ -12,6 +12,8 @@ const router = express.Router();
 
 router.get("/", Experience.getAllExperience);
 
+router.get("/userExperienceById/:id", Experience.getAllUserExperienceById);
+
 router.use(authMiddleware.protect);
 
 router.get("/userExperience", Experience.getAllUserExperience);

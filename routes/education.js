@@ -10,6 +10,8 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+router.get("/userEducationById/:id", Education.getAllUserEducationById);
+
 router.get("/", Education.getAllEducation);
 
 router.use(authMiddleware.protect);

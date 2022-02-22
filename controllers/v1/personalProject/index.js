@@ -83,6 +83,23 @@ exports.getAllUserPersonalProjects = async (req, res, next) => {
   }
 };
 
+exports.getAllPersonalProjectById = async (req, res, next) => {
+  try {
+    const personalProjects = await PersonalProjects.find({
+      authorId: req.params.id
+    }).sort("-createdAt");
+    return successWithData(
+      res,
+      OK,
+      "user PersonalProjects fetched successfully",
+      personalProjects
+    );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getPersonalProject = async (req, res, next) => {
   try {
     const personalProject = await PersonalProjects.findById(

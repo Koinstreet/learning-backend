@@ -11,6 +11,10 @@ const router = express.Router();
 
 router.get("/", EnrolledCourse.getAllEnrolledCourse);
 
+router.get("/:courseId/moduleById/:id", UserModule.getModuleById);
+
+router.get("/user/:userId", EnrolledCourse.getOnePersonCourses);
+
 router.use(authMiddleware.protect);
 
 // courses
@@ -20,8 +24,6 @@ router.post("/", EnrolledCourse.createEnrolledCourse);
 
 router.get("/:id", EnrolledCourse.getEnrolledCourse);
 
-router.get("/user/:userId", EnrolledCourse.getOnePersonCourses);
-
 router
   .route("/:id")
   .patch(EnrolledCourse.updateEnrolledCourse)
@@ -29,6 +31,7 @@ router
 
 // modules
 router.get("/:courseId/userModules", UserModule.getUserUserModules);
+
 router.get("/:courseId/:id", UserModule.getUserModule);
 router.post("/:courseId/module", UserModule.createUserModule);
 router

@@ -11,6 +11,8 @@ const router = express.Router();
 
 router.get("/", EnrolledCourse.getAllEnrolledCourse);
 
+router.get("/:courseId/moduleById/:id", UserModule.getModuleById);
+
 router.use(authMiddleware.protect);
 
 // courses
@@ -29,6 +31,7 @@ router
 
 // modules
 router.get("/:courseId/userModules", UserModule.getUserUserModules);
+
 router.get("/:courseId/:id", UserModule.getUserModule);
 router.post("/:courseId/module", UserModule.createUserModule);
 router

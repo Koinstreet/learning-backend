@@ -82,6 +82,23 @@ exports.getAllUserEducation = async (req, res, next) => {
   }
 };
 
+exports.getAllUserEducationById = async (req, res, next) => {
+  try {
+    const education = await Education.find({
+      authorId: req.params.id
+    }).sort("-createdAt");
+    return successWithData(
+      res,
+      OK,
+      "user Educations fetched successfully",
+      education
+    );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
 exports.getEducation = async (req, res, next) => {
   try {
     const education = await Education.findById(req.params.id).populate(

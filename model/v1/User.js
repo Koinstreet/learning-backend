@@ -42,6 +42,10 @@ const userSchema = new Schema(
     publicAddress: {
       type: String
     },
+    nonce: {
+      type: Number,
+      default: () => Math.floor(Math.random() * 1000000)
+    },
     password: {
       type: String,
       min: 8
@@ -70,7 +74,7 @@ const userSchema = new Schema(
       type: String
     },
     phoneNumber: {
-      type: Number
+      type: String
     },
     experience: {
       type: Number

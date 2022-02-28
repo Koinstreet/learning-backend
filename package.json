@@ -32,6 +32,8 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "eth-sig-util": "^3.0.1",
+    "ethereumjs-util": "^7.1.4",
     "ethers": "^5.5.3",
     "express": "^4.17.1",
     "google-auth-library": "^7.5.0",

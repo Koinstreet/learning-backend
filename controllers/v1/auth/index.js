@@ -1,6 +1,8 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+import { recoverPersonalSignature } from "eth-sig-util";
+import { bufferToHex } from "ethereumjs-util";
 
 import sendEmail from "../../../utils/email/sendEmail";
 import emailTemplate from "../../../utils/email/emailService";
@@ -154,4 +156,76 @@ exports.resetPassword = async (req, res, next) => {
     res.send("An error occured");
     console.log(error);
   }
+};
+
+export const walletLogin = (req, res, next) => {
+  const { signature, publicAddress } = req.body;
+  if (!signature || !publicAddress)
+    return res
+      .status(400)
+      .send({ error: "Request should have signature and publicAddress" });
+
+  return User.findOne({ publicAddress })
+    .then(user => {
+      if (!user) {
+        res.status(401).send({
+          error: `User with publicAddress ${publicAddress} is not found in database`
+        });
+
+        return null;
+      }
+
+      return user;
+    })
+    .then(user => {
+      if (!user) {
+        throw new Error('User is not defined in "Verify digital signature".');
+      }
+
+      const msg = `I am signing my one-time nonce: ${user.nonce}`;
+
+      const msgBufferHex = bufferToHex(Buffer.from(msg, "utf8"));
+      const address = recoverPersonalSignature({
+        data: msgBufferHex,
+        sig: signature
+      });
+
+      if (address.toLowerCase() === publicAddress.toLowerCase()) {
+        return user;
+      } else {
+        res.status(401).send({
+          error: "Signature verification failed"
+        });
+
+        return null;
+      }
+    })
+    .then(user => {
+      if (!user) {
+        throw new Error(
+          'User is not defined in "Generate a new nonce for the user".'
+        );
+      }
+
+      user.nonce = Math.floor(Math.random() * 10000);
+      return user.save();
+    })
+    .then(user => {
+      const message = `user Authorized`;
+      createSendToken(user, 201, res, message);
+    })
+    .catch(next);
+};
+
+export const createWallet = (req, res, next) =>
+  User.create(req.body)
+    .then(user => res.json(user))
+    .catch(next);
+
+export const findAccount = (req, res, next) => {
+  // If a query string ?publicAddress=... is given, then filter results
+
+  return User.find({ publicAddress: req.params.publicAddress })
+    .then(users => res.json(users))
+    .catch(next);
 };

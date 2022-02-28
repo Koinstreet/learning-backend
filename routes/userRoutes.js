@@ -20,6 +20,12 @@ router.post("/login", authUser.loginUser);
 
 router.get("/", authUser.getAllUser);
 
+router.post("/account/create", authUser.createWallet);
+
+router.post("/account/login", authUser.walletLogin);
+
+router.get("/account/get/:publicAddress", authUser.findAccount);
+
 router.get("/search/:query", user.searchUsersByName);
 
 router.route("/getProfile/:id").get(user.getUser);
@@ -29,6 +35,8 @@ router.use(authMiddleware.protect);
 router
   .route("/updateProfile/:id")
   .patch(courseMiddleware.uploadUserImage, user.updateUser);
+
+router.get("/delete/:id", user.deleteUser);
 
 router.post("/mintProfile", user.mintProfile);
 

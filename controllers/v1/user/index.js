@@ -21,7 +21,10 @@ const validateForgotPassword = require("../../../validators/forgotPassword");
 // Error
 const AppError = require("../../../utils/appError");
 // Success
-const { successWithData } = require("../../../utils/successHandler");
+const {
+  successWithData,
+  successNoData
+} = require("../../../utils/successHandler");
 
 const abi = require("../../../artifacts/contracts/NFT.sol/NFT.json");
 
@@ -94,6 +97,29 @@ exports.updateUser = async (req, res, next) => {
     );
     console.log(req.body);
     return successWithData(res, OK, "User Updated", modifieduser);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      let error = { message: "undefined user" };
+      return AppError.tryCatchError(res, error);
+    }
+
+    if (req.user.id === req.params.id || req.user.role === "admin") {
+      await User.findOneAndDelete({ _id: req.params.id });
+
+      return successNoData(res, OK, "User Deleted");
+    } else {
+      let error = { message: "not allowed to perform this action" };
+      return AppError.tryCatchError(res, error);
+    }
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);

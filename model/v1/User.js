@@ -83,6 +83,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
+    isDeactivated: {
+      type: Boolean,
+      default: false
+    },
     location: {
       type: String
     },

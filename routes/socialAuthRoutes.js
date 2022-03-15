@@ -1,9 +1,16 @@
 const express = require("express");
 import passport from 'passport';
-
+const {
+  successWithData,
+  successNoData,
+} = require("../utils/successHandler");
+const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const router = express.Router();
-
+import socialAuth from '../controllers/v1/socialAuth'
 //google routes
+
+router.post("/googleLogin", socialAuth.googleLogin);
+router.post("/nextAuth", socialAuth.nextAuth);
 
 router.get("/auth/google", passport.authenticate("google", {
     scope: ["profile", "email"]
@@ -17,7 +24,7 @@ router.get("/auth/google", passport.authenticate("google", {
 
   router.get("/auth/logout", (req, res) => {
     req.logout();
-    res.send(req.user);
+    res.send(req);
   });
 
   //facebook route
@@ -27,6 +34,8 @@ router.get("/auth/google", passport.authenticate("google", {
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
+    res.send(req);
+    successWithData(res, OK, "Logged in successfully", req.user);
   });
 
   //github routes
@@ -39,6 +48,8 @@ router.get("/auth/google", passport.authenticate("google", {
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
+    res.send(req);
+    successWithData(res, OK, "Logged in successfully", req.user);
   });
 
 // linkedin routes
@@ -51,6 +62,8 @@ router.get('/auth/linkedin/callback',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
+    res.send(req);
+    successWithData(res, OK, "Logged in successfully", req.user);
   });
 
 module.exports = router;

@@ -10,16 +10,25 @@ const EventSchema = new Schema({
   },
   EventPicture: {
     type: String,
+    default: 'http://res.cloudinary.com/djhbhzex4/image/upload/v1626716733/images/2021-07-19T17_45_29.803Z-events_medium.jpeg.jpg'
+  },
+  eventStatus: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending"
   },
   catName: {
     type: String,
-    required: true,
   },
   EventDescription: {
     type: String,
     required: true,
   },
-  Featured:{
+  Featured: {
+    type: Boolean,
+    default: false,
+  },
+  Virtual: {
     type: Boolean,
     default: false,
   },
@@ -35,13 +44,16 @@ const EventSchema = new Schema({
     required: true,
   },
   actionLink: {
-      type: String,
-      required: true,
-    },
-    callToAction: {
-        type: String,
-        required: true,
-    },
+    type: String,
+  },
+  callToAction: {
+    type: String,
+  },
+  tags: {
+    type: Array,
+    required: true
+  }
+
 }, {
   timestamps: true
 });

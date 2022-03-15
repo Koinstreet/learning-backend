@@ -45,7 +45,8 @@ exports.getAllChapterStats = async (req, res, next) => {
 exports.getChapterStats = async (req, res, next) => {
     try {
       const chapter_stats = await ChapterStats.findById(req.params.id);
-      if (!chapter_stats) return AppError.tryCatchError(res, err);
+      if (!chapter_stats) { let error = {message: "undefined chapter stat"}; return AppError.tryCatchError(res, error);}
+
       return successWithData(res, OK, "ChapterStats fetched successfully", chapter_stats);
     } catch (err) {
       console.log(err);
@@ -56,7 +57,8 @@ exports.getChapterStats = async (req, res, next) => {
 exports.updateChapterStats = async (req, res, next) => {
     try {
       const chapterStatsUpdate = await ChapterStats.findById(req.params.id);
-      if (!chapterStatsUpdate) return AppError.tryCatchError(res, err);
+      if (!chapterStatsUpdate) { let error = {message: "undefined chapter stat"}; return AppError.tryCatchError(res, error);}
+
       let chapter_stats;
 
       chapter_stats = {

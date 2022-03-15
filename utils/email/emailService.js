@@ -83,23 +83,22 @@ export default (firstName)=>{
         <div class="content">
           <div class="parent">
             <div class="row1">
-                <p class="">Barefoot <span>Nomad</span></p>
+                <p class="">MPA-Support<span>Team</span></p>
             </div>
           </div>
           <div class="row2">
-          <p>Hello ${firstName}</p><br>
+          <p>Hello ${firstName},</p>
             <h1>Welcome to Minority Programmer's Association</h1>
-            <p>Thanks so much for joining us! You are now on your way to be a part of our opportunities<br><br>
+            <p>Thanks so much for joining us! You are now on your way to be a part of our opportunities<br>
             We are an international network of developers unifying together to build socially impactful projects & spread STEM education to marginalized communities.</p>
     
     
-    
-            <br>
-            <p><i>We are happy to have you on board! Please reply to this email if you have any comments, questions or feedback.<br><br>
+
+            <p><i>We are happy to have you on board! Please reply to this email if you have any comments, questions or feedback.<br>
     
                 Cheerfully yours,<br>
                 
-                Minotirity programmers Team</p></i>
+                Minority programmers Support Team</p></i>
           </div>
           
           

@@ -10,8 +10,8 @@ const fileUploader = require("../middleware/fileUploaders");
 
 const router = express.Router();
 
-router.get("/", location.getAllLocations);
 router.get("/:id", location.getLocation);
+router.get("/", location.getAllLocations);
 
 router.use(authMiddleware.protect);
 router.post(
@@ -21,7 +21,7 @@ router.post(
   );
 router
   .route("/:id")
-  .put(fileUploader.uploadLocationLogo, location.updateLocation)
+  .patch(fileUploader.uploadLocationLogo, location.updateLocation)
   .delete(location.deleteLocation);
 
 module.exports = router;

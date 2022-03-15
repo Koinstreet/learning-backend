@@ -13,13 +13,44 @@ const startupSchema = new Schema({
     type: String,
     required: true,
   },
+  industry: {
+    type: String,
+  },
+  repo_link: {
+    type: String,
+  },
+  non_profit: {
+    type: Boolean,
+    default: false
+  },
+  TAM: {
+    type: Number,
+  },
+  SAM: {
+    type: Number,
+  },
+  SOM: {
+    type: Number,
+  },
   amount: {
     type: String,
+  },
+  market_size: {
+    type: String,
+  },
+  milestone: {
+    type: Array,
+  },
+  pool_questions: {
+    type: Array,
   },
   shareOwner: {
     type: Boolean,
   },
   targetAmount: {
+    type: Number,
+  },
+  min_fund: {
     type: Number,
   },
   shareOffered: {
@@ -46,12 +77,30 @@ const startupSchema = new Schema({
   linkedInLink: {
     type: String,
   },
+  instagramLink: {
+    type: String,
+  },
   location: {
     type: Array,
     required: true,
   },
   teamSizeMin: {
     type: Number,
+  },
+  frontend: {
+    type: Array,
+  },
+  backend: {
+    type: Array,
+  },
+  uiux: {
+    type: Array,
+  },
+  deployment: {
+    type: Array,
+  },
+  teammembers: {
+    type: Array,
   },
   teamSizeMax: {
     type: Number,
@@ -76,7 +125,19 @@ const startupSchema = new Schema({
   vision: {
     type: String,
   },
-  found: {
+  problem: {
+    type: String,
+  },
+  solution: {
+    type: String,
+  },
+  business_model: {
+    type: String,
+  },
+  revenue_stream: {
+    type: String,
+  },
+  found_date: {
     type: String,
   },
 }, {

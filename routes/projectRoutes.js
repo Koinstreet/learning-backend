@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(project.updateProject)
+  .patch(project.updateProject)
   .delete(project.deleteProject);
 
 

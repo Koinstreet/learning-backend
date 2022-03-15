@@ -21,9 +21,9 @@ router.use(authMiddleware.protect);
 router.get("/:courseId/module/:moduleId", courseModule.getModule);
 router.get("/user/viewed", courseModule.getViewedCourses);
 
-router.use(authMiddleware.restrictTo("admin"));
+router.get("/admin/courses", authMiddleware.restrictTo("admin"), course.getAllCourse);
 
-router.get("/admin/courses", course.getAllCourse);
+router.patch("/approve/:id", authMiddleware.restrictTo("admin"), course.approveCourse);
 
 router.post(
   "/",
@@ -32,17 +32,17 @@ router.post(
 );
 router
   .route("/:id")
-  .put(courseMiddleware.uploadCourseImage, course.updateCourse)
+  .patch(courseMiddleware.uploadCourseImage, course.updateCourse)
   .delete(course.deleteCourse);
 
 router
   .route("/:courseId/module")
-  .post(courseMiddleware.uploadModuleVideo, courseModule.createModule)
+  .post(courseMiddleware.uploadModuleImage, courseMiddleware.uploadModuleVideo, courseModule.createModule)
   // .get(moduleController.getCourseAllModule);
 
 router
   .route("/:courseId/module/:id")
-  .put(courseModule.updateModule)
+  .patch(courseMiddleware.uploadModuleImage, courseMiddleware.uploadModuleVideo, courseModule.updateModule)
   .delete(courseModule.deleteModule);
 
 module.exports = router;

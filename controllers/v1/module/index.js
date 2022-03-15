@@ -29,11 +29,26 @@ exports.createModule = async (req, res, next) => {
       errors.msg = "Invalid course";
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
-    const module = {
-      ...req.body,
-      authorId: req.user.id,
-      courseId: req.params.courseId,
-    };
+    
+
+    let module;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      module = {
+        ...req.body,
+        authorId: req.user.id,
+        image: data.url,
+        courseId: req.params.courseId,
+      };
+    } else {
+      module = {
+        ...req.body,
+        authorId: req.user.id,
+        courseId: req.params.courseId,
+      };
+    }
+
     const newModule = await Module.create(module);
     return successWithData(res, CREATED, "Module created", newModule);
   } catch (err) {
@@ -46,7 +61,7 @@ exports.getCourseAllModule = async (req, res, next) => {
   try {
     const modules = await Module.find({ courseId: req.params.courseId }).sort(
       "createdAt"
-    );
+    ).populate("courseId");
     if (!modules) {
       errors.msg = "Invalid course";
       return AppError.validationError(res, BAD_REQUEST, errors);
@@ -63,7 +78,7 @@ exports.getModule = async (req, res, next) => {
     const module = await Module.findOne({
       _id: req.params.moduleId,
       courseId: req.params.courseId,
-    });
+    }).populate("courseId").populate("authorId");;
     const errors = {};
     if (!module) {
       errors.msg = "Invalid module";
@@ -122,9 +137,28 @@ exports.updateModule = async (req, res, next) => {
       errors.msg = "Invalid module";
       return AppError.validationError(res, BAD_REQUEST, errors);
     }
+
+    let module;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      module = {
+        ...req.body,
+        authorId: req.user.id,
+        image: data.url,
+        courseId: req.params.courseId,
+      };
+    } else {
+      module = {
+        ...req.body,
+        authorId: req.user.id,
+        courseId: req.params.courseId,
+      };
+    }
+
     const newModule = await Module.findOneAndUpdate(
       { _id: req.params.id },
-      { ...req.body },
+      { ...module},
       { new: true }
     );
     return successWithData(res, OK, "Updated course successfully", newModule);

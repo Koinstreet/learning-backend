@@ -44,9 +44,8 @@ exports.restrictTo = (...roles) => {
     if (!roles.includes(req.user.role)) {
       const errors = {};
       errors.msg = "You do not have permission to perform this action";
-      return next(AppError.validationError(res, FORBIDDEN, errors));
+      return next(AppError.validationError(res, UNAUTHORIZED, errors.msg));
     }
     next();
   };
 };
-

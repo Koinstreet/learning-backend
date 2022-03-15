@@ -9,17 +9,34 @@ const courseSchema = new Schema({
     required: true,
     ref: "User",
   },
+  totalModules: {
+    type: Number,
+  },
   name: {
     type: String,
     required: true,
+  },
+  tags: {
+    type: Array,
   },
   highlight: {
     type: String,
     required: true,
   },
-  overview: {
+  difficulty: {
+    type: String,
+    enum: ["Beginner", "intermediate", "Advanced"],
+  },
+  earn: {
+    type: Number,
+  },
+  description: {
     type: String,
     required: true,
+  },
+  featured: {
+    type: Boolean,
+    default: false,
   },
   audience: String,
   perequisites: String,
@@ -28,6 +45,7 @@ const courseSchema = new Schema({
     type: Boolean,
     default: false,
   },
+
 }, {
   timestamps: true
 });

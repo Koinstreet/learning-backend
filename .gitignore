@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+.nyc_output
+
 # production
 /build
 
@@ -23,3 +25,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
+config.env

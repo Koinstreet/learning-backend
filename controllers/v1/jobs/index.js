@@ -1,7 +1,12 @@
 const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
+const moment = require('moment');
+const url = require('url');
+const querystring = require('querystring');
 
 // DB
 const Jobs = require("../../../model/v1/Jobs");
+
+const EasyApply = require("../../../model/v1/easyApply");
 
 const validateJob = require("../../../validators/job");
 
@@ -39,10 +44,108 @@ exports.createJob = async (req, res, next) => {
 
 exports.getAllJobs= async (req, res, next) => {
   try {
-    const jobs = await Jobs.find({})
-      .populate("authorId", "-password")
+
+    let parsedUrl = url.parse(req.url);
+    let parsedQs = querystring.parse(parsedUrl.query);
+    
+    let time = 100;
+
+    if (parsedQs.date_posted === 'week'){
+      time = 7
+    }
+    else if(parsedQs.date_posted === 'day'){
+      time = 1
+    }
+    else if(parsedQs.date_posted === 'month'){
+      time = 30
+    }
+    else {
+      time = 100
+    }
+
+    let pay = parsedQs.pay ? parsedQs.pay : 0;
+    let timeFilter = parsedQs.date_posted ? { updatedAt: { $gte: new Date(moment().subtract(time, 'days').startOf('day').format('YYYY-MM-DD HH:mm:ss')), $lt: new Date() } }: {};
+    let payFilter = parsedQs.pay ? { pay: { '$gt': pay, '$lt': 150000} } : {};
+    let remoteFilter = parsedQs.remote ? { remote: parsedQs.remote } : {};
+    let jobTypeFilter = parsedQs.job_type ? { job_type: { $in: (parsedQs.job_type).split(",") } }: {};
+    let job_industry = parsedQs.job_industry ? { job_industry: { $in: (parsedQs.job_industry).split(",") } }: {};
+
+    let allFilter = ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) ? ({$and: [remoteFilter, payFilter, jobTypeFilter, timeFilter, job_industry]}) : {};
+
+    const jobs = await Jobs.find(allFilter)
+      .populate("companyId")
       .sort("-createdAt");
     return successWithData(res, OK, "Jobs fetched successfully", jobs);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getSearch = async (req, res, next) => {
+  try {
+    if (!req.body.job_title || req.body.location) {
+      console.log('please enter any keyword to search')
+     let  errors = "please enter any keyword to search";
+        return AppError.validationError(res, BAD_REQUEST, errors);
+      }
+
+    let job_title = req.body.job_title ? req.body.job_title : '';
+    let location = req.body.location ? req.body.location : '';
+    
+      let text = job_title + location;
+  
+     const searchJobs = await Jobs.aggregate([
+      {
+        '$search': {
+          'index': 'default', 
+          'text': {
+            'query': text !== '' ? text : true,
+            'path': [
+              'job_title', 'job_description', 'location', 'job_industry',
+            ]
+          }
+        }
+      },
+    ])
+        return successWithData(
+          res,
+          CREATED,
+          "search result",
+          searchJobs
+        );
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+exports.getUserJobs = async (req, res, next) => {
+  try {
+    const jobs = await Jobs.find({authorId : req.user.id}).populate("authorId").populate("companyId").sort("-createdAt");
+    if (!jobs) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
+    return successWithData(res, OK, "jobs fetched successfully", jobs);
+  } catch (err) {
+    console.log(err);
+    return AppError.tryCatchError(res, err);
+  }
+};
+
+
+exports.getCandidates = async (req, res, next) => {
+  try {
+    const easyApplied = await EasyApply.find({}).populate("authorId").populate("job_id").populate("companyId").sort("-createdAt");
+    let allEmployerJobs = [];
+
+    easyApplied.map((all)=>{
+      if(all.job_id !== null){
+      if(all.job_id.authorId.toString() === (req.user.id).toString()){
+        allEmployerJobs.push(all)
+      }
+    }
+    })
+
+    return successWithData(res, OK, "jobs you posted and candidates fetched successfully", allEmployerJobs);
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);
@@ -55,8 +158,8 @@ exports.getJob = async (req, res, next) => {
     const job = await Jobs.findById(req.params.id).populate(
       "authorId",
       "-password"
-    );
-    if (!job) return AppError.tryCatchError(res, err);
+    ).populate("companyId");
+    if (!job) { let error = {message: "undefined job"}; return AppError.tryCatchError(res, error);}
     return successWithData(res, OK, "Job fetched successfully", job);
   } catch (err) {
     console.log(err);
@@ -73,7 +176,7 @@ exports.updateJob = async (req, res, next) => {
     }
 
     const jobUpdate = await Jobs.findById(req.params.id);
-    if (!jobUpdate) return AppError.tryCatchError(res, err);
+    if (!jobUpdate) { let error = {message: "undefined Job"}; return AppError.tryCatchError(res, error);}
 
     let job = {
         ...req.body,

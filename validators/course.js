@@ -5,7 +5,7 @@ const validateCourse = (data) => {
   let errors = {};
   data.name = data.name ? data.name : "";
   data.highlight = data.highlight ? data.highlight : "";
-  data.overview = data.overview ? data.overview : "";
+  data.description = data.description ? data.description : "";
 
   if (validator.isEmpty(data.name)) {
     errors.name = "Course name is required";
@@ -13,8 +13,8 @@ const validateCourse = (data) => {
   if (validator.isEmpty(data.highlight)) {
     errors.highlight = "Highlight field is required";
   }
-  if (validator.isEmpty(data.overview)) {
-    errors.overview = "Overview field is required";
+  if (validator.isEmpty(data.description)) {
+    errors.description = "Course description is required";
   }
   return { errors, isValid: _.isEmpty(errors) };
 };

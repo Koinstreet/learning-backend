@@ -23,7 +23,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(fileUploader.uploadStartupImage, startup.updateStartup)
+  .patch(fileUploader.uploadStartupImage, startup.updateStartup)
   .delete(startup.deleteStartup);
 
 module.exports = router;

@@ -2,48 +2,69 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const mentorSchema = new Schema({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
+const mentorSchema = new Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User"
+    },
+    interest_in: {
+      type: String
+    },
+    skill_level: {
+      type: Number
+    },
+    availability: {
+      type: String
+    },
+    language: {
+      type: String
+    },
+    country: {
+      type: String
+    },
+    personal_type: {
+      type: String
+    },
+    qr_code: String,
+    occupation: String,
+    work_place: String,
+    lookingfor_learningstyle: {
+      type: String
+    },
+    lookingfor_skillLevel: {
+      type: String
+    },
+    lookingfor_personalType: {
+      type: String
+    },
+    lookingfor_availabilty: {
+      type: String
+    },
+    lookingfor_interest: {
+      type: String
+    },
+    lookingfor_ethnicity: {
+      type: String
+    },
+    lookingfor_education: {
+      type: String
+    },
+    why_mentor: {
+      type: String
+    },
+    suggestions: {
+      type: Array
+    },
+    calender_events: [
+      { title: String, event_date: String, description: String }
+    ]
   },
-  education: {
-      type: String,
-  },
-  skill_level: {
-    type: Number,
-  },
-  availability: {
-    type: Number,
-  },
-  gender: {
-    type: String,
-  },
-  language: {
-    type: String,
-  },
-  country: {
-    type: String,
-  },
-  lookingfor_learningstyle: {
-    type: Array,
-  },
-  lookingfor_personalType: {
-    type: Array,
-  },
-  lookingfor_availabilty: {
-    type: Number,
-  },
-  lookingfor_interest: {
-    type: Array,
-  },
-  why_mentor: {
-    type: String,
-  },
-}, {
-  timestamps: true
-});
+  {
+    timestamps: true
+  }
+);
 
 const Mentor = mongoose.model("Mentor", mentorSchema);
 

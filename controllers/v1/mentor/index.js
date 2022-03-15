@@ -4,12 +4,12 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 const Mentor = require("../../../model/v1/Mentor");
 const User = require("../../../model/v1/User");
 
-
 const validateMentor = require("../../../validators/mentor");
+const uploadImage = require("../../../utils/uploadImage");
 
 const {
   successWithData,
-  successNoData,
+  successNoData
 } = require("../../../utils/successHandler");
 
 // Error
@@ -17,16 +17,24 @@ const AppError = require("../../../utils/appError");
 
 exports.createMentor = async (req, res, next) => {
   try {
-    let mentor = {
+    let mentor;
+    if (req.file) {
+      const data = await uploadImage(req.file);
+      if (!data.url || !data.public_id) return AppError.tryCatchError(res, err);
+      mentor = {
         ...req.body,
-        user_id: req.user.id,
+        qr_code: data.url,
+        user_id: req.user.id
       };
+    } else {
+      mentor = {
+        ...req.body,
+        user_id: req.user.id
+      };
+    }
 
-    const newMentor= await Mentor.create(mentor);
-    await User.findOneAndUpdate(
-      { _id: req.user.id },
-      { is_mentor: true }
-    );
+    const newMentor = await Mentor.create(mentor);
+    await User.findOneAndUpdate({ _id: req.user.id }, { is_mentor: true });
     return successWithData(
       res,
       CREATED,
@@ -39,7 +47,7 @@ exports.createMentor = async (req, res, next) => {
   }
 };
 
-exports.getAllMentors= async (req, res, next) => {
+exports.getAllMentors = async (req, res, next) => {
   try {
     const mentors = await Mentor.find({})
       .populate("user_id", "-password")
@@ -51,14 +59,16 @@ exports.getAllMentors= async (req, res, next) => {
   }
 };
 
-
 exports.getMentor = async (req, res, next) => {
   try {
     const mentor = await Mentor.findById(req.params.id).populate(
       "user_id",
       "-password"
     );
-    if (!mentor) return AppError.tryCatchError(res, err);
+    if (!mentor) {
+      let error = { message: "undefined mentor" };
+      return AppError.tryCatchError(res, error);
+    }
     return successWithData(res, OK, "Mentor fetched successfully", mentor);
   } catch (err) {
     console.log(err);
@@ -67,16 +77,18 @@ exports.getMentor = async (req, res, next) => {
 };
 
 exports.updateMentor = async (req, res, next) => {
-  
   try {
     const mentorUpdate = await Mentor.findById(req.params.id);
-    if (!mentorUpdate) return AppError.tryCatchError(res, err);
+    if (!mentorUpdate) {
+      let error = { message: "undefined mentor" };
+      return AppError.tryCatchError(res, error);
+    }
 
     let mentor = {
-        ...req.body,
-        user_id: req.user.id,
-      };
-    
+      ...req.body,
+      user_id: req.user.id
+    };
+
     const modifiedMentor = await Mentor.findOneAndUpdate(
       { _id: req.params.id },
       { ...mentor },

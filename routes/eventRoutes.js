@@ -22,7 +22,7 @@ router.post(
 );
 router
   .route("/:id")
-  .put(fileUploader.uploadEventImage, event.updateEvent)
+  .patch(fileUploader.uploadEventImage, event.updateEvent)
   .delete(event.deleteEvent);
 
 module.exports = router;

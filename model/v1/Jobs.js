@@ -8,7 +8,21 @@ const jobSchema = new Schema({
     required: true,
     ref: "User",
   },
+  companyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    default: "60f1b3820739be002a24dcae",
+    ref: "Company",
+  },
   job_title: {
+    type: String,
+    required: true,
+  },
+  easy_apply: {
+    type: Boolean,
+    default: false,
+  },
+  application_link: {
     type: String,
     required: true,
   },
@@ -32,6 +46,11 @@ const jobSchema = new Schema({
   pay: {
     type: Number,
   },
+  paymentDuration: {
+    type: String,
+    default: 'Yr',
+    enum: ['Hr', 'Mo', "Yr"]
+  },
   weekly_hours: {
     type: Number,
   },
@@ -41,6 +60,11 @@ const jobSchema = new Schema({
   additional_compensation: {
     type: String,
   }, 
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "inactive",
+  },
   benefits: {
     type: String,
   },
@@ -48,7 +72,7 @@ const jobSchema = new Schema({
     type: Number,
   },
   min_requirements: {
-    type: Number,
+    type: Array,
   },
 }, {
   timestamps: true

@@ -3,7 +3,7 @@ const { CREATED, UNAUTHORIZED, BAD_REQUEST, OK } = require("http-status-codes");
 // DB
 const Location = require("../../../model/v1/Locations");
 
-const validateLocation  = require("../../../validators/location");
+const validateLocation = require("../../../validators/location");
 
 const uploadImage = require("../../../utils/uploadImage");
 
@@ -23,7 +23,7 @@ exports.createLocation = async (req, res, next) => {
     }
     let location;
     if (req.file) {
-        const logo = await uploadImage(req.file);
+      const logo = await uploadImage(req.file);
       if (!logo.url || !logo.public_id) return AppError.tryCatchError(res, err);
       location = {
         ...req.body,
@@ -37,7 +37,7 @@ exports.createLocation = async (req, res, next) => {
       };
     }
 
-    const newLocation= await Location.create(location);
+    const newLocation = await Location.create(location);
     return successWithData(
       res,
       CREATED,
@@ -54,8 +54,14 @@ exports.getAllLocations = async (req, res, next) => {
   try {
     const locations = await Location.find({})
       .populate("added_by", "-password")
+      .populate("advisor", "-password")
       .sort("-createdAt");
-    return successWithData(res, OK, "Locations fetched successfully", locations);
+    return successWithData(
+      res,
+      OK,
+      "Locations fetched successfully",
+      locations
+    );
   } catch (err) {
     console.log(err);
     return AppError.tryCatchError(res, err);
@@ -64,8 +70,14 @@ exports.getAllLocations = async (req, res, next) => {
 
 exports.getLocation = async (req, res, next) => {
   try {
-    const location = await Location.findById(req.params.id).populate("added_by").sort("-createdAt");
-    if (!location) { let error = {message: "undefined location"}; return AppError.tryCatchError(res, error);}
+    const location = await Location.findById(req.params.id)
+      .populate("added_by")
+      .populate("advisor")
+      .sort("-createdAt");
+    if (!location) {
+      let error = { message: "undefined location" };
+      return AppError.tryCatchError(res, error);
+    }
     return successWithData(res, OK, "locationfetched successfully", location);
   } catch (err) {
     console.log(err);
@@ -74,7 +86,6 @@ exports.getLocation = async (req, res, next) => {
 };
 
 exports.updateLocation = async (req, res, next) => {
-  
   try {
     const { errors, isValid } = validateLocation(req.body);
     if (!isValid) {
@@ -82,7 +93,10 @@ exports.updateLocation = async (req, res, next) => {
     }
 
     const LocationUpdate = await Location.findById(req.params.id);
-    if (!LocationUpdate) { let error = {message: "undefined Location"}; return AppError.tryCatchError(res, error);}
+    if (!LocationUpdate) {
+      let error = { message: "undefined Location" };
+      return AppError.tryCatchError(res, error);
+    }
 
     let location;
     if (req.file) {

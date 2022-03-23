@@ -87,11 +87,6 @@ exports.getLocation = async (req, res, next) => {
 
 exports.updateLocation = async (req, res, next) => {
   try {
-    const { errors, isValid } = validateLocation(req.body);
-    if (!isValid) {
-      return AppError.validationError(res, BAD_REQUEST, errors);
-    }
-
     const LocationUpdate = await Location.findById(req.params.id);
     if (!LocationUpdate) {
       let error = { message: "undefined Location" };
